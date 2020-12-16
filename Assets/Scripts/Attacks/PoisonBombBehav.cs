@@ -12,7 +12,6 @@ public class PoisonBombBehav : MonoBehaviour
     private int maxTick = 6;
 
     private float initialDamage = 2.0f;
-    private float tickDamage = 0.5f;
     private string tgtTag = "";
 
     private bool initialPhase;
@@ -54,7 +53,9 @@ public class PoisonBombBehav : MonoBehaviour
         //Apply tick damage to all affected
         foreach (Collider2D enemy in effected)
         {
-            Debug.Log("Do " + tickDamage + " damage to enemy");
+            EntityStatus enemyStatus = enemy.GetComponent<EntityStatus>();
+            if (enemyStatus != null)
+                enemy.GetComponent<EntityStatus>().PosionDamageEntity(0.0f, 1);
         }
 
         //Increment curTick and check if object ready for destroy
@@ -77,7 +78,7 @@ public class PoisonBombBehav : MonoBehaviour
         {
             if (initialPhase)
             {
-                Debug.Log("Do initial bomb damage to enemy: " + initialDamage);
+                collider.GetComponent<EntityStatus>().PosionDamageEntity(initialDamage, 2);
             }
 
             effected.Add(collider);

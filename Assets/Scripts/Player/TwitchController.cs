@@ -15,7 +15,7 @@ public class TwitchController : MonoBehaviour
     [Header("Player stats")]
     private bool canMove;
     [SerializeField]
-    private float moveSpeed = 0.0f;
+    private EntityStatus status = null;
     [SerializeField]
     private float attackMoveReduction = 0.6f;
 
@@ -124,7 +124,7 @@ public class TwitchController : MonoBehaviour
         Vector3 dir = new Vector3(hDir, vDir, 0);
         dir.Normalize();
 
-        transform.Translate(dir * moveSpeed * Time.fixedDeltaTime * speedModifier);
+        transform.Translate(dir * status.GetCurSpeed() * Time.fixedDeltaTime * speedModifier);
     }
 
     //Method to create primary attack loop

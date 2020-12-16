@@ -49,7 +49,8 @@ public class ProjectileBehav : MonoBehaviour
         {
             if (collider.tag == tgtTag)
             {
-                Debug.Log("DO " + damage + " DAMAGE TO " + tgtTag);
+                EntityStatus tgtStatus = collider.GetComponent<EntityStatus>();
+                tgtStatus.DamageEntity(damage);
             }
 
             CancelInvoke();
