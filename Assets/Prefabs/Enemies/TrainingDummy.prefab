@@ -301,6 +301,7 @@ MonoBehaviour:
   healthRegen: 0.5
   healthBar: {fileID: 2413229082297661545}
   stacksUI: {fileID: 4703791706879051879}
+  normalColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &4469067544193945612
 GameObject:
   m_ObjectHideFlags: 0

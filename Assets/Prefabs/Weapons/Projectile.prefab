@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2757126327102582189}
   - component: {fileID: 719957435129647105}
   - component: {fileID: 4182896339101736487}
-  - component: {fileID: 2270186216343491708}
   - component: {fileID: 6541037167691302875}
   - component: {fileID: 3818750842166895792}
+  - component: {fileID: 2176926265861184455}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -111,20 +111,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2270186216343491708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9017749883438011252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c962daa7ee0dd971b8dc243d2748ee8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projSpeed: 6
-  duration: 3
 --- !u!50 &6541037167691302875
 Rigidbody2D:
   serializedVersion: 4
@@ -242,3 +228,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2176926265861184455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9017749883438011252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2544d1ba82c09f3879fb9f761af46512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projSpeed: 6
+  duration: 3

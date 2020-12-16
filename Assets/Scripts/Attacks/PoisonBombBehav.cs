@@ -5,13 +5,16 @@ using UnityEngine;
 public class PoisonBombBehav : MonoBehaviour
 {
     [SerializeField]
-    private float tickDuration = 0.5f;
+    private float tickDuration = 0.75f;
     [SerializeField]
     private float initialTickDuration = 0.2f;
     [SerializeField]
     private int maxTick = 6;
 
-    private float initialDamage = 2.0f;
+    private float initialDmgFactor = 2.0f;
+    private float slownessFactor = 0.5f;
+    private int initialStacks = 2;
+    private PoisonVial bombVial = null;
     private string tgtTag = "";
 
     private bool initialPhase;
@@ -34,9 +37,10 @@ public class PoisonBombBehav : MonoBehaviour
     }
 
     //Method to set bomb up
-    public void SetBomb(bool isPlayer)
+    public void SetBomb(bool isPlayer, PoisonVial vial)
     {
         tgtTag = (isPlayer) ? "Enemy" : "Player";
+        bombVial = vial;
     }
     
 
@@ -55,7 +59,7 @@ public class PoisonBombBehav : MonoBehaviour
         {
             EntityStatus enemyStatus = enemy.GetComponent<EntityStatus>();
             if (enemyStatus != null)
-                enemy.GetComponent<EntityStatus>().PosionDamageEntity(0.0f, 1);
+                enemy.GetComponent<EntityStatus>().PoisonDamageEntity(0.0f, 1, bombVial);
         }
 
         //Increment curTick and check if object ready for destroy
@@ -78,10 +82,12 @@ public class PoisonBombBehav : MonoBehaviour
         {
             if (initialPhase)
             {
-                collider.GetComponent<EntityStatus>().PosionDamageEntity(initialDamage, 2);
+                float initialDamage = initialDmgFactor * bombVial.GetDamage();
+                collider.GetComponent<EntityStatus>().PoisonDamageEntity(initialDamage, initialStacks, bombVial);
             }
 
             effected.Add(collider);
+            collider.GetComponent<EntityStatus>().ChangeSpeed(slownessFactor);
         }
     }
 
@@ -91,6 +97,7 @@ public class PoisonBombBehav : MonoBehaviour
         if (collider.tag == tgtTag)
         {
             effected.Remove(collider);
+            collider.GetComponent<EntityStatus>().ChangeSpeed(1.0f / slownessFactor);
         }
     }
 

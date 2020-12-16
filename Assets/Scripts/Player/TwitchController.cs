@@ -22,7 +22,8 @@ public class TwitchController : MonoBehaviour
     //Primary attack management
     [Header("Primary attack management")]
     [SerializeField]
-    private float primaryDmg = 1.0f;
+    private int boltCost = 1;
+    private PoisonVial boltVial = null;
     [SerializeField]
     private float fireRate = 0.35f;
     private bool fireTimerRunning;
@@ -35,26 +36,37 @@ public class TwitchController : MonoBehaviour
     private float throwCD = 1.75f;
     [SerializeField]
     private float maxThrowDist = 5f;
+    [SerializeField]
+    private int caskCost = 5;
+    private PoisonVial caskVial = null;
     private bool canThrow;
+
+    //Contaminate management
+    [Header("Contamination management")]
+    [SerializeField]
+    private float conCD = 7.0f;
+    [SerializeField]
+    private ContaminateManager conManager = null;
+    private bool canCon;
 
     //Stealth management
     [Header("Stealth management")]
-    private bool invisible;
-    private bool attackBuffed;
-    private bool canStealth;
     [SerializeField]
     private float stealthFireRateBuff = 0.65f;
     [SerializeField]
     private float stealthSpeedBuff = 1.2f;
     [SerializeField]
-    private float stealthCD = 7.0f;
+    private float stealthCD = 10.0f;
     [SerializeField]
     private float stealthDelay = 1.0f;
     [SerializeField]
     private float stealthDuration = 6.0f;
     [SerializeField]
     private float stealthBuffDuration = 5.0f;
-
+    private bool invisible;
+    private bool attackBuffed;
+    private bool canStealth;
+    
     //Visual indicators (will be moved)
     [Header("Visuals")]
     [SerializeField]
@@ -78,12 +90,18 @@ public class TwitchController : MonoBehaviour
     //Initialize variables
     void Awake()
     {
+        //Initialize flag variables
         fireTimerRunning = false;
         canMove = true;
         canThrow = true;
+        canCon = true;
         invisible = false;
         attackBuffed = false;
         canStealth = true;
+
+        //Initialize poisonVial variables
+        caskVial = new PoisonVial(0, 2, 1, 2, Color.magenta, 20);
+        boltVial = new PoisonVial(2, 0, 3, 0, Color.yellow, 20);
     }
 
     // Start is called before the first frame update
@@ -107,6 +125,13 @@ public class TwitchController : MonoBehaviour
 
             if (canStealth && Input.GetButtonDown("Mobility"))
                 StartCoroutine(initiateStealth());
+
+            if (canCon && Input.GetButtonDown("Contaminate"))
+            {
+                conManager.ContaminateAll();
+                canCon = false;
+                Invoke("refreshContaminate", conCD);
+            }
         }
     }
 
@@ -138,7 +163,7 @@ public class TwitchController : MonoBehaviour
             Vector2 dirVect = new Vector2 (mousePos.x - transform.position.x, mousePos.y - transform.position.y);
 
             Transform curBolt = Object.Instantiate (arrowBolt, transform);
-            curBolt.GetComponent<ProjectileBehav>().SetProj(dirVect, primaryDmg, true);
+            curBolt.GetComponent<PoisonProjBehav>().SetPoisonProj(dirVect, boltVial, true);
             curBolt.parent = null;
 
             //Buff player if player was previously invisible
@@ -190,7 +215,7 @@ public class TwitchController : MonoBehaviour
         yield return new WaitForSeconds (throwTime);
 
         Transform curCask = Object.Instantiate (poisonCask, dirVector, Quaternion.identity, transform);
-        curCask.GetComponent<PoisonBombBehav>().SetBomb (true);
+        curCask.GetComponent<PoisonBombBehav>().SetBomb (true, caskVial);
         curCask.parent = null;
 
         canThrow = false;
@@ -249,6 +274,11 @@ public class TwitchController : MonoBehaviour
     void refreshStealth()
     {
         canStealth = true;
+    }
+
+    void refreshContaminate()
+    {
+        canCon = true;
     }
 
     void endAttkStealthBuff()

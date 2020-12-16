@@ -49,12 +49,18 @@ public class ProjectileBehav : MonoBehaviour
         {
             if (collider.tag == tgtTag)
             {
-                EntityStatus tgtStatus = collider.GetComponent<EntityStatus>();
-                tgtStatus.DamageEntity(damage);
+                DamageEntity(collider);
             }
 
             CancelInvoke();
             DestroyProjectile();
         }
+    }
+
+    //Method to do damage to an entity
+    protected virtual void DamageEntity(Collider2D collider)
+    {
+        EntityStatus tgtStatus = collider.GetComponent<EntityStatus>();
+        tgtStatus.DamageEntity(damage);
     }
 }

@@ -20,6 +20,8 @@ public class EntityStatus : MonoBehaviour
     private Image healthBar = null;
     [SerializeField]
     private TMP_Text stacksUI = null;
+    [SerializeField]
+    private Color normalColor = Color.black;
 
     //Management variables
     private float speedModifier;
@@ -32,6 +34,7 @@ public class EntityStatus : MonoBehaviour
     private int curTick;
     private const int MAX_TICKS = 6;
     private const float TICK_TIME = 1.0f;
+    private PoisonVial poison = null;
 
     // Awake is called to initialize variables
     void Awake()
@@ -64,27 +67,33 @@ public class EntityStatus : MonoBehaviour
     }
 
     //Method to do poison damage to do this enemy
-    public void PosionDamageEntity(float initDmg, int initStacks)
+    //  If vial is null, we just stick with the same poison
+    public void PoisonDamageEntity(float initDmg, int initStacks, PoisonVial vial)
     {
         //Check if enemy wasn't poisoned initially
         bool notPoisoned = curPoisonStacks == 0;
 
         //Poison enemy first
+        poison = vial;
+        GetComponent<SpriteRenderer>().color = vial.GetColor();
+
         curPoisonStacks += initStacks;
         if (curPoisonStacks > MAX_POISON_STACKS)
             curPoisonStacks = MAX_POISON_STACKS;
-        
+            
+        //Update UI
         if (stacksUI != null)
             stacksUI.text = "" + curPoisonStacks;
-        
+            
+        //Reset timer
         curTick = 0;
 
         //Activate invoke if first time poisoned
         if (notPoisoned)
             Invoke("PoisonTickLoop", TICK_TIME);
-        
-        DamageEntity(initDmg);
 
+
+        DamageEntity(initDmg);
     }
 
     //Invoke loop for health regen: only continues loop if not poisoned
@@ -110,7 +119,7 @@ public class EntityStatus : MonoBehaviour
     {
         //Activate poison damage
         curTick++;
-        curHealth -= (0.4f * curPoisonStacks);
+        curHealth -= (poison.GetPoisonDmg() * curPoisonStacks);
         if (curHealth <= 0)
             Death();
 
@@ -122,6 +131,9 @@ public class EntityStatus : MonoBehaviour
         {
             curPoisonStacks = 0;
             curTick = 0;
+            poison = null;
+            GetComponent<SpriteRenderer>().color = normalColor;
+
             if (stacksUI != null)
                 stacksUI.text = "0";
 
@@ -130,6 +142,15 @@ public class EntityStatus : MonoBehaviour
         else
         {
             Invoke("PoisonTickLoop", TICK_TIME);
+        }
+    }
+
+    //Method to do contaminate damage to this entity
+    public void Contaminate()
+    {
+        if (curPoisonStacks > 0)
+        {
+            DamageEntity(poison.GetContaminateDmg(curPoisonStacks));
         }
     }
 
