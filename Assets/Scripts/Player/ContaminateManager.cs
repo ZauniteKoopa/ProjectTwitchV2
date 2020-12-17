@@ -36,6 +36,32 @@ public class ContaminateManager : MonoBehaviour
     //Public method to contamate all enemies
     public void ContaminateAll()
     {
+        if (effected.Count > 0)
+        {
+            //Move all enemies to copy to not destroy iteration
+            List<EntityStatus> tempEnemies = new List<EntityStatus>();
+            foreach(EntityStatus enemy in effected)
+            {
+                if (enemy != null)
+                    tempEnemies.Add(enemy);
+            }
+
+            //Damage enemies
+            foreach(EntityStatus enemy in tempEnemies)
+            {
+                if (enemy != null)
+                    enemy.Contaminate();
+            }
+        }
+        
+    }
+
+    //Method to check if you can contaminate: must have one person poisoned in range
+    public bool CanContaminate()
+    {
+        if (effected.Count == 0)
+            return false;
+
         //Move all enemies to copy to not destroy iteration
         List<EntityStatus> tempEnemies = new List<EntityStatus>();
         foreach(EntityStatus enemy in effected)
@@ -44,10 +70,13 @@ public class ContaminateManager : MonoBehaviour
                 tempEnemies.Add(enemy);
         }
 
+        //Damage enemies
         foreach(EntityStatus enemy in tempEnemies)
         {
-            if (enemy != null)
-                enemy.Contaminate();
+            if (enemy.GetPoisonStacks() > 0)
+                return true;
         }
+
+        return false;
     }
 }

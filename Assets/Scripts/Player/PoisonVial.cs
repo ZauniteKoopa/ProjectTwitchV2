@@ -56,11 +56,6 @@ public class PoisonVial
     public void UsePoison(int cost)
     {
         ammo -= cost;
-
-        if (ammo <= 0)
-        {
-            poisonColor = Color.black;
-        }
     }
 
     //Accessor variable to damage
@@ -96,4 +91,9 @@ public class PoisonVial
         return poisonColor;
     }
 
+    //Accessor method to ammo
+    public int GetAmmo()
+    {
+        return ammo;
+    }
 }

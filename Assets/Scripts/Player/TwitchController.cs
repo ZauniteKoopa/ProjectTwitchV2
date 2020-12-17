@@ -9,6 +9,8 @@ public class TwitchController : MonoBehaviour
     [SerializeField]
     private Transform arrowBolt = null;
     [SerializeField]
+    private Transform weakBolt = null;
+    [SerializeField]
     private Transform poisonCask = null;
 
     //Player mobility properties
@@ -19,13 +21,21 @@ public class TwitchController : MonoBehaviour
     [SerializeField]
     private float attackMoveReduction = 0.6f;
 
+    //Poison vials && swap management
+    private PoisonVial boltVial = null;
+    private PoisonVial caskVial = null;
+    private PoisonVial thirdVial = null;
+    private bool canSwap;
+    private float swapDelay = 0.2f;
+
     //Primary attack management
     [Header("Primary attack management")]
     [SerializeField]
     private int boltCost = 1;
-    private PoisonVial boltVial = null;
     [SerializeField]
     private float fireRate = 0.35f;
+    [SerializeField]
+    private float weakBoltDmg = 1.25f;
     private bool fireTimerRunning;
 
     //Secondary attack management
@@ -38,7 +48,6 @@ public class TwitchController : MonoBehaviour
     private float maxThrowDist = 5f;
     [SerializeField]
     private int caskCost = 5;
-    private PoisonVial caskVial = null;
     private bool canThrow;
 
     //Contaminate management
@@ -78,7 +87,20 @@ public class TwitchController : MonoBehaviour
     [SerializeField]
     private Color normalColor = Color.black;
 
-    //Audio Source Management
+    //UI Management
+    [Header("User Interface")]
+    [SerializeField]
+    private AbilityIcon stealthIcon = null;
+    [SerializeField]
+    private AbilityIcon contaminateIcon = null;
+    [SerializeField]
+    private VialIcon boltIcon = null;
+    [SerializeField]
+    private VialIcon caskIcon = null;
+    [SerializeField]
+    private VialIcon thirdIcon = null;
+
+    //Audio Source Management (Seperate class)
     [Header("Audio")]
     [SerializeField]
     private AudioSource audioFX = null;
@@ -86,6 +108,8 @@ public class TwitchController : MonoBehaviour
     private AudioClip caskThrowFX = null;
     [SerializeField]
     private AudioClip stealthingFX = null;
+    [SerializeField]
+    private AudioClip contaminateFX = null;
 
     //Initialize variables
     void Awake()
@@ -98,16 +122,20 @@ public class TwitchController : MonoBehaviour
         invisible = false;
         attackBuffed = false;
         canStealth = true;
+        canSwap = true;
 
         //Initialize poisonVial variables
         caskVial = new PoisonVial(0, 2, 1, 2, Color.magenta, 20);
-        boltVial = new PoisonVial(2, 0, 3, 0, Color.yellow, 20);
+        boltVial = new PoisonVial(2, 1, 2, 0, Color.yellow, 20);
+        thirdVial = new PoisonVial(0, 2, 3, 0, Color.cyan, 20);
     }
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update: intializes variables connected to other objects (UI)
     void Start()
     {
-        
+        caskIcon.SetUpVial(caskVial);
+        boltIcon.SetUpVial(boltVial);
+        thirdIcon.SetUpVial(thirdVial);
     }
 
     // Update is called once per frame
@@ -117,21 +145,40 @@ public class TwitchController : MonoBehaviour
         {
             movement();
 
+            //Primary attack
             if (!fireTimerRunning && Input.GetButtonDown("Fire1"))
                 primaryAttack();
 
-            if (canThrow && Input.GetButtonDown("Fire2"))
+            //Secondary attack
+            if (canThrow && Input.GetButtonDown("Fire2") && checkVial(caskVial, caskCost))
                 StartCoroutine(throwCask());
 
+            //Invisibility
             if (canStealth && Input.GetButtonDown("Mobility"))
                 StartCoroutine(initiateStealth());
 
-            if (canCon && Input.GetButtonDown("Contaminate"))
+            //Contamination
+            if (canCon && Input.GetButtonDown("Contaminate") && conManager.CanContaminate())
             {
+                //Contaminate
                 conManager.ContaminateAll();
                 canCon = false;
+                contaminateIcon.ShowDisabled();
+
+                //play sound fx
+                audioFX.clip = contaminateFX;
+                audioFX.Play();
+                
                 Invoke("refreshContaminate", conCD);
             }
+
+            //Swapping
+            if (canSwap && Input.GetButton("PrimarySwitch"))
+                swapPrimary();
+
+            if (canSwap && Input.GetButton("SecondarySwitch"))
+                swapCask();
+
         }
     }
 
@@ -152,23 +199,48 @@ public class TwitchController : MonoBehaviour
         transform.Translate(dir * status.GetCurSpeed() * Time.fixedDeltaTime * speedModifier);
     }
 
+    //Helper method to check PoisonVial ammo in a safe manner
+    bool checkVial(PoisonVial vial, int cost)
+    {
+        return vial != null && vial.CanUsePoison(cost);
+    }
+
     //Method to create primary attack loop
     void primaryAttack()
     {
         if (Input.GetButton("Fire1"))
         {
-            //set up and create projectile first
+            //set up projectile direction
             Vector3 mousePos = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0);
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
             Vector2 dirVect = new Vector2 (mousePos.x - transform.position.x, mousePos.y - transform.position.y);
 
-            Transform curBolt = Object.Instantiate (arrowBolt, transform);
-            curBolt.GetComponent<PoisonProjBehav>().SetPoisonProj(dirVect, boltVial, true);
+            //make projectile
+            bool usesPoison = checkVial(boltVial, boltCost);
+            Transform curTemplate = (usesPoison) ? arrowBolt : weakBolt;
+            Transform curBolt = Object.Instantiate (curTemplate, transform);
+            if (usesPoison)
+                curBolt.GetComponent<PoisonProjBehav>().SetPoisonProj(dirVect, boltVial, true);
+            else
+                curBolt.GetComponent<ProjectileBehav>().SetProj(dirVect, weakBoltDmg, true);
             curBolt.parent = null;
 
             //Buff player if player was previously invisible
             if (invisible)
                 StartStealthAttackBuff();
+
+            //Update vial properties if poison was used
+            if (usesPoison)
+            {
+                boltVial.UsePoison(boltCost);
+                boltIcon.UpdateVial();
+                if (boltVial.GetAmmo() == 0)
+                {
+                    boltVial = null;
+                    if (thirdVial != null)
+                        swapPrimary();
+                }
+            }
 
             //Create timer for loop
             fireTimerRunning = true;
@@ -218,6 +290,17 @@ public class TwitchController : MonoBehaviour
         curCask.GetComponent<PoisonBombBehav>().SetBomb (true, caskVial);
         curCask.parent = null;
 
+        //Update vial properties
+        caskVial.UsePoison(caskCost);
+        caskIcon.UpdateVial();
+        caskIcon.ShowDisabled();
+        if (caskVial.GetAmmo() == 0)
+        {
+            caskVial = null;
+            if (thirdVial != null)
+                swapCask();
+        }
+
         canThrow = false;
         canMove = true;
         Invoke("refreshCaskCD", throwCD);
@@ -226,13 +309,17 @@ public class TwitchController : MonoBehaviour
     //Method to call cause character to stealth
     IEnumerator initiateStealth()
     {
+        //Disable stealth
+        canStealth = false;
+        stealthIcon.ShowDisabled();
+
         //Get necessary variables
         SpriteRenderer render = GetComponent<SpriteRenderer>();
         float timer = 0.0f;
 
         //Initiate stealth delay
         audioFX.clip = stealthingFX;
-        audioFX.Play();
+        audioFX.Play(0);
         render.color = stealthDelayColor;
         yield return new WaitForSeconds(stealthDelay);
 
@@ -252,7 +339,6 @@ public class TwitchController : MonoBehaviour
             render.color = normalColor;
         }
 
-        canStealth = false;
         Invoke("refreshStealth", stealthCD);
     }
 
@@ -265,20 +351,60 @@ public class TwitchController : MonoBehaviour
         Invoke("endAttkStealthBuff", stealthBuffDuration);
     }
 
+    //Helper method to swap vials
+    void swapPrimary()
+    {
+        //Swap
+        PoisonVial temp = boltVial;
+        boltVial = thirdVial;
+        thirdVial = temp;
+
+        //Update UI
+        boltIcon.SetUpVial(boltVial);
+        thirdIcon.SetUpVial(thirdVial);
+
+        canSwap = false;
+        Invoke("refreshSwap", swapDelay);
+    }
+
+    void swapCask()
+    {
+        //swap
+        PoisonVial temp = caskVial;
+        caskVial = thirdVial;
+        thirdVial = temp;
+
+        //update UI
+        caskIcon.SetUpVial(caskVial);
+        thirdIcon.SetUpVial(thirdVial);
+
+        canSwap = false;
+        Invoke("refreshSwap", swapDelay);
+    }
+
     //Methods to refresh cooldowns and effects. Called on invoke after attack sequences
     void refreshCaskCD()
     {
+        if (caskVial != null)
+            caskIcon.ShowEnabled();
         canThrow = true;
     }
 
     void refreshStealth()
     {
+        stealthIcon.ShowEnabled();
         canStealth = true;
     }
 
     void refreshContaminate()
     {
+        contaminateIcon.ShowEnabled();
         canCon = true;
+    }
+
+    void refreshSwap()
+    {
+        canSwap = true;
     }
 
     void endAttkStealthBuff()

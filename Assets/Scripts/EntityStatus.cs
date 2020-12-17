@@ -181,4 +181,10 @@ public class EntityStatus : MonoBehaviour
         speedModifier *= speedFactor;
     }
 
+    //Public accessor method to get current aamount of poison stacks
+    public int GetPoisonStacks()
+    {
+        return curPoisonStacks;
+    }
+
 }

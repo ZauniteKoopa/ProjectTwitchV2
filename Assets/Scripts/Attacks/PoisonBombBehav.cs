@@ -41,6 +41,10 @@ public class PoisonBombBehav : MonoBehaviour
     {
         tgtTag = (isPlayer) ? "Enemy" : "Player";
         bombVial = vial;
+        
+        Color bombColor = vial.GetColor();
+        bombColor.a = 0.25f;
+        GetComponent<SpriteRenderer>().color = bombColor;
     }
     
 
