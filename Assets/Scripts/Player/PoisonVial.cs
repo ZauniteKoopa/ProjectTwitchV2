@@ -12,9 +12,11 @@ public class PoisonVial
     private int poison;
     private int reactivity;
     private int stickiness;
+    private const int MAX_STAT = 5;
 
     //Ammo system
     private int ammo;
+    private const int BEGIN_AMMO = 15;
 
     //Constants for damage/potency
     private const float BASE_DAMAGE = 1.5f;
@@ -34,6 +36,9 @@ public class PoisonVial
     private const float BASE_SLOWNESS = 0.85f;
     private const float SLOWNESS_GROWTH = -0.025f;
 
+    //Updates log kept for information purposes
+    private int[] updateLog;
+
 
     //Pure Constructor
     public PoisonVial(int pot, int poi, int r, int s, Color c, int initialAmmo)
@@ -44,6 +49,59 @@ public class PoisonVial
         stickiness = s;
         poisonColor = c;
         ammo = initialAmmo;
+
+        updateLog = new int[4];
+    }
+
+    //Constructor to make PoisonVial from scratch from a list of ingredients
+    public PoisonVial(List<Ingredient> ingredients)
+    {
+        ammo = BEGIN_AMMO;
+        potency = 0;
+        poison = 0;
+        reactivity = 0;
+        stickiness = 0;
+        poisonColor = new Color(Random.Range(0.2f, 1f), Random.Range(0.2f, 1f), Random.Range(0.2f, 1f), 1f);
+
+        updateLog = new int[4];
+        UpgradeVial(ingredients);
+    }
+
+    //Method to upgrade a single poison from a list of ingredients
+    public void UpgradeVial(List<Ingredient> ingredients)
+    {
+        //Clear UpgradeLog
+        for(int i = 0; i < updateLog.Length; i++)
+            updateLog[i] = 0;
+
+        //Upgrade vial 1 ingredient at a time
+        for (int i = 0; i < ingredients.Count; i++)
+        {
+            List<Ingredient.StatType> upgrades = ingredients[i].GetStatUpgrades();
+            for (int upgrade = 0; upgrade < upgrades.Count; upgrade++)
+            {
+                UpgradeStat(upgrades[upgrade]);
+            }
+
+            ammo += ingredients[i].GetAmmoOffered();
+        }
+    }
+
+    //Helper method that upgrades a stat based on input
+    private void UpgradeStat(Ingredient.StatType s)
+    {
+        //Actually update stat
+        if (potency < MAX_STAT && s == Ingredient.StatType.Potency)
+            potency++;
+        else if (poison < MAX_STAT && s == Ingredient.StatType.Poison)
+            poison++;
+        else if (reactivity < MAX_STAT && s == Ingredient.StatType.Reactivity)
+            reactivity++;
+        else if (stickiness < MAX_STAT && s == Ingredient.StatType.Stickiness)
+            stickiness++;
+
+        //record in log
+        updateLog[(int)s]++;
     }
 
     //Ammo checker: Checks if can use poison given the cost
@@ -95,5 +153,29 @@ public class PoisonVial
     public int GetAmmo()
     {
         return ammo;
+    }
+
+    //ToString method for poison vial for debugging purposes
+    public override string ToString()
+    {
+        return "A vial with potency " + potency + ", poison " + poison + ", reactivity " + reactivity + ", and stickiness " + stickiness;
+    }
+
+    //Get Update log information from the latest update. To be used for text popups
+    public List<string> GetLatestUpdateInfo()
+    {
+        List<string> logInfo = new List<string>();
+
+        for (int i = 0; i < updateLog.Length; i++)
+        {
+            if (updateLog[i] > 0)
+            {
+                string curStatInfo = (Ingredient.StatType)i + ": +" + updateLog[i];
+                logInfo.Add(curStatInfo);
+            }
+        }
+
+        return logInfo;
+
     }
 }

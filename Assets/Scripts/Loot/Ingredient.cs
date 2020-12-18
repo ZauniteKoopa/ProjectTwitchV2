@@ -1,0 +1,64 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Ingredient
+{
+    //Array with booleans to be used, in enum order
+    public enum StatType {Potency, Poison, Reactivity, Stickiness};
+    private List<StatType> availableTypes;
+    private const int STAT_SIZE = 4;
+
+    //Method that shows how many stats this ingredient offers
+    private int statsOffered;
+    private const int AMMO_OFFERED = 5;
+
+    //Gives a randomized ingredient with a given offer rate
+    public Ingredient(int offer)
+    {
+        statsOffered = offer;
+        availableTypes = new List<StatType>();
+
+        for(StatType i = StatType.Potency; i <= StatType.Stickiness; i++)
+        {
+            if (Random.Range(0, 2) == 0)
+                availableTypes.Add(i);
+        }
+    }
+
+    //Randomized ingredient with specified stat buff chances in enum order
+    public Ingredient(bool[] statAvailability, int offer)
+    {
+        statsOffered = offer;
+        availableTypes = new List<StatType>();
+
+        if (statAvailability.Length == 0)
+            Debug.Log("INVALID INGREDIENT STAT ARRAY. PLEASE FIX IT");
+
+        for(int i = 0; i < statAvailability.Length; i++)
+        {
+            if (statAvailability[i])
+                availableTypes.Add((StatType)i);
+        }
+    }
+
+    //Method that returns a list of stats for poison to use when upgrading
+    public List<StatType> GetStatUpgrades()
+    {
+        List<StatType> upgrades = new List<StatType>();
+        
+        for(int i = 0; i < statsOffered; i++)
+        {
+            int selectedIndex = Random.Range(0, availableTypes.Count);
+            upgrades.Add(availableTypes[selectedIndex]);
+        }
+
+        return upgrades;
+    }
+
+    //Method to get how much ammo offered
+    public int GetAmmoOffered()
+    {
+        return AMMO_OFFERED;
+    }
+}

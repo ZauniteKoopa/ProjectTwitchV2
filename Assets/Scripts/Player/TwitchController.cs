@@ -27,6 +27,7 @@ public class TwitchController : MonoBehaviour
     private PoisonVial thirdVial = null;
     private bool canSwap;
     private float swapDelay = 0.2f;
+    private bool crafting;
 
     //Primary attack management
     [Header("Primary attack management")]
@@ -99,6 +100,8 @@ public class TwitchController : MonoBehaviour
     private VialIcon caskIcon = null;
     [SerializeField]
     private VialIcon thirdIcon = null;
+    [SerializeField]
+    private Transform upgradePopup = null;
 
     //Audio Source Management (Seperate class)
     [Header("Audio")]
@@ -123,6 +126,7 @@ public class TwitchController : MonoBehaviour
         attackBuffed = false;
         canStealth = true;
         canSwap = true;
+        crafting = false;
 
         //Initialize poisonVial variables
         caskVial = new PoisonVial(0, 2, 1, 2, Color.magenta, 20);
@@ -380,6 +384,96 @@ public class TwitchController : MonoBehaviour
 
         canSwap = false;
         Invoke("refreshSwap", swapDelay);
+    }
+
+    //method to enable / disable crafting mode
+    public void EnableCraftMode()
+    {
+        canMove = false;
+        crafting = true;
+    }
+
+    public void DisableCraftMode()
+    {
+        canMove = true;
+        crafting = false;
+    }
+
+    //Accessor method to crafting
+    public bool IsCrafting()
+    {
+        return crafting;
+    }
+
+    //Method to upgrade poisons
+    public void UpgradePrimary(List<Ingredient> ingredients)
+    {
+        if (boltVial == null)
+        {
+            boltVial = new PoisonVial(ingredients);
+            boltIcon.SetUpVial(boltVial);
+            Debug.Log("NEW BOLT: " + boltVial.ToString());
+        }
+        else
+        {
+            Debug.Log("BOLT BEFORE: " + boltVial.ToString());
+            boltVial.UpgradeVial(ingredients);
+            boltIcon.UpdateVial();
+            Debug.Log("BOLT AFTER: " + boltVial.ToString());
+        }
+
+        StartCoroutine(DisplayVialUpdates(boltVial));
+    }
+
+    public void UpgradeCask(List<Ingredient> ingredients)
+    {
+        if (caskVial == null)
+        {
+            caskVial = new PoisonVial(ingredients);
+            caskIcon.SetUpVial(caskVial);
+            Debug.Log("NEW CASK: " + caskVial.ToString());
+        }
+        else
+        {
+            Debug.Log("CASK BEFORE: " + caskVial.ToString());
+            caskVial.UpgradeVial(ingredients);
+            caskIcon.UpdateVial();
+            Debug.Log("CASK AFTER: " + caskVial.ToString());
+        }
+
+        StartCoroutine(DisplayVialUpdates(caskVial));
+    }
+
+    public void UpgradeThird(List<Ingredient> ingredients)
+    {
+        if (thirdVial == null)
+        {
+            thirdVial = new PoisonVial(ingredients);
+            thirdIcon.SetUpVial(thirdVial);
+            Debug.Log("NEW BACKUP: " + thirdVial.ToString());
+        }
+        else
+        {
+            Debug.Log("BACKUP BEFORE: " + thirdVial.ToString());
+            thirdVial.UpgradeVial(ingredients);
+            thirdIcon.UpdateVial();
+            Debug.Log("BACKUP AFTER: " + thirdVial.ToString());
+        }
+
+        StartCoroutine(DisplayVialUpdates(thirdVial));
+    }
+
+    //IEnumerator to display update popups after a cask update
+    IEnumerator DisplayVialUpdates(PoisonVial vial)
+    {
+        List<string> vialUpdates = vial.GetLatestUpdateInfo();
+
+        for(int i = 0; i < vialUpdates.Count; i++)
+        {
+            Transform curPopup = Object.Instantiate(upgradePopup, transform);
+            curPopup.GetComponent<TextPopup>().SetUpPopup(vialUpdates[i]);
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
     //Methods to refresh cooldowns and effects. Called on invoke after attack sequences
