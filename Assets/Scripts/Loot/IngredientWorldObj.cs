@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class IngredientWorldObj : MonoBehaviour
 {
+    //Type indicator
+    [Header("Ingredient Name")]
+    [SerializeField]
+    Ingredient.IngredientType type = Ingredient.IngredientType.Puffcap;
+    
     //Variables used to create ingredient
     [Header("Stat Offered")]
     [SerializeField]
@@ -41,7 +46,7 @@ public class IngredientWorldObj : MonoBehaviour
         statChances[2] = reactivity;
         statChances[3] = stickiness;
 
-        mainIngredient = new Ingredient(statChances, statsOffered);
+        mainIngredient = new Ingredient(type, statChances, statsOffered);
 
         player = null;
         craftTimer = 0.0f;
@@ -52,12 +57,20 @@ public class IngredientWorldObj : MonoBehaviour
     {
         if (player != null && !player.IsCrafting())
         {
+            //Quick craft during battle
             if (Input.GetButtonDown("BoltCraft"))
                 StartCoroutine(Craft("BoltCraft"));
             else if (Input.GetButtonDown("CaskCraft"))
                 StartCoroutine(Craft("CaskCraft"));
             else if (Input.GetButtonDown("ThirdCraft"))
                 StartCoroutine(Craft("ThirdCraft"));
+
+            //Collecting after battle
+            if (Input.GetButtonDown("Contaminate"))
+            {
+                player.AddToInventory(mainIngredient);
+                Destroy(gameObject);
+            }
         }
     }
 

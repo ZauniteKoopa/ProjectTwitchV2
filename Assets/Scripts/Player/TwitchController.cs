@@ -102,6 +102,8 @@ public class TwitchController : MonoBehaviour
     private VialIcon thirdIcon = null;
     [SerializeField]
     private Transform upgradePopup = null;
+    [SerializeField]
+    private Inventory inventory = null;
 
     //Audio Source Management (Seperate class)
     [Header("Audio")]
@@ -113,6 +115,7 @@ public class TwitchController : MonoBehaviour
     private AudioClip stealthingFX = null;
     [SerializeField]
     private AudioClip contaminateFX = null;
+
 
     //Initialize variables
     void Awake()
@@ -134,6 +137,7 @@ public class TwitchController : MonoBehaviour
         thirdVial = new PoisonVial(0, 2, 3, 0, Color.cyan, 20);
     }
 
+
     // Start is called before the first frame update: intializes variables connected to other objects (UI)
     void Start()
     {
@@ -141,6 +145,7 @@ public class TwitchController : MonoBehaviour
         boltIcon.SetUpVial(boltVial);
         thirdIcon.SetUpVial(thirdVial);
     }
+
 
     // Update is called once per frame
     void FixedUpdate()
@@ -183,8 +188,13 @@ public class TwitchController : MonoBehaviour
             if (canSwap && Input.GetButton("SecondarySwitch"))
                 swapCask();
 
+            //Opening inventory
+            if (Input.GetButtonDown("Inventory"))
+                inventory.Open(boltVial, caskVial, thirdVial);
+
         }
     }
+
 
     //Method to call upon movement
     void movement()
@@ -208,6 +218,7 @@ public class TwitchController : MonoBehaviour
     {
         return vial != null && vial.CanUsePoison(cost);
     }
+
 
     //Method to create primary attack loop
     void primaryAttack()
@@ -259,6 +270,7 @@ public class TwitchController : MonoBehaviour
         }
     }
 
+
     /* Throws cask at mouse direction with distance of MAX_THROW_DIST units or less */
     IEnumerator throwCask ()
     {
@@ -309,6 +321,7 @@ public class TwitchController : MonoBehaviour
         canMove = true;
         Invoke("refreshCaskCD", throwCD);
     }
+
     
     //Method to call cause character to stealth
     IEnumerator initiateStealth()
@@ -346,6 +359,7 @@ public class TwitchController : MonoBehaviour
         Invoke("refreshStealth", stealthCD);
     }
 
+
     //Method to activate stealth attack buff when attacking, if invisible
     void StartStealthAttackBuff()
     {
@@ -354,6 +368,7 @@ public class TwitchController : MonoBehaviour
         GetComponent<SpriteRenderer>().color = stealthBuffColor;
         Invoke("endAttkStealthBuff", stealthBuffDuration);
     }
+
 
     //Helper method to swap vials
     void swapPrimary()
@@ -371,6 +386,7 @@ public class TwitchController : MonoBehaviour
         Invoke("refreshSwap", swapDelay);
     }
 
+
     void swapCask()
     {
         //swap
@@ -386,6 +402,7 @@ public class TwitchController : MonoBehaviour
         Invoke("refreshSwap", swapDelay);
     }
 
+
     //method to enable / disable crafting mode
     public void EnableCraftMode()
     {
@@ -393,17 +410,20 @@ public class TwitchController : MonoBehaviour
         crafting = true;
     }
 
+
     public void DisableCraftMode()
     {
         canMove = true;
         crafting = false;
     }
 
+
     //Accessor method to crafting
     public bool IsCrafting()
     {
         return crafting;
     }
+    
 
     //Method to upgrade poisons
     public void UpgradePrimary(List<Ingredient> ingredients)
@@ -412,18 +432,16 @@ public class TwitchController : MonoBehaviour
         {
             boltVial = new PoisonVial(ingredients);
             boltIcon.SetUpVial(boltVial);
-            Debug.Log("NEW BOLT: " + boltVial.ToString());
         }
         else
         {
-            Debug.Log("BOLT BEFORE: " + boltVial.ToString());
             boltVial.UpgradeVial(ingredients);
             boltIcon.UpdateVial();
-            Debug.Log("BOLT AFTER: " + boltVial.ToString());
         }
 
         StartCoroutine(DisplayVialUpdates(boltVial));
     }
+
 
     public void UpgradeCask(List<Ingredient> ingredients)
     {
@@ -431,18 +449,16 @@ public class TwitchController : MonoBehaviour
         {
             caskVial = new PoisonVial(ingredients);
             caskIcon.SetUpVial(caskVial);
-            Debug.Log("NEW CASK: " + caskVial.ToString());
         }
         else
         {
-            Debug.Log("CASK BEFORE: " + caskVial.ToString());
             caskVial.UpgradeVial(ingredients);
             caskIcon.UpdateVial();
-            Debug.Log("CASK AFTER: " + caskVial.ToString());
         }
 
         StartCoroutine(DisplayVialUpdates(caskVial));
     }
+
 
     public void UpgradeThird(List<Ingredient> ingredients)
     {
@@ -450,18 +466,16 @@ public class TwitchController : MonoBehaviour
         {
             thirdVial = new PoisonVial(ingredients);
             thirdIcon.SetUpVial(thirdVial);
-            Debug.Log("NEW BACKUP: " + thirdVial.ToString());
         }
         else
         {
-            Debug.Log("BACKUP BEFORE: " + thirdVial.ToString());
             thirdVial.UpgradeVial(ingredients);
             thirdIcon.UpdateVial();
-            Debug.Log("BACKUP AFTER: " + thirdVial.ToString());
         }
 
         StartCoroutine(DisplayVialUpdates(thirdVial));
     }
+
 
     //IEnumerator to display update popups after a cask update
     IEnumerator DisplayVialUpdates(PoisonVial vial)
@@ -475,6 +489,14 @@ public class TwitchController : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
     }
+
+
+    //Method concerning inventory
+    public void AddToInventory(Ingredient ingredient)
+    {
+        inventory.AddIngredient(ingredient);
+    }
+
 
     //Methods to refresh cooldowns and effects. Called on invoke after attack sequences
     void refreshCaskCD()

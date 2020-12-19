@@ -6,6 +6,9 @@ public class Ingredient
 {
     //Array with booleans to be used, in enum order
     public enum StatType {Potency, Poison, Reactivity, Stickiness};
+    public enum IngredientType {Puffcap, MutatedHeart, ShimmerOil, WhumpFeces}
+
+    public IngredientType type;
     private List<StatType> availableTypes;
     private const int STAT_SIZE = 4;
 
@@ -14,8 +17,9 @@ public class Ingredient
     private const int AMMO_OFFERED = 5;
 
     //Gives a randomized ingredient with a given offer rate
-    public Ingredient(int offer)
+    public Ingredient(IngredientType t, int offer)
     {
+        type = t;
         statsOffered = offer;
         availableTypes = new List<StatType>();
 
@@ -27,8 +31,9 @@ public class Ingredient
     }
 
     //Randomized ingredient with specified stat buff chances in enum order
-    public Ingredient(bool[] statAvailability, int offer)
+    public Ingredient(IngredientType t, bool[] statAvailability, int offer)
     {
+        type = t;
         statsOffered = offer;
         availableTypes = new List<StatType>();
 
@@ -60,5 +65,22 @@ public class Ingredient
     public int GetAmmoOffered()
     {
         return AMMO_OFFERED;
+    }
+
+    //Method to get hashcode according to type, not to pointer location
+    public override int GetHashCode()
+    {
+        return (int)type;
+    }
+
+    //Method to check equality
+    public override bool Equals(object other)
+    {
+        Ingredient ing = other as Ingredient;
+
+        if (ing == null)
+            return false;
+        
+        return type == ing.type;
     }
 }

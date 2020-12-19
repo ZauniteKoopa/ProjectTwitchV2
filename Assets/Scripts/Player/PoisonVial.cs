@@ -176,6 +176,18 @@ public class PoisonVial
         }
 
         return logInfo;
-
     }
+
+    //Access stats information in the form of an int array in enum order
+    public int[] GetStats()
+    {
+        int[] stats = new int[4];
+        stats[0] = potency;
+        stats[1] = poison;
+        stats[2] = reactivity;
+        stats[3] = stickiness;
+
+        return stats;
+    }
+
 }

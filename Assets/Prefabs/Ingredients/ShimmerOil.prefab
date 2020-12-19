@@ -273,6 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96da7b47dffb9b0940be4dcfef849d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 2
   potency: 0
   poison: 1
   reactivity: 1
