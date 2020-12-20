@@ -14,7 +14,7 @@ public class Ingredient
 
     //Method that shows how many stats this ingredient offers
     private int statsOffered;
-    private const int AMMO_OFFERED = 5;
+    private const int AMMO_OFFERED = 2;
 
     //Variable used for display
     private Color ingColor;

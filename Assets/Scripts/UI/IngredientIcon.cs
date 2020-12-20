@@ -10,10 +10,11 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     [SerializeField]
     private Image icon = null;
     [SerializeField]
-    private TMP_Text count = null;
+    private TMP_Text countText = null;
     [SerializeField]
     private Color emptyColor = Color.clear;
     private Ingredient ingredient = null;
+    private int count;
 
     //Variables for managing drag and drop
     private RectTransform rectTransform;
@@ -40,7 +41,8 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
 
         if (ing != null)
         {
-            count.text = "" + n;
+            count = n;
+            countText.text = "" + n;
             ingredient = ing;
             icon.color = ing.GetColor();
         }
@@ -54,10 +56,38 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     public void ClearIcon()
     {
         icon.color = emptyColor;
-        count.text = "0";
+        countText.text = "0";
         ingredient = null;
         rectTransform.anchoredPosition = startPosition;
         startPosition = rectTransform.anchoredPosition;
+    }
+
+    //Set this ingredient for crafting. THIS DOES NOT USE UP AN INGREDIENT AND DOESN'T CHANGE INVENTORY'S DICTIONARY
+    public void SetIngredientForCrafting()
+    {
+        if (count > 0)
+        {
+            count--;
+            countText.text = "" + count;
+            
+            if (count == 0)
+            {
+                icon.color = emptyColor;
+                rectTransform.anchoredPosition = startPosition;
+            }
+        }
+    }
+
+    //Method for ingredient icon to get ingredient back from crafting
+    public void ReturnIngredient()
+    {
+        if (count == 0)
+        {
+            icon.color = ingredient.GetColor();
+        }
+
+        count++;
+        countText.text = "" + count;
     }
 
     //Accessor method to ingredient

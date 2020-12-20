@@ -50,4 +50,10 @@ public class VialIcon : AbilityIcon
             }
         }
     }
+
+    //Method to access the UI sprite for this icon
+    public Sprite GetSprite()
+    {
+        return vialDisplay.sprite;
+    }
 }

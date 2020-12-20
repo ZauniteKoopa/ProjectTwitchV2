@@ -27,7 +27,15 @@ public class CraftIngredientSlot : MonoBehaviour, IDropHandler
             IngredientIcon ingIcon = eventData.pointerDrag.GetComponent<IngredientIcon>();
             if (ingIcon != null && ingIcon.GetIngredient() != null)
             {
-                Debug.Log("DO SOMETHING!");
+                //if there's an ingredient icon already in here, give an ingredient back to that icon
+                if (ingredientIcon != null)
+                {
+                    ingredientIcon.ReturnIngredient();
+                }
+
+                ingredientIcon = ingIcon;
+                ingIcon.SetIngredientForCrafting();
+                icon.color = ingIcon.GetIngredient().GetColor();
             }
         }
     }
@@ -35,6 +43,26 @@ public class CraftIngredientSlot : MonoBehaviour, IDropHandler
     //Accessor method to ingredient
     public Ingredient GetIngredient()
     {
+        if (ingredientIcon == null)
+            return null;
+        
         return ingredientIcon.GetIngredient();
+    }
+
+    //Method to reset all this slot
+    public void Reset()
+    {
+        if (ingredientIcon != null)
+            ingredientIcon.ReturnIngredient();
+        
+        ingredientIcon = null;
+        icon.color = emptyColor;
+    }
+
+    //Method to craft ingredient in a visual level
+    public void CraftIngredient()
+    {
+        ingredientIcon = null;
+        Reset();
     }
 }
