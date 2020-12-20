@@ -22,9 +22,11 @@ public class IngredientWorldObj : MonoBehaviour
     bool stickiness = false;
     [SerializeField]
     int statsOffered = 1;
+    [SerializeField]
+    Color ingColor = Color.clear;
 
     //Variables used for crafting
-    [Header("Crafting variables")]
+    [Header("Quick Crafting variables")]
     [SerializeField]
     float maxCraftDuration = 5.0f;
     [SerializeField]
@@ -46,7 +48,7 @@ public class IngredientWorldObj : MonoBehaviour
         statChances[2] = reactivity;
         statChances[3] = stickiness;
 
-        mainIngredient = new Ingredient(type, statChances, statsOffered);
+        mainIngredient = new Ingredient(type, statChances, statsOffered, ingColor);
 
         player = null;
         craftTimer = 0.0f;

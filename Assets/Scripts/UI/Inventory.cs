@@ -42,13 +42,7 @@ public class Inventory : MonoBehaviour
     Dictionary<Ingredient, int> ingredientInv;
     [Header("Ingredient Inventory")]
     [SerializeField]
-    private Color emptyColor = Color.clear;
-    [SerializeField]
-    private Image[] ingredientIcons = null;
-    [SerializeField]
-    private TMP_Text[] ingredientCounts = null;
-    [SerializeField]
-    private Color[] inventorySprites = null;
+    private IngredientIcon[] ingredientIcons = null;
 
 
     // Awake is called to initialize some variables
@@ -88,14 +82,17 @@ public class Inventory : MonoBehaviour
         caskIcon.SetUpVial(cv);
         thirdIcon.SetUpVial(tv);
 
-        //Update inventories
-        int i = 0;
-        foreach(KeyValuePair<Ingredient, int> entry in ingredientInv)
+        //Update inventories if necessary
+        if (ingredientInv != null)
         {
-            ingredientIcons[i].color = inventorySprites[entry.Key.GetHashCode()];
-            ingredientCounts[i].text = "" + entry.Value;
-            i++;
+            int i = 0;
+            foreach(KeyValuePair<Ingredient, int> entry in ingredientInv)
+            {
+                ingredientIcons[i].SetUpIcon(entry.Key, entry.Value);
+                i++;
+            }
         }
+        
 
         //Actually open up menu and pause game
         gameObject.SetActive(true);
@@ -122,10 +119,12 @@ public class Inventory : MonoBehaviour
         ClearVialInfo();
 
         //Clear out ingredient information
-        for(int i = 0; i < ingredientInv.Count; i++)
+        if (ingredientInv != null)
         {
-            ingredientIcons[i].color = emptyColor;
-            ingredientCounts[i].text = "0";
+            for(int i = 0; i < ingredientInv.Count; i++)
+            {
+                ingredientIcons[i].ClearIcon();
+            }
         }
 
         //Close the menu
@@ -196,6 +195,18 @@ public class Inventory : MonoBehaviour
         poisonText.text = "Poison: 0";
         reactivityText.text = "Reactivity: 0";
         stickinessText.text = "Stickiness: 0";
+    }
+
+    //Method that returns an array of PoisonVials used to help update info in player
+    //  Post: returns an array in this order {Bolt, Cask, Third}
+    public PoisonVial[] GetVials()
+    {
+        PoisonVial[] vials = new PoisonVial[3];
+        vials[0] = boltVial;
+        vials[1] = caskVial;
+        vials[2] = thirdVial;
+
+        return vials;
     }
 
 }

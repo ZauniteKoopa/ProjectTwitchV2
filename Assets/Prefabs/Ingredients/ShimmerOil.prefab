@@ -279,6 +279,7 @@ MonoBehaviour:
   reactivity: 1
   stickiness: 0
   statsOffered: 1
+  ingColor: {r: 0.4862745, g: 0.5176471, b: 0, a: 1}
   maxCraftDuration: 3
   craftTimerUI: {fileID: 428348292168606439}
   craftTimerBorder: {fileID: 428348291875156348}

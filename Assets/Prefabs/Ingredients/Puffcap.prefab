@@ -273,11 +273,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96da7b47dffb9b0940be4dcfef849d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
   potency: 1
   poison: 1
   reactivity: 0
   stickiness: 0
   statsOffered: 1
+  ingColor: {r: 0.6, g: 0, b: 1, a: 1}
   maxCraftDuration: 3
   craftTimerUI: {fileID: 7351858614707200545}
   craftTimerBorder: {fileID: 7351858614480630202}

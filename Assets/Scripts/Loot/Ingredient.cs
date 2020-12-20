@@ -16,8 +16,11 @@ public class Ingredient
     private int statsOffered;
     private const int AMMO_OFFERED = 5;
 
+    //Variable used for display
+    private Color ingColor;
+
     //Gives a randomized ingredient with a given offer rate
-    public Ingredient(IngredientType t, int offer)
+    public Ingredient(IngredientType t, int offer, Color c)
     {
         type = t;
         statsOffered = offer;
@@ -31,11 +34,12 @@ public class Ingredient
     }
 
     //Randomized ingredient with specified stat buff chances in enum order
-    public Ingredient(IngredientType t, bool[] statAvailability, int offer)
+    public Ingredient(IngredientType t, bool[] statAvailability, int offer, Color c)
     {
         type = t;
         statsOffered = offer;
         availableTypes = new List<StatType>();
+        ingColor = c;
 
         if (statAvailability.Length == 0)
             Debug.Log("INVALID INGREDIENT STAT ARRAY. PLEASE FIX IT");
@@ -82,5 +86,11 @@ public class Ingredient
             return false;
         
         return type == ing.type;
+    }
+
+    //Method to get display for icons
+    public Color GetColor()
+    {
+        return ingColor;
     }
 }

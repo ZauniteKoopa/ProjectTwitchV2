@@ -498,6 +498,20 @@ public class TwitchController : MonoBehaviour
     }
 
 
+    //Method to align poison vials with those in the inventory
+    public void GetVialsFromInventory()
+    {
+        PoisonVial[] inventoryVials = inventory.GetVials();
+        boltVial = inventoryVials[0];
+        caskVial = inventoryVials[1];
+        thirdVial = inventoryVials[2];
+
+        boltIcon.SetUpVial(boltVial);
+        caskIcon.SetUpVial(caskVial);
+        thirdIcon.SetUpVial(thirdVial);
+    }
+
+
     //Methods to refresh cooldowns and effects. Called on invoke after attack sequences
     void refreshCaskCD()
     {
