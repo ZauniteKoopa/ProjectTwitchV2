@@ -14,6 +14,7 @@ public class EntityStatus : MonoBehaviour
     private float baseSpeed = 0.0f;
     [SerializeField]
     private float healthRegen = 0.0f;
+    private bool canMove;
 
     [Header("UI")]
     [SerializeField]
@@ -41,6 +42,7 @@ public class EntityStatus : MonoBehaviour
     {
         curHealth = baseHealth;
         speedModifier = 1.0f;
+        canMove = true;
 
         curPoisonStacks = 0;
         curTick = 0;
@@ -169,6 +171,7 @@ public class EntityStatus : MonoBehaviour
         }
     }
 
+
     //Public accessor method for speed
     public float GetCurSpeed()
     {
@@ -185,6 +188,19 @@ public class EntityStatus : MonoBehaviour
     public int GetPoisonStacks()
     {
         return curPoisonStacks;
+    }
+
+
+    //Method to set movement status
+    public void SetMovement(bool newMove)
+    {
+        canMove = newMove;
+    }
+
+    //Method to indicate enemy can move
+    public bool CanMove()
+    {
+        return curHealth > 0f && canMove;
     }
 
 }

@@ -73,6 +73,8 @@ public class TwitchController : MonoBehaviour
     private float stealthDuration = 6.0f;
     [SerializeField]
     private float stealthBuffDuration = 5.0f;
+    [SerializeField]
+    private InvisibilityRange invisRange = null;
     private bool invisible;
     private bool attackBuffed;
     private bool canStealth;
@@ -360,6 +362,13 @@ public class TwitchController : MonoBehaviour
     }
 
 
+    //Checks if this player is visible to enemy perceiver
+    public bool IsVisible(Collider2D perceiver)
+    {
+        return !invisible || invisRange.IsInRange(perceiver);
+    }
+
+
     //Method to activate stealth attack buff when attacking, if invisible
     void StartStealthAttackBuff()
     {
@@ -370,7 +379,7 @@ public class TwitchController : MonoBehaviour
     }
 
 
-    //Helper method to swap vials
+    //Helper method to swap between primary and third
     void swapPrimary()
     {
         //Swap
@@ -386,7 +395,7 @@ public class TwitchController : MonoBehaviour
         Invoke("refreshSwap", swapDelay);
     }
 
-
+    //method to swap between cask and third
     void swapCask()
     {
         //swap
