@@ -9,8 +9,14 @@ public class TestEnemy : AbstractEnemy
     private Vector3[] patrolPoints = null;
     private int curPoint = 0;
     private const float PASSIVE_REACHED_DISTANCE = 0.25f;
-    private const float HOSTILE_MAX_DISTANCE = 2.5f;
-    private const float HOSTILE_MIN_DISTANCE = 1.5f;
+    private const float HOSTILE_MAX_DISTANCE = 3.5f;
+    private const float HOSTILE_MIN_DISTANCE = 2f;
+
+    //Attack hitbox
+    [SerializeField]
+    private Transform projectile = null;
+    [SerializeField]
+    private float damage = 1.0f;
 
     //Passive movement
     protected override void PassiveMovement(float moveDelta)
@@ -46,8 +52,16 @@ public class TestEnemy : AbstractEnemy
     }
 
     //Attacking method
-    protected override void Attack(Transform tgt)
+    protected override IEnumerator Attack(Transform tgt)
     {
         Debug.Log("ENEMY ATTACK");
+
+        //Wait for delay
+        yield return new WaitForSeconds(0.5f);
+
+        //Make projectile
+        Vector2 dirVect = new Vector2(tgt.position.x - transform.position.x, tgt.position.y - transform.position.y);
+        Transform curProj = Object.Instantiate(projectile, transform);
+        curProj.GetComponent<ProjectileBehav>().SetProj(dirVect, damage, false);
     }
 }
