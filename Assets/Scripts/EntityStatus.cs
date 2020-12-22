@@ -14,7 +14,7 @@ public class EntityStatus : MonoBehaviour
     private float baseSpeed = 0.0f;
     [SerializeField]
     private float healthRegen = 0.0f;
-    private bool canMove;
+    public bool canMove;
 
     [Header("UI")]
     [SerializeField]
@@ -62,9 +62,14 @@ public class EntityStatus : MonoBehaviour
         {
             Death();
         }
-        else if (undamaged && curPoisonStacks == 0)      //To keep only 2 invoke loops concerning health at max, only activate health regen loop if undamaged and not poisoned
+        else     //To keep only 2 invoke loops concerning health at max, only activate health regen loop if undamaged and not poisoned
         {
-            Invoke("HealthRegenLoop", REGEN_TIME);
+            SendMessage("OnEntityDamage", null, SendMessageOptions.DontRequireReceiver);
+
+            if (undamaged && curPoisonStacks == 0)
+            {
+                Invoke("HealthRegenLoop", REGEN_TIME);
+            }
         }
     }
 
@@ -188,19 +193,6 @@ public class EntityStatus : MonoBehaviour
     public int GetPoisonStacks()
     {
         return curPoisonStacks;
-    }
-
-
-    //Method to set movement status
-    public void SetMovement(bool newMove)
-    {
-        canMove = newMove;
-    }
-
-    //Method to indicate enemy can move
-    public bool CanMove()
-    {
-        return curHealth > 0f && canMove;
     }
 
 }

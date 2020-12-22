@@ -15,7 +15,6 @@ public class TwitchController : MonoBehaviour
 
     //Player mobility properties
     [Header("Player stats")]
-    private bool canMove;
     [SerializeField]
     private EntityStatus status = null;
     [SerializeField]
@@ -124,7 +123,6 @@ public class TwitchController : MonoBehaviour
     {
         //Initialize flag variables
         fireTimerRunning = false;
-        canMove = true;
         canThrow = true;
         canCon = true;
         invisible = false;
@@ -152,7 +150,7 @@ public class TwitchController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (canMove)
+        if (status.canMove)
         {
             movement();
 
@@ -298,7 +296,7 @@ public class TwitchController : MonoBehaviour
         dirVector += transform.position;
 
         /* Execute action: play sound, disable movement for some time and throw cask */
-        canMove = false;
+        status.canMove = false;
         audioFX.clip = caskThrowFX;
         audioFX.Play();
 
@@ -320,7 +318,7 @@ public class TwitchController : MonoBehaviour
         }
 
         canThrow = false;
-        canMove = true;
+        status.canMove = true;
         Invoke("refreshCaskCD", throwCD);
     }
 
@@ -412,25 +410,23 @@ public class TwitchController : MonoBehaviour
     }
 
 
-    //method to enable / disable crafting mode
-    public void EnableCraftMode()
-    {
-        canMove = false;
-        crafting = true;
-    }
-
-
-    public void DisableCraftMode()
-    {
-        canMove = true;
-        crafting = false;
-    }
-
-
     //Accessor method to crafting
     public bool IsCrafting()
     {
         return crafting;
+    }
+
+    //Mutator method for crafting
+    public void EnableCraftMode()
+    {
+        crafting = true;
+        status.canMove = false;
+    }
+
+    public void DisableCraftMode()
+    {
+        crafting = false;
+        status.canMove = true;
     }
     
 
@@ -550,5 +546,14 @@ public class TwitchController : MonoBehaviour
     {
         attackBuffed = false;
         GetComponent<SpriteRenderer>().color = normalColor;
+    }
+
+
+    //Event handler: if entity is damaged during crafting, interrupt crafting
+    public void OnEntityDamage()
+    {
+        Debug.Log("Damaged");
+        if (crafting)
+            DisableCraftMode();
     }
 }
