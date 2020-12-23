@@ -17,8 +17,17 @@ public abstract class AbstractEnemy : MonoBehaviour
     private float attackTimer;
     private bool canAttack;
 
+    //Loot drops
+    [SerializeField]
+    private float lootDropChance = 0.5f;
+    [SerializeField]
+    private Transform[] loot = null;
+
+    //List of things to disable
+    [SerializeField]
+    private Canvas canvas = null;
+
     //Method flags
-    private bool dead;
     private bool lostPlayer;
     private bool inAction;
 
@@ -31,7 +40,6 @@ public abstract class AbstractEnemy : MonoBehaviour
         isTgtVisible = false;
 
         status = GetComponent<EntityStatus>();
-        dead = false;
         lostPlayer = false;
         inAction = false;
     }
@@ -41,7 +49,7 @@ public abstract class AbstractEnemy : MonoBehaviour
     private void FixedUpdate()
     {
         //Only activate this if enemy is not in the middle of an action
-        if (!inAction)
+        if (!inAction && status.IsAlive())
         {
             //Collect data
             bool prevTgtVisible = isTgtVisible;
@@ -58,7 +66,7 @@ public abstract class AbstractEnemy : MonoBehaviour
             {
                 StartCoroutine(Confusion());
             }
-            else if (!dead && status.canMove)
+            else if (status.canMove)
             {
                 float moveSpeed = status.GetCurSpeed() * Time.fixedDeltaTime;
 
@@ -114,6 +122,27 @@ public abstract class AbstractEnemy : MonoBehaviour
     {
         tgt = player;
     }
+
+    //Method to deal with enemy when on death
+    public void OnEntityDeath()
+    {
+        //Disable enemy canvas
+        if (canvas != null)
+        {
+            canvas.enabled = false;
+        }
+
+        //Check if the enemy actually drops loot
+        float lootDrop = Random.Range(0f, 1f);
+
+        if (lootDrop < lootDropChance)
+        {
+            int select = Random.Range(0, loot.Length);
+            Transform chosenLoot = Object.Instantiate(loot[select], transform);
+            chosenLoot.parent = null;
+        }
+    }
+
 
 
     //--------------------------------------------------

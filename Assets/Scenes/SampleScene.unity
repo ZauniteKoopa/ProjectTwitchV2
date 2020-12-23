@@ -5969,6 +5969,7 @@ MonoBehaviour:
   baseHealth: 60
   baseSpeed: 4
   healthRegen: 0
+  canMove: 0
   healthBar: {fileID: 2029453631}
   stacksUI: {fileID: 0}
   normalColor: {r: 0, g: 1, b: 0, a: 1}
@@ -10240,6 +10241,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1653495102}
   m_CullTransparentMesh: 0
+--- !u!223 &1654759875 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 783715958143618211, guid: b93e366029e1d7d1aaafe708e867471d,
+    type: 3}
+  m_PrefabInstance: {fileID: 4464128079882312530}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1658477418
 GameObject:
   m_ObjectHideFlags: 0
@@ -13607,7 +13614,6 @@ GameObject:
   - component: {fileID: 2087455469}
   - component: {fileID: 2087455468}
   - component: {fileID: 2087455467}
-  - component: {fileID: 2087455466}
   - component: {fileID: 2087455465}
   m_Layer: 0
   m_Name: InvisRange
@@ -13628,27 +13634,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03b0718440bf0d2e69f242b883b4f633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!50 &2087455466
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2087455464}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!58 &2087455467
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -14230,6 +14215,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2235502432449359057, guid: 9dcfe1be48c9ad87b9ed3f7b6f8124d2,
         type: 3}
+    - target: {fileID: 1417082043, guid: b93e366029e1d7d1aaafe708e867471d, type: 3}
+      propertyPath: lootDropChance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1417082043, guid: b93e366029e1d7d1aaafe708e867471d, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 1654759875}
+    - target: {fileID: 783715958143618211, guid: b93e366029e1d7d1aaafe708e867471d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4464128080512704785, guid: b93e366029e1d7d1aaafe708e867471d,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -60,7 +60,7 @@ public class EntityStatus : MonoBehaviour
         //If health is zero, kill either enemy or player. If alive and not poisoned, activate loop
         if (curHealth <= 0.0f)
         {
-            Death();
+            StartCoroutine(Death());
         }
         else     //To keep only 2 invoke loops concerning health at max, only activate health regen loop if undamaged and not poisoned
         {
@@ -128,27 +128,31 @@ public class EntityStatus : MonoBehaviour
         curTick++;
         curHealth -= (poison.GetPoisonDmg() * curPoisonStacks);
         if (curHealth <= 0)
-            Death();
-
-        if (healthBar != null)
-            healthBar.fillAmount = curHealth / baseHealth;
-
-        //If maxTicks has passed, disable poison and start healthregen loop, else continue PoisonTickLoop
-        if (curTick == MAX_TICKS)
         {
-            curPoisonStacks = 0;
-            curTick = 0;
-            poison = null;
-            GetComponent<SpriteRenderer>().color = normalColor;
-
-            if (stacksUI != null)
-                stacksUI.text = "0";
-
-            Invoke("HealthRegenLoop", REGEN_TIME);
+            StartCoroutine(Death());
         }
         else
         {
-            Invoke("PoisonTickLoop", TICK_TIME);
+            if (healthBar != null)
+                healthBar.fillAmount = curHealth / baseHealth;
+
+            //If maxTicks has passed, disable poison and start healthregen loop, else continue PoisonTickLoop
+            if (curTick == MAX_TICKS)
+            {
+                curPoisonStacks = 0;
+                curTick = 0;
+                poison = null;
+                GetComponent<SpriteRenderer>().color = normalColor;
+
+                if (stacksUI != null)
+                    stacksUI.text = "0";
+
+                Invoke("HealthRegenLoop", REGEN_TIME);
+            }
+            else
+            {
+                Invoke("PoisonTickLoop", TICK_TIME);
+            }
         }
     }
 
@@ -162,9 +166,15 @@ public class EntityStatus : MonoBehaviour
     }
 
     //Method to kill object when health is low
-    void Death()
+    IEnumerator Death()
     {
         CancelInvoke();
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
+        SendMessage("OnEntityDeath", null, SendMessageOptions.DontRequireReceiver);
+        yield return new WaitForSeconds(1.0f);
+
+        Debug.Log("Death");
 
         if (tag == "Enemy")
         {
@@ -193,6 +203,12 @@ public class EntityStatus : MonoBehaviour
     public int GetPoisonStacks()
     {
         return curPoisonStacks;
+    }
+
+    //Acessor method on whether or not the entity is dead
+    public bool IsAlive()
+    {
+        return curHealth > 0f;
     }
 
 }

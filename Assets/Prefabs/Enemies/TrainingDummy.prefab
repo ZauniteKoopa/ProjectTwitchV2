@@ -435,6 +435,7 @@ MonoBehaviour:
   baseHealth: 60
   baseSpeed: 3
   healthRegen: 0.5
+  canMove: 0
   healthBar: {fileID: 2413229082297661545}
   stacksUI: {fileID: 4703791706879051879}
   normalColor: {r: 1, g: 0, b: 0, a: 1}
@@ -451,9 +452,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackTimerDelay: 3.5
+  lootDropChance: 0
+  loot:
+  - {fileID: 7351858614600386105, guid: 51ae25e3bac4764dbba15897b3fbe135, type: 3}
+  - {fileID: 583347244938952296, guid: 2f9678727ce8a18cab7bbbf00518a96b, type: 3}
+  - {fileID: 9051591174592059892, guid: 6ba9e725ae3917579972d5c52b69cad3, type: 3}
   patrolPoints:
   - {x: 5.5, y: 2, z: 0}
   - {x: 5.5, y: -3, z: 0}
+  projectile: {fileID: 2235502432449359057, guid: 9dcfe1be48c9ad87b9ed3f7b6f8124d2,
+    type: 3}
+  damage: 1
 --- !u!1 &4469067544193945612
 GameObject:
   m_ObjectHideFlags: 0
