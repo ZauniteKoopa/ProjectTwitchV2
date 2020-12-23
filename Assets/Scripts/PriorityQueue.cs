@@ -23,7 +23,7 @@ public class PriorityQueue<T> where T : IComparable<T>
 
         //Continuously swap with parent, if parent element is smaller: i - 1 = actual Index
         int i = queue.Count;
-        while (i != 1 && queue[i - 1].CompareTo(queue[(i / 2) - 1]) < 0)
+        while (i > 1 && queue[i - 1].CompareTo(queue[(i / 2) - 1]) < 0)
         {
             T temp = queue[i - 1];
             queue[i - 1] = queue[(i/2) - 1];
@@ -52,17 +52,18 @@ public class PriorityQueue<T> where T : IComparable<T>
         bool digging = true;
         while (2 * i <= queue.Count && digging)
         {
-            if (queue[2 * i - 1].CompareTo(queue[i - 1]) < 0)
+            //Get the smallest of the 2 children (2 * i - 1 is left while 2 * i is right)). If equal, just choose left
+            int minChild = 2 * i - 1;
+
+            if (2 * i < queue.Count && queue[minChild] > queue[2 * i])
+                minChild = 2 * i;
+
+            //Check if parent is bigger than smallest child to swap
+            if (queue[minChild].CompareTo(queue[i - 1]) < 0)
             {
                 T temp = queue[i - 1];
-                queue[i - 1] = queue[2 * i - 1];
-                queue[2 * i - 1] = temp;
-            }
-            else if (queue[2 * i].CompareTo(queue[i - 1]) < 0)
-            {
-                T temp = queue[i - 1];
-                queue[i - 1] = queue[2 * i];
-                queue[2 * i] = temp;
+                queue[i - 1] = queue[minChild];
+                queue[minChild] = temp;
             }
             else
             {
