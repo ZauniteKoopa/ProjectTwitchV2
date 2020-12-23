@@ -52,10 +52,10 @@ public class PriorityQueue<T> where T : IComparable<T>
         bool digging = true;
         while (2 * i <= queue.Count && digging)
         {
-            //Get the smallest of the 2 children (2 * i - 1 is left while 2 * i is right)). If equal, just choose left
+            //Get the smallest of the 2 children (2 * i - 1 is left while 2 * i is right). If equal, just choose left
             int minChild = 2 * i - 1;
 
-            if (2 * i < queue.Count && queue[minChild] > queue[2 * i])
+            if (2 * i < queue.Count && queue[minChild].CompareTo(queue[2 * i]) > 0)
                 minChild = 2 * i;
 
             //Check if parent is bigger than smallest child to swap
@@ -64,6 +64,8 @@ public class PriorityQueue<T> where T : IComparable<T>
                 T temp = queue[i - 1];
                 queue[i - 1] = queue[minChild];
                 queue[minChild] = temp;
+
+                i = minChild + 1;
             }
             else
             {
