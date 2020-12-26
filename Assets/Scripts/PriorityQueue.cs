@@ -15,7 +15,7 @@ public class PriorityQueue<T> where T : IComparable<T>
         queue = new List<T>();
     }
 
-    //Adds an element to the priority queue
+    //Adds an element to the priority queue: O(logN)
     public void Enqueue(T element)
     {
         //Add the element to the end of the list
@@ -33,7 +33,7 @@ public class PriorityQueue<T> where T : IComparable<T>
         }
     }
 
-    //Removes an element from the priority queue. Always removes the top of the queue
+    //Removes an element from the priority queue. Always removes the top of the queue: O(logN)
     //  If queue is empty, returns null
     public T Dequeue()
     {
@@ -77,9 +77,18 @@ public class PriorityQueue<T> where T : IComparable<T>
         return top;
     }
 
-    //Method to look at the topmost element
+    //Method to look at the topmost element: O(1)
+    //  if queue is empty, return default value
     public T Front()
     {
+        if (queue.Count == 0)
+            return default(T);
         return queue[0];
+    }
+
+    //Method to check if queue is empty O(1)
+    public bool IsEmpty()
+    {
+        return queue.Count == 0;
     }
 }
