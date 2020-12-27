@@ -46,6 +46,12 @@ public class Waypoint : MonoBehaviour, IComparable<Waypoint>
         weight = distFromStart + Vector3.Distance(dest, transform.position);
     }
 
+    //Accessor method to get waypoint position
+    public Vector3 GetPos()
+    {
+        return transform.position;
+    }
+
     //Method to compare waypoints to eachother
     //  Pre: Both waypoints MUST be visited for accurate comparison
     //  Post: Returns -1 if this instance is less, 0 if equal, and 1 if instance is more

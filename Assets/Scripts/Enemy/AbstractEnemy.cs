@@ -11,7 +11,15 @@ public abstract class AbstractEnemy : MonoBehaviour
     private TwitchController tgt;
     private bool isTgtVisible;
 
-    //Method to determine behavior
+    //Variables for navigation
+    [SerializeField]
+    private Vector3[] patrolPoints = null;
+    private bool runAway;
+    private int curPoint;
+    private List<Waypoint> path;
+    private int navIndex;
+
+    //Method to determine attack behavior
     [SerializeField]
     private float attackTimerDelay = 1f;
     private float attackTimer;
@@ -42,6 +50,9 @@ public abstract class AbstractEnemy : MonoBehaviour
         status = GetComponent<EntityStatus>();
         lostPlayer = false;
         inAction = false;
+        navIndex = -1;
+        path = null;
+        curPoint = 0;
     }
 
 
@@ -59,38 +70,116 @@ public abstract class AbstractEnemy : MonoBehaviour
 
             //If target was previously seen but no longer visible, enter confused state
             lostPlayer = (prevTgtVisible == true && isTgtVisible == false);
-
+            bool prevDir = IsMovingAway();
 
             //Active decision tree
-            if (lostPlayer)
-            {
-                StartCoroutine(Confusion());
-            }
-            else if (status.canMove)
-            {
-                float moveSpeed = status.GetCurSpeed() * Time.fixedDeltaTime;
+            DecisionTree(lostPlayer);
 
-                //Target is seen and is visible, do offensive movement. Else, do passive movement
-                if (tgt != null && isTgtVisible)
-                {
-                    HostileMovement(moveSpeed, tgt.transform);
-                    attackTimer += Time.fixedDeltaTime;
-
-                    //Attack every attack timer interval
-                    if (canAttack && attackTimer > attackTimerDelay)
-                    {
-                        StartCoroutine(ExecuteAttack());
-                        attackTimer = 0f;
-                    }
-                }
-                else
-                {
-                    attackTimer = 0f;
-                    PassiveMovement(moveSpeed);
-                }
+            //If enemy changed directions in this frame, set path to null
+            if (IsMovingAway() != prevDir)
+            {
+                path = null;
             }
         }
         
+    }
+
+
+    //Private helper method that consists of the main decision tree of general AI
+    private void DecisionTree(bool lostPlayer)
+    {
+        if (lostPlayer)
+        {
+            StartCoroutine(Confusion());
+        }
+        else if (status.canMove)
+        {
+            float moveSpeed = status.GetCurSpeed() * Time.fixedDeltaTime;
+
+            //Target is seen and is visible, do offensive movement. Else, do passive movement and reset timer
+            if (tgt != null && isTgtVisible)
+            {
+                bool reachedPoint = HostileMovement(moveSpeed, GetCurrentDest(), path != null);
+                if (path != null && reachedPoint)
+                    AdvancePath();
+
+                //Attack every attack timer interval
+                attackTimer += Time.fixedDeltaTime;
+
+                if (canAttack && attackTimer > attackTimerDelay)
+                {
+                    StartCoroutine(ExecuteAttack());
+                    attackTimer = 0f;
+                }
+            }
+            else
+            {
+                attackTimer = 0f;
+
+                //Move enemy. If reached a point, go to next point on path or delete path
+                bool reachedPoint = PassiveMovement(moveSpeed, GetCurrentDest());
+                if (reachedPoint)
+                    AdvancePath();
+            }
+        }
+    }
+
+    //Private helper method to get next vector position for enemy to head to
+    private Vector3 GetCurrentDest()
+    {
+        //If path exists, advance in path. If path doesn't exit and is still hostile, just go to target. Else, go to patrol point
+        if (path != null)
+        {
+            return path[navIndex].GetPos();
+        }
+        else if (tgt != null && isTgtVisible)      
+        {
+            return tgt.transform.position;
+        }
+        else
+        {
+            return patrolPoints[curPoint];
+        }
+    }
+
+    //Private helper method used to advance enemy to the next point in path or patrolPoints array
+    private void AdvancePath()
+    {
+        //If on a path, go to the next
+        if (path != null)
+        {
+            navIndex--;
+
+            if (navIndex < 0)
+                path = null;
+        }
+        else
+        {
+            curPoint = (curPoint + 1) % patrolPoints.Length;
+        }
+    }
+
+    //Accessor method for children classes to access tgt's position
+    protected Vector3 GetTgtPosition()
+    {
+        return tgt.transform.position;
+    }
+
+
+    //When colliding with an obstacle, find a path around that obstacle
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Collider2D collider = collision.collider;
+        Obstacle obstacle = collider.GetComponent<Obstacle>();
+
+        if (obstacle != null)
+        {
+            Vector3 start = transform.position;
+            Vector3 end = GetCurrentDest();
+
+            path = (tgt != null && isTgtVisible && IsMovingAway()) ? obstacle.GetPathAway(start, end) : obstacle.GetPathTo(start, end);
+            navIndex = path.Count - 1;
+        }
     }
 
     //IEnumerator to indicate confusion from enemy: (Stand still for a second and go back)
@@ -149,13 +238,18 @@ public abstract class AbstractEnemy : MonoBehaviour
     //  Abstract Methods for classes to override
     //--------------------------------------------------
 
+    //Accessor method to direction of enemy based on target. (Either towards - 0 or away - 1
+    protected abstract bool IsMovingAway();
+
     //Movement when player is not noticed by enemy
-    protected abstract void PassiveMovement(float moveDelta);
+    //  Returns true if reached destination
+    protected abstract bool PassiveMovement(float moveDelta, Vector3 tgtPos);
 
     //Movement when player is noticed by enemy
-    protected abstract void HostileMovement(float moveDelta, Transform trans);
+    //  Returns true if reached destination
+    protected abstract bool HostileMovement(float moveDelta, Vector3 tgtPos, bool onPath);
 
-    //Method called for choosing how to attack: ALL METHODS THIS WAY MUST END IN ENDACTION (will be edited)
+    //Method called for choosing how to attack
     protected abstract IEnumerator Attack(Transform trans);
 
 }
