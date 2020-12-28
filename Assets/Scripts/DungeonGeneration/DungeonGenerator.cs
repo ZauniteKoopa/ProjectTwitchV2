@@ -21,9 +21,18 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField]
     private Vector3 originPos = Vector3.zero;
     
-    //Room to instance with
+    //Room types to instance with
+    public enum RoomType {Enemy, Start, End, Treasure}
     [SerializeField]
     private Transform room = null;
+    [SerializeField]
+    private Transform startRoom = null;
+    [SerializeField]
+    private Transform endRoom = null;
+    [SerializeField]
+    private Transform treasureRoom = null;
+    [SerializeField]
+    private int treasureRarity = 7;
 
     //Constant variables for offset
     private const float VERTICAL_OFFSET = 12.0f;
@@ -45,8 +54,23 @@ public class DungeonGenerator : MonoBehaviour
         {
             for (int c = 0; c < cols; c++)
             {
+                //Get current room position
                 Vector3 curRoomPos = new Vector3(originX + c * HORIZONTAL_OFFSET, originY + r * VERTICAL_OFFSET, Z_POS);
-                Transform curRoom = UnityEngine.Object.Instantiate(room, curRoomPos, Quaternion.identity);
+
+                //Get template to use
+                Transform curTemplate;
+                RoomType curType = blueprint[r, c].roomType;
+
+                if (curType == RoomType.Start)
+                    curTemplate = startRoom;
+                else if (curType == RoomType.End)
+                    curTemplate = endRoom;
+                else if (curType == RoomType.Treasure)
+                    curTemplate = treasureRoom;
+                else
+                    curTemplate = room;
+
+                Transform curRoom = UnityEngine.Object.Instantiate(curTemplate, curRoomPos, Quaternion.identity);
                 curRoom.GetComponent<Room>().SetOpenings(blueprint[r, c].openings);
             }
         }
@@ -73,6 +97,9 @@ public class DungeonGenerator : MonoBehaviour
 
         //Readd some edges
         ReaddEdges(blueprint, totalEdges - minEdges);
+
+        //Assign room types in blueprint
+        AssignRoomTypes(blueprint);
 
         return blueprint;
     }
@@ -138,6 +165,7 @@ public class DungeonGenerator : MonoBehaviour
 
 
     //Private helper method to attempt to readd edges to the blueprint
+    //  Called after getting the min span tree for this graph
     private void ReaddEdges(BP_Vertex[,] blueprint, int edgesLeft)
     {
         int edgesToAdd = UnityEngine.Random.Range(0, (edgesLeft / 2) + 1);
@@ -164,6 +192,51 @@ public class DungeonGenerator : MonoBehaviour
     }
 
 
+    //Private helper method to assign room their own typing
+    //  Blueprint must have bigger dimensions than 1x2 or 2x1 and all rooms are type "Enemy"
+    //  TreasureRarity MUST have a bigger rarity than 1
+    private void AssignRoomTypes(BP_Vertex[,] blueprint)
+    {
+        //Get numRows and numCols for reference
+        int numRows = blueprint.GetLength(0);
+        int numCols = blueprint.GetLength(1);
+        Debug.Assert(numRows > 1);
+        Debug.Assert(numCols > 1);
+        Debug.Assert(treasureRarity > 1);
+
+        //Assign start and end rooms. length between start and end room should be greater than 1
+        BP_Vertex start = blueprint[UnityEngine.Random.Range(0, numRows), UnityEngine.Random.Range(0, numCols)];
+        start.roomType = RoomType.Start;
+
+        bool foundEnd = false;
+        while (!foundEnd)
+        {
+            //Get a random end room and verify. Once verified, set that as the end
+            BP_Vertex end = blueprint[UnityEngine.Random.Range(0, numRows), UnityEngine.Random.Range(0, numCols)];
+
+            if (end.roomType == RoomType.Enemy && !AreNeighbors(start, end))
+            {
+                foundEnd = true;
+                end.roomType = RoomType.End;
+            }
+        }
+
+        //Set treasure rooms based on rarity
+        int maxTreasure = ((numRows * numCols) / treasureRarity) + 1;
+        int numTreasure = UnityEngine.Random.Range(0, maxTreasure);
+        while(numTreasure > 0)
+        {
+            BP_Vertex room = blueprint[UnityEngine.Random.Range(0, numRows), UnityEngine.Random.Range(0, numCols)];
+
+            if (room.roomType == RoomType.Enemy)
+            {
+                room.roomType = RoomType.Treasure;
+                numTreasure--;
+            }
+        }
+    }
+
+
     //Private helper method that checks if a number is within bounds of the 2D array
     private static bool WithinBPBounds(int r, int c, int numRows, int numCols)
     {
@@ -171,6 +244,31 @@ public class DungeonGenerator : MonoBehaviour
         bool colInBounds = (c >= 0) && (c < numCols);
 
         return rowInBounds && colInBounds;
+    }
+
+    
+    //Private helper method to check if BP Vertices are next to each other and easily accessible
+    //  If vertices are equal to each other, return true
+    private bool AreNeighbors(BP_Vertex v1, BP_Vertex v2)
+    {
+        if (v1 == v2)
+            return true;
+        
+        //Go through each directional neighbor v1 has
+        for (int i = 0; i < NUM_DIR; i++)
+        {
+            int neighborRow = v1.row + Y_DIRS[i];
+            int neighborCol = v1.col + X_DIRS[i];
+
+            //If found to be a neighbor, check if it's accessible from v1
+            if (v2.row == neighborRow && v2.col == neighborCol)
+            {
+                return v1.openings[i];
+            }
+        }
+
+        //If found to not be a neighbor, return false.
+        return false;
     }
 
 
@@ -181,6 +279,7 @@ public class DungeonGenerator : MonoBehaviour
         public int col;
         public bool[] openings;
         public bool visited;
+        public RoomType roomType;
 
         //Constructor
         public BP_Vertex(int r, int c)
@@ -188,6 +287,7 @@ public class DungeonGenerator : MonoBehaviour
             row = r;
             col = c;
 
+            roomType = RoomType.Enemy;
             visited = false;
             openings = new bool[NUM_DIR];
             for (int i = 0; i < NUM_DIR; i++)
