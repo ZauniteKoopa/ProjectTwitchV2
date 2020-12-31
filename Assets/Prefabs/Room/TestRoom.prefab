@@ -2941,6 +2941,9 @@ MonoBehaviour:
   - {fileID: 508326572930724239}
   exit: {fileID: 0}
   willCameraSnap: 1
+  maxEnemies: 3
+  minEnemies: 1
+  enemy: {fileID: 5993415847945982035, guid: 53d290cffb120fb2e82664f8fdbfce6a, type: 3}
 --- !u!1 &5152657721550052478
 GameObject:
   m_ObjectHideFlags: 0
@@ -3772,7 +3775,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 9104410896364283300, guid: 9a9a4ed427c01af33a54a4c3d23ebb75,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 17
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7590627409587625811, guid: 9a9a4ed427c01af33a54a4c3d23ebb75, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9a9a4ed427c01af33a54a4c3d23ebb75, type: 3}
 --- !u!4 &3235636991863831152 stripped
 Transform:

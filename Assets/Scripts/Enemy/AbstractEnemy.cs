@@ -13,15 +13,23 @@ public abstract class AbstractEnemy : MonoBehaviour
 
     //Variables for navigation
     [SerializeField]
+    private int minPatrolPoints = 1;
+    [SerializeField]
+    private int maxPatrolPoints = 1;
+    [SerializeField]
     private Vector3[] patrolPoints = null;
     private bool runAway;
     private int curPoint;
     private List<Waypoint> path;
     private int navIndex;
 
+    //Method 
+
     //Method to determine attack behavior
     [SerializeField]
     private float attackTimerDelay = 1f;
+    [SerializeField]
+    private bool isHostile = true;
     private float attackTimer;
     private bool canAttack;
 
@@ -97,7 +105,7 @@ public abstract class AbstractEnemy : MonoBehaviour
             float moveSpeed = status.GetCurSpeed() * Time.fixedDeltaTime;
 
             //Target is seen and is visible, do offensive movement. Else, do passive movement and reset timer
-            if (tgt != null && isTgtVisible)
+            if (isHostile && tgt != null && isTgtVisible)
             {
                 bool reachedPoint = HostileMovement(moveSpeed, GetCurrentDest(), path != null);
                 if (path != null && reachedPoint)
@@ -132,7 +140,7 @@ public abstract class AbstractEnemy : MonoBehaviour
         {
             return path[navIndex].GetPos();
         }
-        else if (tgt != null && isTgtVisible)      
+        else if (isHostile && tgt != null && isTgtVisible)      
         {
             return tgt.transform.position;
         }
@@ -230,6 +238,20 @@ public abstract class AbstractEnemy : MonoBehaviour
             Transform chosenLoot = Object.Instantiate(loot[select], transform);
             chosenLoot.parent = null;
         }
+    }
+
+    
+    //Accessor method to maximum patrol points for this enemy
+    public int GetNumPatrolPoints()
+    {
+        return Random.Range(minPatrolPoints, maxPatrolPoints + 1);
+    }
+
+    //Det Patrol points
+    public void SetPatrolPoints(Vector3[] points)
+    {
+        Debug.Assert(points != null && points.Length > 0);
+        patrolPoints = points;
     }
 
 

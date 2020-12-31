@@ -20,7 +20,7 @@ public class RoomSensor : MonoBehaviour
 
         if (twitch != null)
         {
-            StartCoroutine(room.CameraSnap());
+            StartCoroutine(room.Activate());
         }
     }
 

@@ -19,10 +19,49 @@ public class Room : MonoBehaviour
     private const float SNAP_TIME = 0.4f;
     private const float CAMERA_OFFSET = -10f;
 
+    //Variable to make and keep track of enemies
+    [SerializeField]
+    private int maxEnemies = 0;
+    [SerializeField]
+    private int minEnemies = 0;
+    [SerializeField]
+    private Transform enemy = null;
+    private List<Transform> enemies;
+
+    private const float X_EXTENTS = 7.0f;
+    private const float Y_EXTENTS = 3.0f;
+
     //On awake, initialize variables
     void Awake()
     {
         doors = new List<GameObject>();
+        enemies = new List<Transform>();
+    }
+
+    //On start, instantiate enemies
+    public void SpawnEnemies()
+    {
+        int numEnemies = Random.Range(minEnemies, maxEnemies + 1);
+        
+        for (int i = 0; i < numEnemies; i++)
+        {
+            int numPoints = enemy.GetComponent<AbstractEnemy>().GetNumPatrolPoints();
+            Vector3[] points = new Vector3[numPoints];
+
+            for (int p = 0; p < points.Length; p++)
+            {
+                float posY = Random.Range(-Y_EXTENTS, Y_EXTENTS);
+                float posX = Random.Range(-X_EXTENTS, X_EXTENTS);
+
+                Vector3 curPoint = new Vector3(posX, posY, -1);
+                points[p] = transform.TransformPoint(curPoint);
+            }
+
+            Transform curEnemy = Object.Instantiate(enemy, points[points.Length - 1], Quaternion.identity, transform);
+            curEnemy.GetComponent<AbstractEnemy>().SetPatrolPoints(points);
+            curEnemy.gameObject.SetActive(false);
+            enemies.Add(curEnemy);
+        }
     }
 
     //Method to enable openings given an array of booleans in NESW order
@@ -45,9 +84,16 @@ public class Room : MonoBehaviour
         return exit;
     }
 
-    //Method to snap camera to a room
-    public IEnumerator CameraSnap()
+    //Method to activate room
+    public IEnumerator Activate()
     {
+        //Activate all enemies
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            enemies[i].gameObject.SetActive(true);
+        }
+
+        //Camera snapping
         if (willCameraSnap)
         {
             //Set up variables
@@ -70,5 +116,4 @@ public class Room : MonoBehaviour
             mainCam.transform.position = end;
         }
     }
-
 }
