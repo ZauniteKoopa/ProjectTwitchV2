@@ -16,10 +16,17 @@ public class DungeonGenerator : MonoBehaviour
     private int rows = 3;
     [SerializeField]
     private int cols = 3;
+    [SerializeField]
+    private int numDungeons = 1;
 
     //Starting location
     [SerializeField]
     private Vector3 originPos = Vector3.zero;
+    [SerializeField]
+    private Exit initialEntry = null;
+    [SerializeField]
+    private Vector3 tgtDest = Vector3.zero;
+    private Exit nextExit;
     
     //Room types to instance with
     public enum RoomType {Enemy, Start, End, Treasure}
@@ -38,41 +45,23 @@ public class DungeonGenerator : MonoBehaviour
     private const float VERTICAL_OFFSET = 12.0f;
     private const float HORIZONTAL_OFFSET = 20.0f;
     private const float Z_POS = 1f;
+    private const float DUNGEON_OFFSET = 100.0f;
 
 
     // On start generate dungeon
     void Start()
     {
-        //Get initial blueprint of dungeon first
-        BP_Vertex[,] blueprint = MakeBlueprint(rows, cols);
+        //Set initial exit as next exit
+        nextExit = initialEntry;
 
-        float originX = originPos.x;
-        float originY = originPos.y;
-
-        //Make every room in the grid
-        for (int r = 0; r < rows; r++)
+        for (int i = 0; i < numDungeons; i++)
         {
-            for (int c = 0; c < cols; c++)
-            {
-                //Get current room position
-                Vector3 curRoomPos = new Vector3(originX + c * HORIZONTAL_OFFSET, originY + r * VERTICAL_OFFSET, Z_POS);
+            //Get initial blueprint of dungeon first and then make room from blueprint
+            BP_Vertex[,] blueprint = MakeBlueprint(rows, cols);
+            MakeRooms(blueprint, i);
 
-                //Get template to use
-                Transform curTemplate;
-                RoomType curType = blueprint[r, c].roomType;
-
-                if (curType == RoomType.Start)
-                    curTemplate = startRoom;
-                else if (curType == RoomType.End)
-                    curTemplate = endRoom;
-                else if (curType == RoomType.Treasure)
-                    curTemplate = treasureRoom;
-                else
-                    curTemplate = room;
-
-                Transform curRoom = UnityEngine.Object.Instantiate(curTemplate, curRoomPos, Quaternion.identity);
-                curRoom.GetComponent<Room>().SetOpenings(blueprint[r, c].openings);
-            }
+            //Increment originPos
+            originPos.x -= DUNGEON_OFFSET;
         }
     }
 
@@ -168,7 +157,7 @@ public class DungeonGenerator : MonoBehaviour
     //  Called after getting the min span tree for this graph
     private void ReaddEdges(BP_Vertex[,] blueprint, int edgesLeft)
     {
-        int edgesToAdd = UnityEngine.Random.Range(0, (edgesLeft / 2) + 1);
+        int edgesToAdd = UnityEngine.Random.Range(1, (edgesLeft / 2) + 1);
         int numRows = blueprint.GetLength(0);
         int numCols = blueprint.GetLength(1);
 
@@ -232,6 +221,60 @@ public class DungeonGenerator : MonoBehaviour
             {
                 room.roomType = RoomType.Treasure;
                 numTreasure--;
+            }
+        }
+    }
+
+
+    //Private helper method to actually make rooms from blueprint
+    //  Pre: blueprint must be all set
+    private void MakeRooms(BP_Vertex[,] blueprint, int dungeonNum)
+    {
+        //Get variables
+        int rows = blueprint.GetLength(0);
+        int cols = blueprint.GetLength(1);
+
+        float originX = originPos.x;
+        float originY = originPos.y;
+
+        Exit curExit = nextExit;
+
+        //Make every room in the grid
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < cols; c++)
+            {
+                //Get current room position
+                Vector3 curRoomPos = new Vector3(originX + c * HORIZONTAL_OFFSET, originY + r * VERTICAL_OFFSET, Z_POS);
+
+                //Get template to use
+                Transform curTemplate;
+                RoomType curType = blueprint[r, c].roomType;
+
+                if (curType == RoomType.Start)
+                    curTemplate = startRoom;
+                else if (curType == RoomType.End)
+                    curTemplate = endRoom;
+                else if (curType == RoomType.Treasure)
+                    curTemplate = treasureRoom;
+                else
+                    curTemplate = room;
+
+                //Instatiate object and edit properties. If startRoom, set curExit's dest to that room. If endRoom, set up nextExit
+                Transform curRoom = UnityEngine.Object.Instantiate(curTemplate, curRoomPos, Quaternion.identity);
+                curRoom.GetComponent<Room>().SetOpenings(blueprint[r, c].openings);
+
+                if (curType == RoomType.Start)
+                    curExit.SetDest(curRoomPos);
+                else if (curType == RoomType.End)
+                {
+                    Exit tempExit = curRoom.GetComponent<Room>().GetExit();
+
+                    if (dungeonNum == numDungeons - 1)      //If last exit, just teleport to finishing dest
+                        tempExit.SetDest(tgtDest);
+                    else                                    //Else, set this exit as the nextExit
+                        nextExit = tempExit;
+                }
             }
         }
     }
