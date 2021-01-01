@@ -47,7 +47,7 @@ public class TwitchController : MonoBehaviour
     [SerializeField]
     private float maxThrowDist = 5f;
     [SerializeField]
-    private int caskCost = 5;
+    private int caskCost = 3;
     private bool canThrow;
 
     //Contaminate management
@@ -117,6 +117,9 @@ public class TwitchController : MonoBehaviour
     [SerializeField]
     private AudioClip contaminateFX = null;
 
+    //Provoked flag
+    public bool provoked;
+
 
     //Initialize variables
     void Awake()
@@ -130,6 +133,7 @@ public class TwitchController : MonoBehaviour
         canStealth = true;
         canSwap = true;
         crafting = false;
+        provoked = false;
 
         //Initialize poisonVial variables
         caskVial = new PoisonVial(0, 2, 1, 2, Color.magenta, 20);
@@ -189,7 +193,7 @@ public class TwitchController : MonoBehaviour
                 swapCask();
 
             //Opening inventory
-            if (Input.GetButtonDown("Inventory"))
+            if (!provoked && Input.GetButtonDown("Inventory"))
                 inventory.Open(boltVial, caskVial, thirdVial);
 
         }
@@ -433,14 +437,16 @@ public class TwitchController : MonoBehaviour
     //Method to upgrade poisons
     public void UpgradePrimary(List<Ingredient> ingredients)
     {
+        int bonus = (provoked) ? 0 : 1;
+
         if (boltVial == null)
         {
-            boltVial = new PoisonVial(ingredients);
+            boltVial = new PoisonVial(ingredients, bonus);
             boltIcon.SetUpVial(boltVial);
         }
         else
         {
-            boltVial.UpgradeVial(ingredients);
+            boltVial.UpgradeVial(ingredients, bonus);
             boltIcon.UpdateVial();
         }
 
@@ -450,14 +456,16 @@ public class TwitchController : MonoBehaviour
 
     public void UpgradeCask(List<Ingredient> ingredients)
     {
+        int bonus = (provoked) ? 0 : 1;
+
         if (caskVial == null)
         {
-            caskVial = new PoisonVial(ingredients);
+            caskVial = new PoisonVial(ingredients, bonus);
             caskIcon.SetUpVial(caskVial);
         }
         else
         {
-            caskVial.UpgradeVial(ingredients);
+            caskVial.UpgradeVial(ingredients, bonus);
             caskIcon.UpdateVial();
         }
 
@@ -467,14 +475,16 @@ public class TwitchController : MonoBehaviour
 
     public void UpgradeThird(List<Ingredient> ingredients)
     {
+        int bonus = (provoked) ? 0 : 1;
+
         if (thirdVial == null)
         {
-            thirdVial = new PoisonVial(ingredients);
+            thirdVial = new PoisonVial(ingredients, bonus);
             thirdIcon.SetUpVial(thirdVial);
         }
         else
         {
-            thirdVial.UpgradeVial(ingredients);
+            thirdVial.UpgradeVial(ingredients, bonus);
             thirdIcon.UpdateVial();
         }
 

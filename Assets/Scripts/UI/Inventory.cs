@@ -311,9 +311,9 @@ public class Inventory : MonoBehaviour
             {
                 //Get poison vial to update icon with
                 if (craftVial == null)
-                    craftVial = new PoisonVial(ingredientList);
+                    craftVial = new PoisonVial(ingredientList, 1);
                 else
-                    craftVial.UpgradeVial(ingredientList);
+                    craftVial.UpgradeVial(ingredientList, 1);
 
                 //Update display information and craft
                 UpdateVialDisplayInfo(updatedIcon, craftVial);

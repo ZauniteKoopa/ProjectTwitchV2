@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -26,10 +27,14 @@ public class Room : MonoBehaviour
     private int minEnemies = 0;
     [SerializeField]
     private Transform enemy = null;
+    private int numEnemies;
     private List<Transform> enemies;
 
     private const float X_EXTENTS = 7.0f;
     private const float Y_EXTENTS = 3.0f;
+
+    bool activated = false;
+    TwitchController player = null;
 
     //On awake, initialize variables
     void Awake()
@@ -41,7 +46,7 @@ public class Room : MonoBehaviour
     //On start, instantiate enemies
     public void SpawnEnemies()
     {
-        int numEnemies = Random.Range(minEnemies, maxEnemies + 1);
+        numEnemies = Random.Range(minEnemies, maxEnemies + 1);
         
         for (int i = 0; i < numEnemies; i++)
         {
@@ -59,6 +64,7 @@ public class Room : MonoBehaviour
 
             Transform curEnemy = Object.Instantiate(enemy, points[points.Length - 1], Quaternion.identity, transform);
             curEnemy.GetComponent<AbstractEnemy>().SetPatrolPoints(points);
+            curEnemy.GetComponent<EntityStatus>().onDeathEvent.AddListener(OnEnemyDeath);
             curEnemy.gameObject.SetActive(false);
             enemies.Add(curEnemy);
         }
@@ -85,12 +91,28 @@ public class Room : MonoBehaviour
     }
 
     //Method to activate room
-    public IEnumerator Activate()
+    public IEnumerator Activate(TwitchController twitch)
     {
-        //Activate all enemies
-        for (int i = 0; i < enemies.Count; i++)
+        //if not activated previously, activate
+        if (!activated)
         {
-            enemies[i].gameObject.SetActive(true);
+            activated = true;
+
+            //Activate all enemies
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                enemies[i].gameObject.SetActive(true);
+            }
+
+            //Lock all doors
+            if (numEnemies > 0)
+            {
+                for (int i = 0; i < doors.Count; i++)
+                    doors[i].SetActive(true);
+
+                player = twitch;
+                twitch.provoked = true;
+            }
         }
 
         //Camera snapping
@@ -115,5 +137,25 @@ public class Room : MonoBehaviour
 
             mainCam.transform.position = end;
         }
+    }
+
+    //Signal handler method when enemy has died
+    public void OnEnemyDeath()
+    {
+        numEnemies--;
+
+        if (numEnemies <= 0)
+            StartCoroutine(Deactivate());
+    }
+
+    //IEnumerator to deactivate
+    IEnumerator Deactivate()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        for (int i = 0; i < doors.Count; i++)
+            doors[i].SetActive(false);
+        
+        player.provoked = false;
     }
 }

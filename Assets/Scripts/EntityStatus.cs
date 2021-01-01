@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using TMPro;
 
 public class EntityStatus : MonoBehaviour
@@ -37,6 +38,9 @@ public class EntityStatus : MonoBehaviour
     private const float TICK_TIME = 1.0f;
     private PoisonVial poison = null;
 
+    //Events
+    public UnityEvent onDeathEvent;
+
     // Awake is called to initialize variables
     void Awake()
     {
@@ -46,6 +50,7 @@ public class EntityStatus : MonoBehaviour
 
         curPoisonStacks = 0;
         curTick = 0;
+        onDeathEvent = new UnityEvent();
     }
 
     // Method to call to damage this entity
@@ -172,9 +177,9 @@ public class EntityStatus : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
         GetComponent<SpriteRenderer>().enabled = false;
         SendMessage("OnEntityDeath", null, SendMessageOptions.DontRequireReceiver);
-        yield return new WaitForSeconds(1.0f);
+        onDeathEvent.Invoke();
 
-        Debug.Log("Death");
+        yield return new WaitForSeconds(1.0f);
 
         if (tag == "Enemy")
         {

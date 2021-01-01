@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1175018175517396793}
   m_Layer: 0
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3407,6 +3407,9 @@ MonoBehaviour:
   - {fileID: 2117446670034821692}
   exit: {fileID: 0}
   willCameraSnap: 1
+  maxEnemies: 0
+  minEnemies: 0
+  enemy: {fileID: 0}
 --- !u!1 &6768545416440254413
 GameObject:
   m_ObjectHideFlags: 0

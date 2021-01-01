@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3818750842166895792}
   - component: {fileID: 2176926265861184455}
   m_Layer: 0
-  m_Name: Projectile
+  m_Name: PoisonProj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,5 +240,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2544d1ba82c09f3879fb9f761af46512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projSpeed: 6
-  duration: 3
+  projSpeed: 12
+  duration: 2

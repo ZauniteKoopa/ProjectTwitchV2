@@ -16,7 +16,7 @@ public class PoisonVial
 
     //Ammo system
     private int ammo;
-    private const int BEGIN_AMMO = 15;
+    private const int BEGIN_AMMO = 20;
 
     //Constants for damage/potency
     private const float BASE_DAMAGE = 1.5f;
@@ -54,7 +54,7 @@ public class PoisonVial
     }
 
     //Constructor to make PoisonVial from scratch from a list of ingredients
-    public PoisonVial(List<Ingredient> ingredients)
+    public PoisonVial(List<Ingredient> ingredients, int randomBonus)
     {
         ammo = BEGIN_AMMO;
         potency = 0;
@@ -64,11 +64,11 @@ public class PoisonVial
         poisonColor = new Color(Random.Range(0.2f, 1f), Random.Range(0.2f, 1f), Random.Range(0.2f, 1f), 1f);
 
         updateLog = new int[4];
-        UpgradeVial(ingredients);
+        UpgradeVial(ingredients, randomBonus);
     }
 
     //Method to upgrade a single poison from a list of ingredients
-    public void UpgradeVial(List<Ingredient> ingredients)
+    public void UpgradeVial(List<Ingredient> ingredients, int randomBonus)
     {
         //Clear UpgradeLog
         for(int i = 0; i < updateLog.Length; i++)
@@ -80,7 +80,7 @@ public class PoisonVial
             List<Ingredient.StatType> upgrades = ingredients[i].GetStatUpgrades();
             for (int upgrade = 0; upgrade < upgrades.Count; upgrade++)
             {
-                UpgradeStat(upgrades[upgrade]);
+                UpgradeStat(upgrades[upgrade], randomBonus);
             }
 
             ammo += ingredients[i].GetAmmoOffered();
@@ -88,20 +88,23 @@ public class PoisonVial
     }
 
     //Helper method that upgrades a stat based on input
-    private void UpgradeStat(Ingredient.StatType s)
+    private void UpgradeStat(Ingredient.StatType s, int randomBonus)
     {
+        int bonus = 1;
+        bonus += Random.Range(0, randomBonus + 1);
+
         //Actually update stat
         if (potency < MAX_STAT && s == Ingredient.StatType.Potency)
-            potency++;
+            potency += bonus;
         else if (poison < MAX_STAT && s == Ingredient.StatType.Poison)
-            poison++;
+            poison += bonus;
         else if (reactivity < MAX_STAT && s == Ingredient.StatType.Reactivity)
-            reactivity++;
+            reactivity += bonus;
         else if (stickiness < MAX_STAT && s == Ingredient.StatType.Stickiness)
-            stickiness++;
+            stickiness += bonus;
 
         //record in log
-        updateLog[(int)s]++;
+        updateLog[(int)s] += bonus;
     }
 
     //Ammo checker: Checks if can use poison given the cost

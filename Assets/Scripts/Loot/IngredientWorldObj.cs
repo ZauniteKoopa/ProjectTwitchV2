@@ -61,14 +61,14 @@ public class IngredientWorldObj : MonoBehaviour
         {
             //Quick craft during battle
             if (Input.GetButtonDown("BoltCraft"))
-                StartCoroutine(Craft("BoltCraft"));
+                StartCoroutine(Craft("BoltCraft", player.provoked));
             else if (Input.GetButtonDown("CaskCraft"))
-                StartCoroutine(Craft("CaskCraft"));
+                StartCoroutine(Craft("CaskCraft", player.provoked));
             else if (Input.GetButtonDown("ThirdCraft"))
-                StartCoroutine(Craft("ThirdCraft"));
+                StartCoroutine(Craft("ThirdCraft", player.provoked));
 
             //Collecting after battle
-            if (Input.GetButtonDown("Contaminate"))
+            if (Input.GetButtonDown("Contaminate") && !player.provoked)
             {
                 player.AddToInventory(mainIngredient);
                 Destroy(gameObject);
@@ -77,27 +77,30 @@ public class IngredientWorldObj : MonoBehaviour
     }
 
     //IEnumerator used to update progress
-    IEnumerator Craft(string buttonInput)
+    IEnumerator Craft(string buttonInput, bool playerProvoked)
     {
         //Disable player movement and set up charge
-        craftTimer = 0.0f;
-        player.EnableCraftMode();
-        craftTimerBorder.SetActive(true);
-
-        //Do crafting process
-        while(craftTimer < maxCraftDuration && player.IsCrafting() && Input.GetButton(buttonInput))
+        if (playerProvoked)
         {
-            yield return new WaitForFixedUpdate();
-            craftTimer += Time.fixedDeltaTime;
-            craftTimerUI.fillAmount = craftTimer / maxCraftDuration;
+            craftTimer = 0.0f;
+            player.EnableCraftMode();
+            craftTimerBorder.SetActive(true);
+
+            //Do crafting process
+            while(craftTimer < maxCraftDuration && player.IsCrafting() && Input.GetButton(buttonInput))
+            {
+                yield return new WaitForFixedUpdate();
+                craftTimer += Time.fixedDeltaTime;
+                craftTimerUI.fillAmount = craftTimer / maxCraftDuration;
+            }
+
+            //Enable player movement
+            player.DisableCraftMode();
+            craftTimerBorder.SetActive(false);
         }
 
-        //Enable player movement
-        player.DisableCraftMode();
-        craftTimerBorder.SetActive(false);
-
         //If channel was completed, craft potion and destroy this object
-        if (craftTimer >= maxCraftDuration)
+        if (!playerProvoked || craftTimer >= maxCraftDuration)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
             ingredients.Add(mainIngredient);

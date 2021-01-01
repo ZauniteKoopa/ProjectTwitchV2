@@ -358,13 +358,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321cdbde173cafeafae55b1cb58108ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 10
+  baseHealth: 20
   baseSpeed: 3
   healthRegen: 0.5
   canMove: 0
   healthBar: {fileID: 5738329415334775083}
   stacksUI: {fileID: 3429524657777047845}
   normalColor: {r: 1, g: 0, b: 0, a: 1}
+  onDeathEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7989147297717732857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,7 +387,7 @@ MonoBehaviour:
   - {x: -3.5, y: -3, z: 0}
   attackTimerDelay: 3.5
   isHostile: 0
-  lootDropChance: 0
+  lootDropChance: 0.4
   loot:
   - {fileID: 7351858614600386105, guid: 51ae25e3bac4764dbba15897b3fbe135, type: 3}
   - {fileID: 583347244938952296, guid: 2f9678727ce8a18cab7bbbf00518a96b, type: 3}
