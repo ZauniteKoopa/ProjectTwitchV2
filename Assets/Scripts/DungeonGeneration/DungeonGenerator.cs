@@ -263,7 +263,6 @@ public class DungeonGenerator : MonoBehaviour
                 //Instatiate object and edit properties. If startRoom, set curExit's dest to that room. If endRoom, set up nextExit
                 Transform curRoom = UnityEngine.Object.Instantiate(curTemplate, curRoomPos, Quaternion.identity);
                 curRoom.GetComponent<Room>().SetOpenings(blueprint[r, c].openings);
-                curRoom.GetComponent<Room>().SpawnEnemies();
 
                 if (curType == RoomType.Start)
                     curExit.SetDest(curRoomPos);

@@ -27,8 +27,9 @@ public class Room : MonoBehaviour
     private int minEnemies = 0;
     [SerializeField]
     private Transform enemy = null;
+    [SerializeField]
+    private RoomCollision spawnChecker = null;
     private int numEnemies;
-    private List<Transform> enemies;
 
     private const float X_EXTENTS = 7.0f;
     private const float Y_EXTENTS = 3.0f;
@@ -40,33 +41,45 @@ public class Room : MonoBehaviour
     void Awake()
     {
         doors = new List<GameObject>();
-        enemies = new List<Transform>();
     }
 
-    //On start, instantiate enemies
-    public void SpawnEnemies()
+    //Private method to instantiate enemies
+    private void SpawnEnemies()
     {
+        //Randomly get the number of enemies for this room
         numEnemies = Random.Range(minEnemies, maxEnemies + 1);
         
+        //Make enemies 1 by 1
         for (int i = 0; i < numEnemies; i++)
         {
+            //Set up enemy and create patrol points
+            Vector3 enemySize = enemy.localScale;
+
             int numPoints = enemy.GetComponent<AbstractEnemy>().GetNumPatrolPoints();
             Vector3[] points = new Vector3[numPoints];
 
             for (int p = 0; p < points.Length; p++)
             {
-                float posY = Random.Range(-Y_EXTENTS, Y_EXTENTS);
-                float posX = Random.Range(-X_EXTENTS, X_EXTENTS);
+                //Find a position within the room and test it
+                Vector3 curPoint;
 
-                Vector3 curPoint = new Vector3(posX, posY, -1);
-                points[p] = transform.TransformPoint(curPoint);
+                do 
+                {
+                    float posY = Random.Range(-Y_EXTENTS, Y_EXTENTS);
+                    float posX = Random.Range(-X_EXTENTS, X_EXTENTS);
+
+                    curPoint = new Vector3(posX, posY, -1);
+                    curPoint = transform.TransformPoint(curPoint);
+                }
+                while (!spawnChecker.ValidPoint(curPoint, enemySize));
+
+                points[p] = curPoint;
             }
 
+            //Instantiate enemy
             Transform curEnemy = Object.Instantiate(enemy, points[points.Length - 1], Quaternion.identity, transform);
             curEnemy.GetComponent<AbstractEnemy>().SetPatrolPoints(points);
             curEnemy.GetComponent<EntityStatus>().onDeathEvent.AddListener(OnEnemyDeath);
-            curEnemy.gameObject.SetActive(false);
-            enemies.Add(curEnemy);
         }
     }
 
@@ -98,11 +111,8 @@ public class Room : MonoBehaviour
         {
             activated = true;
 
-            //Activate all enemies
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                enemies[i].gameObject.SetActive(true);
-            }
+            //spawn and Activate all enemies
+            SpawnEnemies();
 
             //Lock all doors
             if (numEnemies > 0)
