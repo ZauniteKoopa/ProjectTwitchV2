@@ -108,7 +108,7 @@ public class IngredientWorldObj : MonoBehaviour
             if (buttonInput == "BoltCraft")
                 player.UpgradePrimary(ingredients);
             else if (buttonInput == "CaskCraft")
-                player.UpgradeCask(ingredients);
+                player.UpgradeSec(ingredients);
             else if (buttonInput == "ThirdCraft")
                 player.UpgradeThird(ingredients);
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class PoisonVial
@@ -16,7 +17,7 @@ public class PoisonVial
 
     //Ammo system
     private int ammo;
-    private const int BEGIN_AMMO = 20;
+    private const int BEGIN_AMMO = 30;
 
     //Constants for damage/potency
     private const float BASE_DAMAGE = 1.5f;
@@ -36,11 +37,47 @@ public class PoisonVial
     private const float BASE_SLOWNESS = 0.85f;
     private const float SLOWNESS_GROWTH = -0.025f;
 
+    //Side effects variables
+    //  Enum: 0 = none, 1-3 = potency, 4-6 = poison, 7-9 = reactivity, 10-12 = stickiness
+    public enum SideEffect
+    {
+        [Description("???")]
+        NONE,
+        [Description("Piercing Shot")]
+        PIERCING_SHOT,
+        [Description("Acid Spill")]
+        ACID_SPILL,
+        [Description("Creeping Dread")]
+        CREEPING_DREAD,
+        [Description("Open Infection")]
+        OPEN_INFECTION,
+        [Description("Poison Fog")]
+        POISON_FOG,
+        [Description("Greater Decay")]
+        GREATER_DECAY,
+        [Description("Noxious Explosion")]
+        NOXIOUS_EXPLOSION,
+        [Description("Combustion Blast")]
+        COMBUSTION_BLAST,
+        [Description("Death Mark")]
+        DEATH_MARK,
+        [Description("Slime Puddle")]
+        SLIME_PUDDLE,
+        [Description("Slime Leak")]
+        SLIME_LEAK,
+        [Description("Induced Paralysis")]
+        INDUCED_PARALYSIS
+    }
+
+    private SideEffect sideEffect;
+    private const int SIDE_EFFECT_REQ = 3;
+    private const int EFFECTS_PER_TYPE = 3;
+
     //Updates log kept for information purposes
     private int[] updateLog;
 
 
-    //Pure Constructor
+    //Pure Constructor with no side effects
     public PoisonVial(int pot, int poi, int r, int s, Color c, int initialAmmo)
     {
         potency = pot;
@@ -49,6 +86,7 @@ public class PoisonVial
         stickiness = s;
         poisonColor = c;
         ammo = initialAmmo;
+        sideEffect = SideEffect.NONE;
 
         updateLog = new int[4];
     }
@@ -56,6 +94,7 @@ public class PoisonVial
     //Constructor to make PoisonVial from scratch from a list of ingredients
     public PoisonVial(List<Ingredient> ingredients, int randomBonus)
     {
+        sideEffect = SideEffect.NONE;
         ammo = BEGIN_AMMO;
         potency = 0;
         poison = 0;
@@ -74,37 +113,88 @@ public class PoisonVial
         for(int i = 0; i < updateLog.Length; i++)
             updateLog[i] = 0;
 
-        //Upgrade vial 1 ingredient at a time
+        //Make a list for side effect generation if no stat effect found
+        List<Ingredient.StatType> potentialEffects = null;
+        if (sideEffect == SideEffect.NONE)
+            potentialEffects = new List<Ingredient.StatType>();
+
+        //Upgrade vial 1 ingredient at a time. If side effect upgrade detected, add to potential effects
         for (int i = 0; i < ingredients.Count; i++)
         {
             List<Ingredient.StatType> upgrades = ingredients[i].GetStatUpgrades();
             for (int upgrade = 0; upgrade < upgrades.Count; upgrade++)
             {
-                UpgradeStat(upgrades[upgrade], randomBonus);
+                bool sideEffect = UpgradeStat(upgrades[upgrade], randomBonus);
+
+                if (potentialEffects != null && sideEffect)
+                    potentialEffects.Add(upgrades[upgrade]);
             }
 
             ammo += ingredients[i].GetAmmoOffered();
         }
+
+        //If side effected detected, give a random side effect from the list
+        if (potentialEffects != null && potentialEffects.Count > 0)
+        {
+            Ingredient.StatType sideEffectType = potentialEffects[Random.Range(0, potentialEffects.Count)];
+            sideEffect = GiveSideEffect(sideEffectType);
+            Debug.Log("SIDE EFFECT OBTAINED: " + sideEffect.ToString());
+        }
     }
 
     //Helper method that upgrades a stat based on input
-    private void UpgradeStat(Ingredient.StatType s, int randomBonus)
+    //  Returns true if side effect requirement is met with this stat ON THIS TURN
+    //  An upgrade for a specific stat type should never return twice
+    private bool UpgradeStat(Ingredient.StatType s, int randomBonus)
     {
         int bonus = 1;
         bonus += Random.Range(0, randomBonus + 1);
+        int beforeStat = 0;
+        int upgradedStat = 0;
 
         //Actually update stat
         if (potency < MAX_STAT && s == Ingredient.StatType.Potency)
+        {
+            beforeStat = potency;
             potency += bonus;
+            upgradedStat = potency;
+        }
         else if (poison < MAX_STAT && s == Ingredient.StatType.Poison)
+        {
+            beforeStat = poison;
             poison += bonus;
+            upgradedStat = poison;
+        }
         else if (reactivity < MAX_STAT && s == Ingredient.StatType.Reactivity)
+        {
+            beforeStat = reactivity;
             reactivity += bonus;
+            upgradedStat = reactivity;
+        }
         else if (stickiness < MAX_STAT && s == Ingredient.StatType.Stickiness)
+        {
+            beforeStat = stickiness;
             stickiness += bonus;
+            upgradedStat = stickiness;
+        }
 
         //record in log
         updateLog[(int)s] += bonus;
+        return upgradedStat >= SIDE_EFFECT_REQ && beforeStat < SIDE_EFFECT_REQ;
+    }
+
+
+    //Private helper method to give this vial a side effect if need be
+    //  Pre: This vial should not have a side effect before hand
+    private SideEffect GiveSideEffect(Ingredient.StatType type)
+    {
+        int typeIndex = (int)type;
+
+        int beginRand = (EFFECTS_PER_TYPE * typeIndex) + 1;
+        int endRand = EFFECTS_PER_TYPE * (typeIndex + 1);
+        int selected = Random.Range(beginRand, endRand + 1);
+
+        return (SideEffect)selected;
     }
 
     //Ammo checker: Checks if can use poison given the cost
@@ -193,4 +283,9 @@ public class PoisonVial
         return stats;
     }
 
+    //Access side effect name (TO BE CHANGED)
+    public string GetSideEffectName()
+    {
+        return sideEffect.ToString();
+    }
 }

@@ -25,6 +25,10 @@ public class Inventory : MonoBehaviour
     private Image thirdHighlight = null;
     private Image curHighlight;
 
+    //Index display
+    private enum DisplayVialEnum {None, Primary, Secondary, Third};
+    private DisplayVialEnum displayVialIndex;
+
     //variables to player's poison vial. MUST BE LOADED UPON OPEN
     private PoisonVial boltVial = null;
     private PoisonVial caskVial = null;
@@ -40,6 +44,8 @@ public class Inventory : MonoBehaviour
     private TMP_Text reactivityText = null;
     [SerializeField]
     private TMP_Text stickinessText = null;
+    [SerializeField]
+    private TMP_Text sideEffectName = null;
 
     //Ingredient inventory to manage
     Dictionary<Ingredient, int> ingredientInv;
@@ -61,6 +67,7 @@ public class Inventory : MonoBehaviour
         curHighlight = null;
         craftVial = null;
         active = false;
+        displayVialIndex = DisplayVialEnum.None;
     }
 
 
@@ -88,6 +95,7 @@ public class Inventory : MonoBehaviour
         boltVial = bv;
         caskVial = cv;
         thirdVial = tv;
+        displayVialIndex = DisplayVialEnum.None;
 
         //Set up UI icons
         boltIcon.SetUpVial(bv);
@@ -196,6 +204,7 @@ public class Inventory : MonoBehaviour
         boltHighlight.enabled = true;
         curHighlight = boltHighlight;
         DisplayVialInfo(boltVial);
+        displayVialIndex = DisplayVialEnum.Primary;
     }
 
 
@@ -208,6 +217,7 @@ public class Inventory : MonoBehaviour
         caskHighlight.enabled = true;
         curHighlight = caskHighlight;
         DisplayVialInfo(caskVial);
+        displayVialIndex = DisplayVialEnum.Secondary;
     }
 
 
@@ -220,6 +230,7 @@ public class Inventory : MonoBehaviour
         thirdHighlight.enabled = true;
         curHighlight = thirdHighlight;
         DisplayVialInfo(thirdVial);
+        displayVialIndex = DisplayVialEnum.Third;
     }
 
 
@@ -234,6 +245,7 @@ public class Inventory : MonoBehaviour
             poisonText.text = "Poison: " + vialInfo[1];
             reactivityText.text = "Reactivity: " + vialInfo[2];
             stickinessText.text = "Stickiness: "+ vialInfo[3];
+            sideEffectName.text = "Side Effect - " + vial.GetSideEffectName() + ":";
         }
         else
         {
@@ -245,10 +257,13 @@ public class Inventory : MonoBehaviour
     //helper method to clear out information
     private void ClearVialInfo()
     {
+        displayVialIndex = DisplayVialEnum.None;
+
         potencyText.text = "Potency: 0";
         poisonText.text = "Poison: 0";
         reactivityText.text = "Reactivity: 0";
         stickinessText.text = "Stickiness: 0";
+        sideEffectName.text = "Side Effect - ???:";
     }
 
     // method to reset all crafting
@@ -268,17 +283,17 @@ public class Inventory : MonoBehaviour
         //Find what icon needs to be updated: if craftVial is null --> no icon was selected beforehand. Choose the next free one
         //If there are no free icons, you can't craft
         VialIcon updatedIcon = null;
-        if (craftVial != null)
+        if (craftVial != null)                  //Updating a poison
         {
             updatedIcon = (craftVial == boltVial) ? boltIcon : updatedIcon;
             updatedIcon = (craftVial == caskVial) ? caskIcon : updatedIcon;
             updatedIcon = (craftVial == thirdVial) ? thirdIcon : updatedIcon;
         }
-        else
+        else                                    //Replacing a poison
         {
-            updatedIcon = (boltVial == null) ? boltIcon : updatedIcon;
-            updatedIcon = (caskVial == null) ? caskIcon : updatedIcon;
-            updatedIcon = (thirdVial == null) ? thirdIcon : updatedIcon;
+            updatedIcon = (displayVialIndex == DisplayVialEnum.Primary) ? boltIcon : updatedIcon;
+            updatedIcon = (displayVialIndex == DisplayVialEnum.Secondary) ? caskIcon : updatedIcon;
+            updatedIcon = (displayVialIndex == DisplayVialEnum.Third) ? thirdIcon : updatedIcon;
         }
 
         //If slot was found, continue with the crafting process
@@ -326,7 +341,7 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            Debug.Log("NO OPEN SLOTS AVAILABLE");
+            Debug.Log("MUST SELECT POISON TO REPLACE IT OR PUT POISON IN CRAFT SLOT TO UPGRADE");
         }
     }
 
