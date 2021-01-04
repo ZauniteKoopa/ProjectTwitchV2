@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TwitchController : MonoBehaviour
 {
@@ -57,6 +58,7 @@ public class TwitchController : MonoBehaviour
     [SerializeField]
     private ContaminateManager conManager = null;
     private bool canCon;
+    private List<PoisonBombBehav> reactiveBombs;
 
     //Stealth management
     [Header("Stealth management")]
@@ -138,9 +140,11 @@ public class TwitchController : MonoBehaviour
         provoked = false;
 
         //Initialize poisonVial variables
-        secVial = new PoisonVial(0, 2, 1, 3, Color.magenta, 30, PoisonVial.SideEffect.SLIME_BOMB);
+        secVial = new PoisonVial(0, 2, 1, 2, Color.magenta, 30);
         mainVial = new PoisonVial(2, 1, 2, 0, Color.yellow, 30);
-        thirdVial = new PoisonVial(0, 2, 2, 1, Color.cyan, 30);
+        thirdVial = new PoisonVial(0, 2, 3, 1, Color.cyan, 30, PoisonVial.SideEffect.COMBUSTION_BLAST);
+
+        reactiveBombs = new List<PoisonBombBehav>();
     }
 
 
@@ -176,6 +180,15 @@ public class TwitchController : MonoBehaviour
             //Contamination
             if (canCon && Input.GetButtonDown("Contaminate") && conManager.CanContaminate())
             {
+                //Activate reactive bombs
+                int i = reactiveBombs.Count - 1;
+                while (i >= 0 && reactiveBombs[i] != null)
+                {
+                    reactiveBombs[i].CombustionBlast();
+                    i--;
+                }
+                reactiveBombs.Clear();
+
                 //Contaminate
                 conManager.ContaminateAll();
                 canCon = false;
@@ -303,8 +316,13 @@ public class TwitchController : MonoBehaviour
 
         yield return new WaitForSeconds (throwTime);
 
+        //Instatiate cask instance
         Transform curCask = Object.Instantiate (poisonCask, dirVector, Quaternion.identity, transform);
-        curCask.GetComponent<PoisonBombBehav>().SetBomb (true, mainVial);
+        PoisonBombBehav caskBomb = curCask.GetComponent<PoisonBombBehav>();
+        caskBomb.SetBomb (true, mainVial);
+        if (mainVial.GetSideEffect() == PoisonVial.SideEffect.COMBUSTION_BLAST)
+            reactiveBombs.Add(caskBomb);
+            
         curCask.parent = null;
 
         //Update vial properties
@@ -573,7 +591,6 @@ public class TwitchController : MonoBehaviour
     //Event handler: if entity is damaged during crafting, interrupt crafting
     public void OnEntityDamage()
     {
-        Debug.Log("Damaged");
         if (crafting)
             DisableCraftMode();
     }

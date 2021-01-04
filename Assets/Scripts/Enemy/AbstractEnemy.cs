@@ -120,7 +120,7 @@ public abstract class AbstractEnemy : MonoBehaviour
                     attackTimer = 0f;
                 }
             }
-            else
+            else if (patrolPoints != null && patrolPoints.Length > 1)
             {
                 attackTimer = 0f;
 

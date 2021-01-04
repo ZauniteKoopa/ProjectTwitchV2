@@ -14,12 +14,25 @@ public class PoisonBombBehav : MonoBehaviour
     private float initialDmgFactor = 2.0f;
     private float slownessFactor = 0.5f;
     private int initialStacks = 2;
+    private const float BASE_DAMAGE_PER_TICK = 0.1f;
     private PoisonVial bombVial = null;
     private string tgtTag = "";
 
     private bool initialPhase;
     private int curTick;
     private HashSet<Collider2D> effected;
+
+
+    //---------------
+    // Side Effects Constants
+    //---------------
+
+    //Acid Spill constant
+    private const float ACID_DAMAGE_PER_TICK = 0.6f;
+
+    //Combustion Blast constants
+    private const float BASE_BLAST_DAMAGE = 4.0f;
+
 
     //Awake is called to set local variables
     void Awake()
@@ -33,6 +46,13 @@ public class PoisonBombBehav : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //If greater decay, increase rate of poison
+        if (bombVial.GetSideEffect() == PoisonVial.SideEffect.GREATER_DECAY)
+        {
+            tickDuration /= 2.0f;
+            maxTick *= 2;
+        }
+
         Invoke("FinishInitial", initialTickDuration);
     }
 
@@ -63,7 +83,14 @@ public class PoisonBombBehav : MonoBehaviour
         {
             EntityStatus enemyStatus = enemy.GetComponent<EntityStatus>();
             if (enemyStatus != null)
-                enemy.GetComponent<EntityStatus>().PoisonDamageEntity(0.0f, 1, bombVial);
+            {
+                //Calculate damage if need be
+                float initDmg = BASE_DAMAGE_PER_TICK;
+                if (bombVial.GetSideEffect() == PoisonVial.SideEffect.ACID_SPILL)
+                    initDmg += (bombVial.GetSideEffectLevel() * ACID_DAMAGE_PER_TICK);
+                
+                enemy.GetComponent<EntityStatus>().PoisonDamageEntity(initDmg, 1, bombVial);
+            }
         }
 
         //Increment curTick and check if object ready for destroy
@@ -78,6 +105,23 @@ public class PoisonBombBehav : MonoBehaviour
             Invoke("ApplyTickDamage", tickDuration);
         }
     }
+
+
+    //Explosion used when contamination is used: a signal handler method
+    public void CombustionBlast()
+    {
+        foreach(Collider2D enemy in effected)
+        {
+            int numStacks = bombVial.GetSideEffectLevel();
+            float dmg = BASE_BLAST_DAMAGE * numStacks;
+
+            enemy.GetComponent<EntityStatus>().PoisonDamageEntity(dmg, numStacks, bombVial);
+        }
+
+        CancelInvoke();
+        Destroy(gameObject);
+    }
+
 
     //Method to check collisions and add objects effected HashSet
     void OnTriggerEnter2D(Collider2D collider)

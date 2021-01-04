@@ -37,6 +37,7 @@ public class EntityStatus : MonoBehaviour
     private const int MAX_TICKS = 6;
     private const float TICK_TIME = 1.0f;
     private PoisonVial poison = null;
+    private const float GREATER_DECAY_MODIFIER = 1.25f;
 
     //Events
     public UnityEvent onDeathEvent;
@@ -129,9 +130,12 @@ public class EntityStatus : MonoBehaviour
     //Invoke loop for poison tick: continues looping up until curTick == max tick
     void PoisonTickLoop()
     {
-        //Activate poison damage
+        //Activate poison damage. Add damage modifier if "Greater Decay"
         curTick++;
+        float dmg = poison.GetPoisonDmg();
+        dmg *= (poison.GetSideEffect() == PoisonVial.SideEffect.GREATER_DECAY) ? GREATER_DECAY_MODIFIER : 1.0f;
         curHealth -= (poison.GetPoisonDmg() * curPoisonStacks);
+
         if (curHealth <= 0)
         {
             StartCoroutine(Death());
