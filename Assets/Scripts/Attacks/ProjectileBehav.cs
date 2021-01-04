@@ -26,8 +26,9 @@ public class ProjectileBehav : MonoBehaviour
     }
 
     //Destroys projectile
-    void DestroyProjectile()
+    protected void DestroyProjectile()
     {
+        CancelInvoke();
         Destroy(gameObject);
     }
 
@@ -50,10 +51,12 @@ public class ProjectileBehav : MonoBehaviour
             if (collider.tag == tgtTag)
             {
                 DamageEntity(collider);
+            } 
+            else
+            {
+                DestroyProjectile();
             }
 
-            CancelInvoke();
-            DestroyProjectile();
         }
     }
 
@@ -62,5 +65,6 @@ public class ProjectileBehav : MonoBehaviour
     {
         EntityStatus tgtStatus = collider.GetComponent<EntityStatus>();
         tgtStatus.DamageEntity(damage);
+        DestroyProjectile();
     }
 }

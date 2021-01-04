@@ -242,3 +242,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projSpeed: 12
   duration: 2
+  slimeBomb: {fileID: 3341918416620112683, guid: ac9943340f9d0a757a500a472a8bf3db,
+    type: 3}

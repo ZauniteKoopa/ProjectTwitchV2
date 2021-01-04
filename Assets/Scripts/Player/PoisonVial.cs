@@ -61,8 +61,8 @@ public class PoisonVial
         COMBUSTION_BLAST,
         [Description("Death Mark")]
         DEATH_MARK,
-        [Description("Slime Puddle")]
-        SLIME_PUDDLE,
+        [Description("Slime Bomb")]
+        SLIME_BOMB,
         [Description("Slime Leak")]
         SLIME_LEAK,
         [Description("Induced Paralysis")]
@@ -87,6 +87,20 @@ public class PoisonVial
         poisonColor = c;
         ammo = initialAmmo;
         sideEffect = SideEffect.NONE;
+
+        updateLog = new int[4];
+    }
+
+    //Pure constructor with side effects
+    public PoisonVial(int pot, int poi, int r, int s, Color c, int initialAmmo, SideEffect effect)
+    {
+        potency = pot;
+        poison = poi;
+        reactivity = r;
+        stickiness = s;
+        poisonColor = c;
+        ammo = initialAmmo;
+        sideEffect = effect;
 
         updateLog = new int[4];
     }
@@ -283,9 +297,41 @@ public class PoisonVial
         return stats;
     }
 
+    // --------
+    // Side effect methods
+    // --------
+
     //Access side effect name (TO BE CHANGED)
     public string GetSideEffectName()
     {
         return sideEffect.ToString();
+    }
+
+    //Access side effect enum
+    public SideEffect GetSideEffect()
+    {
+        return sideEffect;
+    }
+
+    //Accessor method to side effect level
+    //  If no side effect, return 0
+    public int GetSideEffectLevel()
+    {
+        if (sideEffect == SideEffect.NONE)
+            return 0;
+        
+        int effectType = ((int)sideEffect - 1) / EFFECTS_PER_TYPE;
+        int lvl = 2;
+        
+        if (effectType == 0)
+            lvl = potency;
+        else if (effectType == 1)
+            lvl = poison;
+        else if (effectType == 2)
+            lvl = reactivity;
+        else if (effectType == 3)
+            lvl = stickiness;
+
+        return lvl - 2;
     }
 }
