@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 using TMPro;
+
+[System.Serializable]
+public class IngredientSelectDelegate : UnityEvent<Ingredient> {}
 
 public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
@@ -24,6 +28,9 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     private Canvas canvas = null;
     public bool dropped;
 
+    //Event when dragged on
+    public IngredientSelectDelegate OnIngredientSelect;
+
     private const float ICON_SNAPBACK_TIME = 0.1f;
 
     //On awake, set start position
@@ -32,6 +39,7 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         dropped = false;
+        OnIngredientSelect = new IngredientSelectDelegate();
     }
 
     //Method to set up ingredient
@@ -99,14 +107,13 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     //Event handler when clicking down on icon
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("On Pointer down");
+        if (ingredient != null)
+            OnIngredientSelect.Invoke(ingredient);
     }
 
     //Event handler when beginning to drag
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("On begin drag");
-
         if (ingredient != null)
         {
             canvasGroup.blocksRaycasts = false;
@@ -126,8 +133,6 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     //Event handler when dropping icon
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("On end drag");
-
         if (!dropped && ingredient != null)
         { 
             canvasGroup.blocksRaycasts = true;

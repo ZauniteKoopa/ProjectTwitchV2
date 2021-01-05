@@ -4,7 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class CraftIngredientSlot : MonoBehaviour, IDropHandler
+// [System.Serializable]
+// public class IngredientSelectDelegate : UnityEvent<Ingredient> {}
+
+public class CraftIngredientSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
 {
     //UI elements
     [SerializeField]
@@ -13,10 +16,14 @@ public class CraftIngredientSlot : MonoBehaviour, IDropHandler
     private Color emptyColor = Color.clear;
     private IngredientIcon ingredientIcon;
 
+    //Event when dragged on
+    public IngredientSelectDelegate OnIngredientSelect;
+
     // Start is called before the first frame update
     void Awake()
     {
         ingredientIcon = null;
+        OnIngredientSelect = new IngredientSelectDelegate();
     }
 
     //Method to drop Ingredient Icon in this slot
@@ -38,6 +45,13 @@ public class CraftIngredientSlot : MonoBehaviour, IDropHandler
                 icon.color = ingIcon.GetIngredient().GetColor();
             }
         }
+    }
+
+    //Event handler when clicking down on icon
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (ingredientIcon.GetIngredient() != null)
+            OnIngredientSelect.Invoke(ingredientIcon.GetIngredient());
     }
 
     //Accessor method to ingredient

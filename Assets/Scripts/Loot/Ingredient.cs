@@ -93,4 +93,23 @@ public class Ingredient
     {
         return ingColor;
     }
+
+    //Method to get string name
+    public string GetName()
+    {
+        return type.ToString();
+    }
+
+    //Method to get available types
+    public List<string> GetUpgrades()
+    {
+        List<string> upgrades = new List<string>();
+
+        for (int i = 0; i < availableTypes.Count; i++)
+        {
+            upgrades.Add(availableTypes[i].ToString());
+        }
+
+        return upgrades;
+    }
 }

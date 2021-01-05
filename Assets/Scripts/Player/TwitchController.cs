@@ -140,9 +140,9 @@ public class TwitchController : MonoBehaviour
         provoked = false;
 
         //Initialize poisonVial variables
-        secVial = new PoisonVial(0, 2, 1, 3, Color.magenta, 30, PoisonVial.SideEffect.SLIME_LEAK);
+        secVial = new PoisonVial(0, 2, 1, 2, Color.magenta, 30);
         mainVial = new PoisonVial(2, 1, 2, 0, Color.yellow, 30);
-        thirdVial = new PoisonVial(0, 2, 3, 1, Color.cyan, 30, PoisonVial.SideEffect.NOXIOUS_EXPLOSION);
+        thirdVial = new PoisonVial(0, 2, 2, 1, Color.cyan, 30);
 
         reactiveBombs = new List<PoisonBombBehav>();
     }

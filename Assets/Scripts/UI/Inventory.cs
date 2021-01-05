@@ -53,6 +53,12 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private IngredientIcon[] ingredientIcons = null;
 
+    //Ingredient display information
+    [SerializeField]
+    private TMP_Text ingredientName = null;
+    [SerializeField]
+    private TMP_Text ingredientDescription = null;
+
     //Crafting system
     [Header("Crafting system")]
     [SerializeField]
@@ -68,6 +74,16 @@ public class Inventory : MonoBehaviour
         craftVial = null;
         active = false;
         displayVialIndex = DisplayVialEnum.None;
+    }
+
+    //On start listen to all icons
+    void Start()
+    {
+        for (int i = 0; i < ingredientIcons.Length; i++)
+            ingredientIcons[i].OnIngredientSelect.AddListener(UpdateIngredientInfo);
+
+        for (int i = 0; i < craftSlots.Length; i++)
+            craftSlots[i].OnIngredientSelect.AddListener(UpdateIngredientInfo);
     }
 
 
@@ -113,6 +129,7 @@ public class Inventory : MonoBehaviour
             }
         }
         
+        ClearIngredientInfo();
 
         //Actually open up menu and pause game
         gameObject.SetActive(true);
@@ -127,6 +144,8 @@ public class Inventory : MonoBehaviour
 
         while(active)
         {
+            yield return new WaitForSecondsRealtime(0.01f);
+
             //Keyboard controls for crafting
             if (Input.GetButtonDown("BoltCraft"))
             {
@@ -134,6 +153,7 @@ public class Inventory : MonoBehaviour
                     SetUpCraftVial(boltVial, boltIcon);
                 else
                     ResetCraftVial();
+                Debug.Log("button pushed");
             }
             else if (Input.GetButtonDown("CaskCraft"))
             {
@@ -149,8 +169,11 @@ public class Inventory : MonoBehaviour
                 else
                     ResetCraftVial();
             }
+            else if (Input.GetButtonDown("Inventory"))
+            {
+                CallClose();
+            }
 
-            yield return new WaitForSecondsRealtime(0.01f);
         }
 
         Close();
@@ -231,6 +254,31 @@ public class Inventory : MonoBehaviour
         curHighlight = thirdHighlight;
         DisplayVialInfo(thirdVial);
         displayVialIndex = DisplayVialEnum.Third;
+    }
+
+
+    //Signal handler method to handle ingredient selection to display info
+    public void UpdateIngredientInfo(Ingredient ing)
+    {
+        if (ing != null)
+        {
+            ingredientName.text = "Ingredient - " + ing.GetName() + ":";
+            List<string> upgrades = ing.GetUpgrades();
+            ingredientDescription.text = "";
+
+            for (int i = 0; i < upgrades.Count; i++)
+            {
+                ingredientDescription.text += upgrades[i];
+                ingredientDescription.text += "\n";
+            }
+        }
+    }
+
+    //Method to clear out ingredient info
+    void ClearIngredientInfo()
+    {
+        ingredientName.text = "Ingredient - ???:";
+        ingredientDescription.text = "";
     }
 
 
@@ -376,6 +424,7 @@ public class Inventory : MonoBehaviour
         craftVial = vial;
         craftVialSlot.sprite = vialIcon.GetSprite();
         craftVialSlot.color = vial.GetColor();
+
     }
 
     //Method to reset Crafting vial slot
