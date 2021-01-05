@@ -17,6 +17,12 @@ public class EntityStatus : MonoBehaviour
     private float healthRegen = 0.0f;
     public bool canMove;
 
+    //Aura variable
+    [Header("Aura")]
+    [SerializeField]
+    private EntityAura aura = null;
+    private const int AURA_REQ = 3;
+
     [Header("UI")]
     [SerializeField]
     private Image healthBar = null;
@@ -34,6 +40,7 @@ public class EntityStatus : MonoBehaviour
     private int curPoisonStacks;
     private const int MAX_POISON_STACKS = 5;
     private int curTick;
+    private int totalTicks;
     private const int MAX_TICKS = 6;
     private const float TICK_TIME = 1.0f;
     private PoisonVial poison = null;
@@ -51,6 +58,7 @@ public class EntityStatus : MonoBehaviour
 
         curPoisonStacks = 0;
         curTick = 0;
+        totalTicks = 0;
         onDeathEvent = new UnityEvent();
     }
 
@@ -85,14 +93,20 @@ public class EntityStatus : MonoBehaviour
     {
         //Check if enemy wasn't poisoned initially
         bool notPoisoned = curPoisonStacks == 0;
-
-        //Poison enemy first
-        poison = vial;
-        GetComponent<SpriteRenderer>().color = vial.GetColor();
-
+            
         curPoisonStacks += initStacks;
         if (curPoisonStacks > MAX_POISON_STACKS)
             curPoisonStacks = MAX_POISON_STACKS;
+
+        //Poison enemy first if enemy were to be poisoned
+        if (vial != null)
+        {
+            poison = vial;
+            GetComponent<SpriteRenderer>().color = vial.GetColor();
+
+            if (aura != null && curPoisonStacks >= AURA_REQ)
+                aura.EnableAura(vial);
+        }
             
         //Update UI
         if (stacksUI != null)
@@ -108,6 +122,22 @@ public class EntityStatus : MonoBehaviour
 
         DamageEntity(initDmg);
     }
+
+
+    //Public method to do weak poison damage (vial will NOT  be overriden)
+    //  If enemy wasn't previously poisoned, just do weak poison
+    public void WeakPoisonDamageEntity(float initDmg, int initStacks, PoisonVial weakVial)
+    {
+        if (curPoisonStacks == 0)
+        {
+            PoisonDamageEntity(initDmg, initStacks, weakVial);
+        }
+        else
+        {
+            PoisonDamageEntity(initDmg, initStacks, null);
+        }
+    }
+
 
     //Invoke loop for health regen: only continues loop if not poisoned
     void HealthRegenLoop()
@@ -132,10 +162,15 @@ public class EntityStatus : MonoBehaviour
     {
         //Activate poison damage. Add damage modifier if "Greater Decay"
         curTick++;
+        totalTicks++;
         float dmg = poison.GetPoisonDmg();
         dmg *= (poison.GetSideEffect() == PoisonVial.SideEffect.GREATER_DECAY) ? GREATER_DECAY_MODIFIER : 1.0f;
         curHealth -= (poison.GetPoisonDmg() * curPoisonStacks);
 
+        if (totalTicks % 3 == 0 && aura != null)
+            aura.AuraPoisonTick();
+        
+        //Decide what to do next depending on health and tick timer
         if (curHealth <= 0)
         {
             StartCoroutine(Death());
@@ -150,8 +185,12 @@ public class EntityStatus : MonoBehaviour
             {
                 curPoisonStacks = 0;
                 curTick = 0;
+                totalTicks = 0;
                 poison = null;
                 GetComponent<SpriteRenderer>().color = normalColor;
+
+                if (aura != null)
+                    aura.DisableAura();
 
                 if (stacksUI != null)
                     stacksUI.text = "0";
@@ -170,6 +209,9 @@ public class EntityStatus : MonoBehaviour
     {
         if (curPoisonStacks > 0)
         {
+            if (aura != null)
+                aura.ContaminateExplode(curPoisonStacks);
+            
             DamageEntity(poison.GetContaminateDmg(curPoisonStacks));
         }
     }
@@ -182,6 +224,9 @@ public class EntityStatus : MonoBehaviour
         GetComponent<SpriteRenderer>().enabled = false;
         SendMessage("OnEntityDeath", null, SendMessageOptions.DontRequireReceiver);
         onDeathEvent.Invoke();
+
+        if (aura != null)
+            aura.DisableAura();
 
         yield return new WaitForSeconds(1.0f);
 
