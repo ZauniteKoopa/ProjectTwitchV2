@@ -47,8 +47,8 @@ public class PoisonVial
         PIERCING_SHOT,
         [Description("Acid Spill")]
         ACID_SPILL,
-        [Description("Creeping Dread")]
-        CREEPING_DREAD,
+        [Description("Spray and Pray")]
+        SPRAY_PRAY,
         [Description("Open Infection")]
         OPEN_INFECTION,
         [Description("Poison Fog")]

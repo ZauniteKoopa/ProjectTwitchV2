@@ -19,6 +19,10 @@ public class PoisonProjBehav : ProjectileBehav
     [SerializeField]
     private Transform slimeBomb = null;
     private const float SLIME_BOMB_DMG_PERCENT = 0.4f;
+
+    //Spray and pray constants
+    private const float SPRAY_CRIT_CHANCE = 0.4f;
+    private const float CRIT_DAMAGE_PERCENT = 3.0f;
     
 
     //Method to damage enemy
@@ -60,6 +64,12 @@ public class PoisonProjBehav : ProjectileBehav
     {
         vial = pv;
         dmgModifier = 1.0f;
+
+        if (pv.GetSideEffect() == PoisonVial.SideEffect.SPRAY_PRAY && Random.Range(0.0f, 1.0f) <= SPRAY_CRIT_CHANCE)
+        {
+            dmgModifier *= CRIT_DAMAGE_PERCENT;
+        }
+
         GetComponent<SpriteRenderer>().color = pv.GetColor();
         SetProj(dir, 0f, isPlayer);
     }

@@ -54,7 +54,7 @@ public class TwitchController : MonoBehaviour
     //Contaminate management
     [Header("Contamination management")]
     [SerializeField]
-    private float conCD = 7.0f;
+    private float conCD = 9.5f;
     [SerializeField]
     private ContaminateManager conManager = null;
     private bool canCon;
@@ -140,9 +140,9 @@ public class TwitchController : MonoBehaviour
         provoked = false;
 
         //Initialize poisonVial variables
-        secVial = new PoisonVial(0, 2, 1, 2, Color.magenta, 30);
+        secVial = new PoisonVial(0, 2, 1, 3, Color.magenta, 30, PoisonVial.SideEffect.INDUCED_PARALYSIS);
         mainVial = new PoisonVial(2, 1, 2, 0, Color.yellow, 30);
-        thirdVial = new PoisonVial(0, 2, 2, 1, Color.cyan, 30);
+        thirdVial = new PoisonVial(0, 2, 3, 1, Color.cyan, 30, PoisonVial.SideEffect.DEATH_MARK);
 
         reactiveBombs = new List<PoisonBombBehav>();
     }

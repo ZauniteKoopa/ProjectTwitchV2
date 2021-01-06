@@ -49,6 +49,14 @@ public class EntityStatus : MonoBehaviour
     //Events
     public UnityEvent onDeathEvent;
 
+    //Variables for side effects concerning contamination
+    private const float SIDE_EFFECT_DURATION = 3.5f;
+    private const float SIDE_EFFECT_DMG_BUFF = 1.5f;
+    private const float PARALYSIS_SPEED_REDUCTION = 0.1f;
+    private const float DEATH_MARK_THRESHOLD = 0.4f;
+    private PoisonVial.SideEffect contaminateEffect;
+
+
     // Awake is called to initialize variables
     void Awake()
     {
@@ -60,14 +68,18 @@ public class EntityStatus : MonoBehaviour
         curTick = 0;
         totalTicks = 0;
         onDeathEvent = new UnityEvent();
+        contaminateEffect = PoisonVial.SideEffect.NONE;
     }
 
     // Method to call to damage this entity
     public void DamageEntity(float dmg)
     {
         //Check if undamaged and decrement health
+        float dmgModifier = (contaminateEffect != PoisonVial.SideEffect.NONE) ? SIDE_EFFECT_DMG_BUFF : 1.0f;
         bool undamaged = (curHealth >= baseHealth);
-        curHealth -= dmg;
+
+        curHealth -= (dmg * dmgModifier);
+
         if (healthBar != null)
             healthBar.fillAmount = curHealth / baseHealth;
 
@@ -207,13 +219,45 @@ public class EntityStatus : MonoBehaviour
     //Method to do contaminate damage to this entity
     public void Contaminate()
     {
+        //Only contaminate if enemy has side effects
         if (curPoisonStacks > 0)
         {
+
+            //do aura damage if applicable
             if (aura != null)
                 aura.ContaminateExplode(curPoisonStacks);
             
-            DamageEntity(poison.GetContaminateDmg(curPoisonStacks));
+            //Actually do contaminate damage. If DEATH_MARK, check if can execute (below threshhold)
+            if (poison.GetSideEffect() == PoisonVial.SideEffect.DEATH_MARK && curHealth < DEATH_MARK_THRESHOLD * baseHealth)
+            {
+                DamageEntity(baseHealth);
+            }
+            else
+            {
+                DamageEntity(poison.GetContaminateDmg(curPoisonStacks));
+            }
+
+            //Do side effect damage and put up contaminate timer if applicable
+            if (poison.GetSideEffect() == PoisonVial.SideEffect.INDUCED_PARALYSIS || poison.GetSideEffect() == PoisonVial.SideEffect.DEATH_MARK)
+            {
+                contaminateEffect = poison.GetSideEffect();
+                if (contaminateEffect == PoisonVial.SideEffect.INDUCED_PARALYSIS)
+                    ChangeSpeed(PARALYSIS_SPEED_REDUCTION);
+                
+                Invoke("ExpireContaminateEffects", SIDE_EFFECT_DURATION);
+            }
         }
+    }
+
+
+    //Method to expire contaminate side effects
+    void ExpireContaminateEffects()
+    {
+        //Reverse any specific changes
+        if (contaminateEffect == PoisonVial.SideEffect.INDUCED_PARALYSIS)
+            ChangeSpeed(1.0f / PARALYSIS_SPEED_REDUCTION);
+        
+        contaminateEffect = PoisonVial.SideEffect.NONE;
     }
 
     //Method to kill object when health is low
