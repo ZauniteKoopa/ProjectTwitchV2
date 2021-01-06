@@ -285,6 +285,20 @@ public class EntityStatus : MonoBehaviour
     }
 
 
+    //Public method to heal for a fixed amount
+    public void Heal(float healthGained)
+    {
+        //Update health value
+        curHealth += healthGained;
+        if (curHealth > baseHealth)
+            curHealth = baseHealth;
+
+        //Update health UI
+        if (healthBar != null)
+            healthBar.fillAmount = curHealth / baseHealth;
+    }
+
+
     //Public accessor method for speed
     public float GetCurSpeed()
     {

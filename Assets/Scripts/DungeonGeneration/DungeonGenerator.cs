@@ -31,13 +31,13 @@ public class DungeonGenerator : MonoBehaviour
     //Room types to instance with
     public enum RoomType {Enemy, Start, End, Treasure}
     [SerializeField]
-    private Transform room = null;
+    private Transform[] rooms = null;
     [SerializeField]
     private Transform startRoom = null;
     [SerializeField]
     private Transform endRoom = null;
     [SerializeField]
-    private Transform treasureRoom = null;
+    private Transform[] treasureRooms = null;
     [SerializeField]
     private int treasureRarity = 7;
 
@@ -256,9 +256,9 @@ public class DungeonGenerator : MonoBehaviour
                 else if (curType == RoomType.End)
                     curTemplate = endRoom;
                 else if (curType == RoomType.Treasure)
-                    curTemplate = treasureRoom;
+                    curTemplate = treasureRooms[UnityEngine.Random.Range(0, treasureRooms.Length)];
                 else
-                    curTemplate = room;
+                    curTemplate = rooms[UnityEngine.Random.Range(0, rooms.Length)];
 
                 //Instatiate object and edit properties. If startRoom, set curExit's dest to that room. If endRoom, set up nextExit
                 Transform curRoom = UnityEngine.Object.Instantiate(curTemplate, curRoomPos, Quaternion.identity);
