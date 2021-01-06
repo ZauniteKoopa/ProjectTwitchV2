@@ -64,14 +64,12 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private CraftIngredientSlot[] craftSlots = null;
     [SerializeField]
-    private Image craftVialSlot = null;
-    private PoisonVial craftVial;
+    private CraftVialSlot craftVialSlot = null;
 
     // Awake is called to initialize some variables
     void Awake()
     {
         curHighlight = null;
-        craftVial = null;
         active = false;
         displayVialIndex = DisplayVialEnum.None;
     }
@@ -149,25 +147,25 @@ public class Inventory : MonoBehaviour
             //Keyboard controls for crafting
             if (Input.GetButtonDown("BoltCraft"))
             {
-                if (craftVial != boltVial)
-                    SetUpCraftVial(boltVial, boltIcon);
+                if (craftVialSlot.GetVial() != boltVial)
+                    craftVialSlot.SetUpCraftVial(boltVial, boltIcon);
                 else
-                    ResetCraftVial();
+                    craftVialSlot.Reset();
                 Debug.Log("button pushed");
             }
             else if (Input.GetButtonDown("CaskCraft"))
             {
-                if (craftVial != caskVial)
-                    SetUpCraftVial(caskVial, caskIcon);
+                if (craftVialSlot.GetVial() != caskVial)
+                    craftVialSlot.SetUpCraftVial(caskVial, caskIcon);
                 else
-                    ResetCraftVial();
+                    craftVialSlot.Reset();
             }
             else if (Input.GetButtonDown("ThirdCraft"))
             {
-                if (craftVial != thirdVial)
-                    SetUpCraftVial(thirdVial, thirdIcon);
+                if (craftVialSlot.GetVial() != thirdVial)
+                    craftVialSlot.SetUpCraftVial(thirdVial, thirdIcon);
                 else
-                    ResetCraftVial();
+                    craftVialSlot.Reset();
             }
             else if (Input.GetButtonDown("Inventory"))
             {
@@ -211,6 +209,9 @@ public class Inventory : MonoBehaviour
                 ingredientIcons[i].ClearIcon();
             }
         }
+
+        //Reset craft
+        ResetCraft();
 
         //Close the menu
         gameObject.SetActive(false);
@@ -322,7 +323,7 @@ public class Inventory : MonoBehaviour
             craftSlots[i].Reset();
         }
 
-        ResetCraftVial();
+        craftVialSlot.Reset();
     }
 
     //Method to actually craft using the materials in the crafting section
@@ -331,13 +332,13 @@ public class Inventory : MonoBehaviour
         //Find what icon needs to be updated: if craftVial is null --> no icon was selected beforehand. Choose the next free one
         //If there are no free icons, you can't craft
         VialIcon updatedIcon = null;
-        if (craftVial != null)                  //Updating a poison
+        if (craftVialSlot.GetVial() != null)                  //Updating a poison
         {
-            updatedIcon = (craftVial == boltVial) ? boltIcon : updatedIcon;
-            updatedIcon = (craftVial == caskVial) ? caskIcon : updatedIcon;
-            updatedIcon = (craftVial == thirdVial) ? thirdIcon : updatedIcon;
+            updatedIcon = (craftVialSlot.GetVial() == boltVial) ? boltIcon : updatedIcon;
+            updatedIcon = (craftVialSlot.GetVial() == caskVial) ? caskIcon : updatedIcon;
+            updatedIcon = (craftVialSlot.GetVial() == thirdVial) ? thirdIcon : updatedIcon;
         }
-        else                                    //Replacing a poison
+        else                                                  //Replacing a poison
         {
             updatedIcon = (displayVialIndex == DisplayVialEnum.Primary) ? boltIcon : updatedIcon;
             updatedIcon = (displayVialIndex == DisplayVialEnum.Secondary) ? caskIcon : updatedIcon;
@@ -372,6 +373,8 @@ public class Inventory : MonoBehaviour
             //Actually craft the poison if there was actually ingredients
             if (ingredientList.Count > 0)
             {
+                PoisonVial craftVial = craftVialSlot.GetVial();
+
                 //Get poison vial to update icon with
                 if (craftVial == null)
                     craftVial = new PoisonVial(ingredientList, 1);
@@ -415,24 +418,6 @@ public class Inventory : MonoBehaviour
             thirdIcon.SetUpVial(thirdVial);
             ShowThirdVial();
         }
-    }
-
-
-    //Method for setting up Crafting Vial Slot
-    private void SetUpCraftVial(PoisonVial vial, VialIcon vialIcon)
-    {
-        craftVial = vial;
-        craftVialSlot.sprite = vialIcon.GetSprite();
-        craftVialSlot.color = vial.GetColor();
-
-    }
-
-    //Method to reset Crafting vial slot
-    private void ResetCraftVial()
-    {
-        craftVial = null;
-        craftVialSlot.color = Color.black;
-        craftVialSlot.sprite = null;
     }
 
     //Method that returns an array of PoisonVials used to help update info in player

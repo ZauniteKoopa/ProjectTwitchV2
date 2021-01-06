@@ -152,7 +152,6 @@ public class PoisonVial
         {
             Ingredient.StatType sideEffectType = potentialEffects[Random.Range(0, potentialEffects.Count)];
             sideEffect = GiveSideEffect(sideEffectType);
-            Debug.Log("SIDE EFFECT OBTAINED: " + sideEffect.ToString());
         }
     }
 

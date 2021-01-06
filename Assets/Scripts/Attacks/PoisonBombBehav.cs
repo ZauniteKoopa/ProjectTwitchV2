@@ -14,7 +14,7 @@ public class PoisonBombBehav : MonoBehaviour
     private float initialDmgFactor = 2.0f;
     private float slownessFactor = 0.5f;
     private int initialStacks = 2;
-    private const float BASE_DAMAGE_PER_TICK = 0.1f;
+    private const float BASE_DAMAGE_PER_TICK = 0.2f;
     private PoisonVial bombVial = null;
     private string tgtTag = "";
 
@@ -28,7 +28,7 @@ public class PoisonBombBehav : MonoBehaviour
     //---------------
 
     //Acid Spill constant
-    private const float ACID_DAMAGE_PER_TICK = 0.6f;
+    private const float ACID_DAMAGE_PER_TICK = 1.4f;
 
     //Combustion Blast constants
     private const float BASE_BLAST_DAMAGE = 4.0f;

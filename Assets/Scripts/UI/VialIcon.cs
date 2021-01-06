@@ -56,4 +56,10 @@ public class VialIcon : AbilityIcon
     {
         return vialDisplay.sprite;
     }
+
+    //Method to access poison vial
+    public PoisonVial GetVial()
+    {
+        return vial;
+    }
 }

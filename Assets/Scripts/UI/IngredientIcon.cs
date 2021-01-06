@@ -30,7 +30,6 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
 
     //Event when dragged on
     public IngredientSelectDelegate OnIngredientSelect;
-
     private const float ICON_SNAPBACK_TIME = 0.1f;
 
     //On awake, set start position
