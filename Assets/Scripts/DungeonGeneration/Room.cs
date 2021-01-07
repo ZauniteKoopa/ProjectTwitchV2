@@ -84,14 +84,18 @@ public class Room : MonoBehaviour
     }
 
     //Method to enable openings given an array of booleans in NESW order
-    public void SetOpenings(bool[] bpOpenings)
+    //  If flipped, open door in SWNE
+    public void SetOpenings(bool[] bpOpenings, bool flipped)
     {
         for (int i = 0; i < bpOpenings.Length; i++)
         {
+            //Specific door you're opening to match with i
+            int index = (flipped) ? ((i + (bpOpenings.Length / 2)) % bpOpenings.Length) : i;
+
             if (bpOpenings[i])
             {
-                roomOpenings[i].SetActive(false);
-                doors.Add(roomOpenings[i]);
+                roomOpenings[index].SetActive(false);
+                doors.Add(roomOpenings[index]);
             }
         }
     }

@@ -81,15 +81,18 @@ public class PoisonBombBehav : MonoBehaviour
         //Apply tick damage to all affected
         foreach (Collider2D enemy in effected)
         {
-            EntityStatus enemyStatus = enemy.GetComponent<EntityStatus>();
-            if (enemyStatus != null)
+            if (enemy != null)
             {
-                //Calculate damage if need be
-                float initDmg = BASE_DAMAGE_PER_TICK;
-                if (bombVial.GetSideEffect() == PoisonVial.SideEffect.ACID_SPILL)
-                    initDmg += (bombVial.GetSideEffectLevel() * ACID_DAMAGE_PER_TICK);
-                
-                enemy.GetComponent<EntityStatus>().PoisonDamageEntity(initDmg, 1, bombVial);
+                EntityStatus enemyStatus = enemy.GetComponent<EntityStatus>();
+                if (enemyStatus != null)
+                {
+                    //Calculate damage if need be
+                    float initDmg = BASE_DAMAGE_PER_TICK;
+                    if (bombVial.GetSideEffect() == PoisonVial.SideEffect.ACID_SPILL)
+                        initDmg += (bombVial.GetSideEffectLevel() * ACID_DAMAGE_PER_TICK);
+                    
+                    enemy.GetComponent<EntityStatus>().PoisonDamageEntity(initDmg, 1, bombVial);
+                }
             }
         }
 
@@ -110,12 +113,21 @@ public class PoisonBombBehav : MonoBehaviour
     //Explosion used when contamination is used: a signal handler method
     public void CombustionBlast()
     {
+        //Put all enemies in a list to avoid iteration error
+        List<Collider2D> damaged = new List<Collider2D>();
+
         foreach(Collider2D enemy in effected)
+        {
+            if (enemy != null)
+                damaged.Add(enemy);
+        }
+
+        for (int i = 0; i < damaged.Count; i++)
         {
             int numStacks = bombVial.GetSideEffectLevel();
             float dmg = BASE_BLAST_DAMAGE * numStacks;
 
-            enemy.GetComponent<EntityStatus>().PoisonDamageEntity(dmg, numStacks, bombVial);
+            damaged[i].GetComponent<EntityStatus>().PoisonDamageEntity(dmg, numStacks, bombVial);
         }
 
         CancelInvoke();

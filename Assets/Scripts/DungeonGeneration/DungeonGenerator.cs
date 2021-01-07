@@ -260,10 +260,15 @@ public class DungeonGenerator : MonoBehaviour
                 else
                     curTemplate = rooms[UnityEngine.Random.Range(0, rooms.Length)];
 
-                //Instatiate object and edit properties. If startRoom, set curExit's dest to that room. If endRoom, set up nextExit
+                //Instatiate object and edit properties. 
                 Transform curRoom = UnityEngine.Object.Instantiate(curTemplate, curRoomPos, Quaternion.identity);
-                curRoom.GetComponent<Room>().SetOpenings(blueprint[r, c].openings);
+                bool flipped = (curType == RoomType.Enemy && UnityEngine.Random.Range(0, 2) == 0);
+                if (flipped)
+                    curRoom.Rotate(0f, 0f, 180f);
 
+                curRoom.GetComponent<Room>().SetOpenings(blueprint[r, c].openings, flipped);
+
+                //If startRoom, set curExit's dest to that room. If endRoom, set up nextExit
                 if (curType == RoomType.Start)
                     curExit.SetDest(curRoomPos);
                 else if (curType == RoomType.End)

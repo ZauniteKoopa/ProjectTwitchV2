@@ -50,7 +50,6 @@ public class SlimeBomb : MonoBehaviour
     {
         if (collider.tag == "Enemy")
         {
-            Debug.Log("hit");
             EntityStatus tgt = collider.GetComponent<EntityStatus>();
             tgt.ChangeSpeed(speedReduction);
             tgt.DamageEntity(damage);

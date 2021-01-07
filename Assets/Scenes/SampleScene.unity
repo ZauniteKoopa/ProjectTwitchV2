@@ -15878,6 +15878,8 @@ MonoBehaviour:
   tgtDest: {x: -4.5, y: 25.5, z: -1}
   rooms:
   - {fileID: 2737745231790836997, guid: 5bde8eca8b13bb2cf90c855a73eaca77, type: 3}
+  - {fileID: 4099926020483549373, guid: caa71a65aa4513029912dac276ce6787, type: 3}
+  - {fileID: 2732717391684281369, guid: f08a937c8be78706cb11906b744fa8ce, type: 3}
   startRoom: {fileID: 7738758389615647490, guid: 91830349b37463e758de2110a2cdf00b,
     type: 3}
   endRoom: {fileID: 4161434010286835855, guid: 4ac574b1e137cd3f68d1e0997430e442, type: 3}
@@ -16185,7 +16187,7 @@ PrefabInstance:
     - target: {fileID: 1417082043, guid: b93e366029e1d7d1aaafe708e867471d, type: 3}
       propertyPath: projectile
       value: 
-      objectReference: {fileID: 2235502432449359057, guid: 9dcfe1be48c9ad87b9ed3f7b6f8124d2,
+      objectReference: {fileID: 8745216315445732907, guid: 69586cca61caec1ae8df47447d0b4e74,
         type: 3}
     - target: {fileID: 1417082043, guid: b93e366029e1d7d1aaafe708e867471d, type: 3}
       propertyPath: lootDropChance

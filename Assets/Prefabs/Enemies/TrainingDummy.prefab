@@ -434,7 +434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321cdbde173cafeafae55b1cb58108ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 60
+  baseHealth: 40
   baseSpeed: 3
   healthRegen: 0.5
   canMove: 0
@@ -457,20 +457,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87e24f0bd0a579670bb68d628924bbe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minPatrolPoints: 1
-  maxPatrolPoints: 1
+  minPatrolPoints: 2
+  maxPatrolPoints: 4
   patrolPoints:
   - {x: 5.5, y: 2, z: 0}
   - {x: 5.5, y: -3, z: 0}
   attackTimerDelay: 3.5
   isHostile: 1
-  lootDropChance: 0
+  lootDropChance: 0.4
   loot:
   - {fileID: 7351858614600386105, guid: 51ae25e3bac4764dbba15897b3fbe135, type: 3}
   - {fileID: 583347244938952296, guid: 2f9678727ce8a18cab7bbbf00518a96b, type: 3}
+  - {fileID: 2246876989593270844, guid: 0e9f2f7a1b7db8e4cb7f86090314e0c6, type: 3}
+  - {fileID: 3308923313085471542, guid: 60cd31166261562e5b81a349669926bc, type: 3}
+  - {fileID: 5214189503012270570, guid: f8ed9b60665319cbca78dc8c9f915e67, type: 3}
+  - {fileID: 4656245909690571681, guid: 0a96b0f2249fbb49c92175e3991743bc, type: 3}
+  - {fileID: 428348291994388223, guid: c2b80735b7533260bb7ca30b6b77c9b4, type: 3}
   - {fileID: 9051591174592059892, guid: 6ba9e725ae3917579972d5c52b69cad3, type: 3}
-  canvas: {fileID: 0}
-  projectile: {fileID: 2235502432449359057, guid: 9dcfe1be48c9ad87b9ed3f7b6f8124d2,
+  canvas: {fileID: 783715958143618211}
+  projectile: {fileID: 8745216315445732907, guid: 69586cca61caec1ae8df47447d0b4e74,
     type: 3}
   damage: 3
 --- !u!50 &5528655750973477066

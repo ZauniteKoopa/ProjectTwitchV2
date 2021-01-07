@@ -62,8 +62,6 @@ public class TestEnemy : AbstractEnemy
     //Attacking method
     protected override IEnumerator Attack(Transform tgt)
     {
-        Debug.Log("ENEMY ATTACK");
-
         //Wait for delay
         yield return new WaitForSeconds(0.5f);
 
