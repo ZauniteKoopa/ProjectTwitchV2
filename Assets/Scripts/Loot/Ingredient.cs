@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ingredient
 {
     //Array with booleans to be used, in enum order
-    public enum StatType {Potency, Poison, Reactivity, Stickiness};
+    public enum StatType {Potency, Poison, Reactivity, Stickiness, None};
     public enum IngredientType {Puffcap, MutatedHeart, ShimmerOil, WhumpFeces, SewerFlower, RustedSteel, RottenBlood, ChemtechFuel}
 
     public IngredientType type;

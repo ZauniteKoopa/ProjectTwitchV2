@@ -16,6 +16,23 @@ public class VialIcon : AbilityIcon
     //Method to set up poison vial
     public void SetUpVial(PoisonVial pv)
     {
+        SetUpVial(pv, true);
+    }
+
+    //Method to set up vial with disabled or enabled in mind
+    public void SetUpVial(PoisonVial pv, bool enabled)
+    {
+        //Enable or disable
+        if (enabled)
+        {
+            ShowEnabled();
+        }
+        else
+        {
+            ShowDisabled();
+        }
+
+        //Set ammo and vial
         vial = pv;
 
         if (pv == null)
@@ -25,7 +42,6 @@ public class VialIcon : AbilityIcon
         }
         else
         {
-            ShowEnabled();
             vialDisplay.color = pv.GetColor();
             ammoDisplay.text = "" + pv.GetAmmo();
         }

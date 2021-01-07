@@ -44,7 +44,7 @@ public class EntityStatus : MonoBehaviour
     private const int MAX_TICKS = 6;
     private const float TICK_TIME = 1.0f;
     private PoisonVial poison = null;
-    private const float GREATER_DECAY_MODIFIER = 1.25f;
+    private const float GREATER_DECAY_MODIFIER = 2.0f;
 
     //Events
     public UnityEvent onDeathEvent;

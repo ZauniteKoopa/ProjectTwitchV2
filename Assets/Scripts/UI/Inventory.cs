@@ -46,6 +46,10 @@ public class Inventory : MonoBehaviour
     private TMP_Text stickinessText = null;
     [SerializeField]
     private TMP_Text sideEffectName = null;
+    [SerializeField]
+    private Color specializedColor = Color.black;
+    [SerializeField]
+    private Color basicColor = Color.black;
 
     //Ingredient inventory to manage
     Dictionary<Ingredient, int> ingredientInv;
@@ -65,6 +69,8 @@ public class Inventory : MonoBehaviour
     private CraftIngredientSlot[] craftSlots = null;
     [SerializeField]
     private CraftVialSlot craftVialSlot = null;
+    [SerializeField]
+    private TMP_Text craftingWarning = null;
 
     // Awake is called to initialize some variables
     void Awake()
@@ -82,6 +88,8 @@ public class Inventory : MonoBehaviour
 
         for (int i = 0; i < craftSlots.Length; i++)
             craftSlots[i].OnIngredientSelect.AddListener(UpdateIngredientInfo);
+
+        craftVialSlot.OnCraftVialSelect.AddListener(OnCraftVialSelect);
     }
 
 
@@ -283,23 +291,44 @@ public class Inventory : MonoBehaviour
     }
 
 
+    //Signal handler method for when CraftVial is selected
+    public void OnCraftVialSelect(PoisonVial vial)
+    {
+        if (vial == boltVial)
+            ShowBoltVial();
+        else if (vial == caskVial)
+            ShowCaskVial();
+        else if (vial == thirdVial)
+            ShowThirdVial();
+    }
+
+
     //Helper method to display vial information on inventory screen
     private void DisplayVialInfo(PoisonVial vial)
     {
         if (vial != null)
         {
             int[] vialInfo = vial.GetStats();
+            Ingredient.StatType s = vial.GetSpecialization();
 
-            potencyText.text = "Potency: " + vialInfo[0];
-            poisonText.text = "Poison: " + vialInfo[1];
-            reactivityText.text = "Reactivity: " + vialInfo[2];
-            stickinessText.text = "Stickiness: "+ vialInfo[3];
+            DisplayStat(potencyText, Ingredient.StatType.Potency, vialInfo[0], s);
+            DisplayStat(poisonText, Ingredient.StatType.Poison, vialInfo[1], s);
+            DisplayStat(reactivityText, Ingredient.StatType.Reactivity, vialInfo[2], s);
+            DisplayStat(stickinessText, Ingredient.StatType.Stickiness, vialInfo[3], s);
+
             sideEffectName.text = "Side Effect - " + vial.GetSideEffectName() + ":";
         }
         else
         {
             ClearVialInfo();
         }
+    }
+
+    //Private helper method for DisplayVialInfo to set texts for stats
+    private void DisplayStat(TMP_Text display, Ingredient.StatType type, int typeValue, Ingredient.StatType specialization)
+    {
+        display.text = type.ToString() + ": " + typeValue;
+        display.color = (type == specialization) ? specializedColor : basicColor;
     }
 
 
@@ -324,6 +353,7 @@ public class Inventory : MonoBehaviour
         }
 
         craftVialSlot.Reset();
+        craftingWarning.gameObject.SetActive(false);
     }
 
     //Method to actually craft using the materials in the crafting section
@@ -387,15 +417,22 @@ public class Inventory : MonoBehaviour
             }
             else
             {
-                Debug.Log("NO INGREDIENTS DETECTED");
+                DisplayCraftWarning("NO INGREDIENTS DETECTED");
             }
         }
         else
         {
-            Debug.Log("MUST SELECT POISON TO REPLACE IT OR PUT POISON IN CRAFT SLOT TO UPGRADE");
+            DisplayCraftWarning("NO VIAL OR SLOT SELECTED TO UPGRADE OR FILL");
         }
     }
 
+
+    //Helper method to display craft warning 
+    public void DisplayCraftWarning(string warning)
+    {
+        craftingWarning.gameObject.SetActive(true);
+        craftingWarning.text = warning;
+    }
 
     //Helper method to update vial information in the UI
     private void UpdateVialDisplayInfo(VialIcon icon, PoisonVial newVial)

@@ -21,17 +21,17 @@ public class PoisonVial
 
     //Constants for damage/potency
     private const float BASE_DAMAGE = 1.5f;
-    private const float DMG_GROWTH = 0.5f;
+    private const float DMG_GROWTH = 1f;
 
     //constants for poison
     private const float BASE_POISON = 0f;
-    private const float POISON_GROWTH = 0.1f;
+    private const float POISON_GROWTH = 0.25f;
 
     //constants for reactivity
-    private const float BASE_CONTAMINATE_DMG = 2f;
-    private const float BASE_CON_GROWTH = 2f;
+    private const float BASE_CONTAMINATE_DMG = 1f;
+    private const float BASE_CON_GROWTH = 1.25f;
     private const float BASE_STACK_DMG = 1f;
-    private const float STACK_DMG_GROWTH = 0.75f;
+    private const float STACK_DMG_GROWTH = 0.5f;
 
     //constants for stickiness
     private const float BASE_SLOWNESS = 0.85f;
@@ -169,25 +169,25 @@ public class PoisonVial
         if (potency < MAX_STAT && s == Ingredient.StatType.Potency)
         {
             beforeStat = potency;
-            potency += bonus;
+            potency = Mathf.Min(potency + bonus, MAX_STAT);
             upgradedStat = potency;
         }
         else if (poison < MAX_STAT && s == Ingredient.StatType.Poison)
         {
             beforeStat = poison;
-            poison += bonus;
+            poison = Mathf.Min(poison + bonus, MAX_STAT);
             upgradedStat = poison;
         }
         else if (reactivity < MAX_STAT && s == Ingredient.StatType.Reactivity)
         {
             beforeStat = reactivity;
-            reactivity += bonus;
+            reactivity = Mathf.Min(reactivity + bonus, MAX_STAT);
             upgradedStat = reactivity;
         }
         else if (stickiness < MAX_STAT && s == Ingredient.StatType.Stickiness)
         {
             beforeStat = stickiness;
-            stickiness += bonus;
+            stickiness = Mathf.Min(stickiness + bonus, MAX_STAT);
             upgradedStat = stickiness;
         }
 
@@ -332,5 +332,17 @@ public class PoisonVial
             lvl = stickiness;
 
         return lvl - 2;
+    }
+
+    //Get vial side effect specialization
+    public Ingredient.StatType GetSpecialization()
+    {
+        if (sideEffect == SideEffect.NONE)
+            return Ingredient.StatType.None;
+
+        int effectType = (int)sideEffect - 1;
+        effectType /= EFFECTS_PER_TYPE;
+
+        return (Ingredient.StatType)effectType;
     }
 }

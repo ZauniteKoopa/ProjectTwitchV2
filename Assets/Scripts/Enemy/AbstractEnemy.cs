@@ -173,7 +173,6 @@ public abstract class AbstractEnemy : MonoBehaviour
         return tgt.transform.position;
     }
 
-
     //When colliding with an obstacle, find a path around that obstacle
     private void OnCollisionEnter2D(Collision2D collision)
     {

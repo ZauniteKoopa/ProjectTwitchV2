@@ -28,10 +28,11 @@ public class PoisonBombBehav : MonoBehaviour
     //---------------
 
     //Acid Spill constant
-    private const float ACID_DAMAGE_PER_TICK = 1.4f;
+    private const float BASE_ACID_DAMAGE = 2.5f;
+    private const float ACID_DAMAGE_GROWTH = 2.5f;
 
     //Combustion Blast constants
-    private const float BASE_BLAST_DAMAGE = 4.0f;
+    private const float BASE_BLAST_DAMAGE = 2.5f;
 
 
     //Awake is called to set local variables
@@ -89,7 +90,7 @@ public class PoisonBombBehav : MonoBehaviour
                     //Calculate damage if need be
                     float initDmg = BASE_DAMAGE_PER_TICK;
                     if (bombVial.GetSideEffect() == PoisonVial.SideEffect.ACID_SPILL)
-                        initDmg += (bombVial.GetSideEffectLevel() * ACID_DAMAGE_PER_TICK);
+                        initDmg += ((bombVial.GetSideEffectLevel() * ACID_DAMAGE_GROWTH) + BASE_ACID_DAMAGE);
                     
                     enemy.GetComponent<EntityStatus>().PoisonDamageEntity(initDmg, 1, bombVial);
                 }

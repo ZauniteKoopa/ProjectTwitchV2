@@ -415,7 +415,7 @@ public class TwitchController : MonoBehaviour
 
         //Update UI
         boltIcon.SetUpVial(mainVial);
-        caskIcon.SetUpVial(mainVial);
+        caskIcon.SetUpVial(mainVial, canThrow);
         secIcon.SetUpVial(secVial);
 
         canSwap = false;
@@ -432,7 +432,7 @@ public class TwitchController : MonoBehaviour
 
         //update UI
         boltIcon.SetUpVial(mainVial);
-        caskIcon.SetUpVial(mainVial);
+        caskIcon.SetUpVial(mainVial, canThrow);
         thirdIcon.SetUpVial(thirdVial);
 
         canSwap = false;

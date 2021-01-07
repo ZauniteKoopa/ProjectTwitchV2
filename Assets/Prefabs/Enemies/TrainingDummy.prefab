@@ -477,7 +477,7 @@ MonoBehaviour:
   canvas: {fileID: 783715958143618211}
   projectile: {fileID: 8745216315445732907, guid: 69586cca61caec1ae8df47447d0b4e74,
     type: 3}
-  damage: 3
+  damage: 5
 --- !u!50 &5528655750973477066
 Rigidbody2D:
   serializedVersion: 4

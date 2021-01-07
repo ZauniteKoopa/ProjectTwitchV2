@@ -65,10 +65,12 @@ public class TestEnemy : AbstractEnemy
         //Wait for delay
         yield return new WaitForSeconds(0.5f);
 
-        //Make projectile
-        
-        Vector2 dirVect = new Vector2(tgt.position.x - transform.position.x, tgt.position.y - transform.position.y);
-        Transform curProj = Object.Instantiate(projectile, transform);
-        curProj.GetComponent<ProjectileBehav>().SetProj(dirVect, damage, false);
+        //Make projectile if enemy is still alive at this time
+        if (GetComponent<EntityStatus>().IsAlive())
+        {
+            Vector2 dirVect = new Vector2(tgt.position.x - transform.position.x, tgt.position.y - transform.position.y);
+            Transform curProj = Object.Instantiate(projectile, transform);
+            curProj.GetComponent<ProjectileBehav>().SetProj(dirVect, damage, false);
+        }
     }
 }

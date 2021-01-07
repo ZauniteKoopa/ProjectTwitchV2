@@ -1,16 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CraftVialSlot : MonoBehaviour, IDropHandler
+[System.Serializable]
+public class VialSelectDelegate : UnityEvent<PoisonVial> {}
+
+public class CraftVialSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
 {
     //Reference variable to update
     private PoisonVial vial = null;
 
     [SerializeField]
     private Image vialSlot = null;
+
+    //Event method for selection
+    public VialSelectDelegate OnCraftVialSelect;
+
+    //On awake, set up event
+    void Awake()
+    {
+        OnCraftVialSelect = new VialSelectDelegate();
+    }
 
     //Public method to set Craft Vial slot to this craft vial
     public void SetUpCraftVial(PoisonVial pv, VialIcon ui)
@@ -44,7 +57,15 @@ public class CraftVialSlot : MonoBehaviour, IDropHandler
             if (vialIcon != null && vialIcon.GetVial() != null)
             {
                 SetUpCraftVial(vialIcon.GetVial(), vialIcon);
+                OnCraftVialSelect.Invoke(vial);
             }
         }
+    }
+
+    //Event handler method when clicking on this image
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (vial != null)
+            OnCraftVialSelect.Invoke(vial);
     }
 }
