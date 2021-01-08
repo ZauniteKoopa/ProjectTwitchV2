@@ -22,6 +22,10 @@ public class PoisonBombBehav : MonoBehaviour
     private int curTick;
     private HashSet<Collider2D> effected;
 
+    //Audio
+    [SerializeField]
+    private AudioClip blastSound = null;
+
 
     //---------------
     // Side Effects Constants
@@ -79,7 +83,13 @@ public class PoisonBombBehav : MonoBehaviour
     //Method to apply tick damage to all those are effected
     void ApplyTickDamage()
     {
-        //Apply tick damage to all affected
+        List<EntityStatus> damaged = new List<EntityStatus>();
+        //Calculate damage if need be
+        float initDmg = BASE_DAMAGE_PER_TICK;
+        if (bombVial.GetSideEffect() == PoisonVial.SideEffect.ACID_SPILL)
+            initDmg += ((bombVial.GetSideEffectLevel() * ACID_DAMAGE_GROWTH) + BASE_ACID_DAMAGE);
+
+        //Put enemies in separate list to avoid iteration error
         foreach (Collider2D enemy in effected)
         {
             if (enemy != null)
@@ -87,15 +97,14 @@ public class PoisonBombBehav : MonoBehaviour
                 EntityStatus enemyStatus = enemy.GetComponent<EntityStatus>();
                 if (enemyStatus != null)
                 {
-                    //Calculate damage if need be
-                    float initDmg = BASE_DAMAGE_PER_TICK;
-                    if (bombVial.GetSideEffect() == PoisonVial.SideEffect.ACID_SPILL)
-                        initDmg += ((bombVial.GetSideEffectLevel() * ACID_DAMAGE_GROWTH) + BASE_ACID_DAMAGE);
-                    
-                    enemy.GetComponent<EntityStatus>().PoisonDamageEntity(initDmg, 1, bombVial);
+                    damaged.Add(enemyStatus);
                 }
             }
         }
+
+        //Iterate through list to actually damage enemy
+        for (int i = 0; i < damaged.Count; i++)
+            damaged[i].WeakPoisonDamageEntity(initDmg, 1, bombVial);
 
         //Increment curTick and check if object ready for destroy
         curTick++;
@@ -131,7 +140,23 @@ public class PoisonBombBehav : MonoBehaviour
             damaged[i].GetComponent<EntityStatus>().PoisonDamageEntity(dmg, numStacks, bombVial);
         }
 
+        StartCoroutine(ExplodeFog());
+    }
+
+    //IEnumerator sequence to destroy fog by explosion
+    private IEnumerator ExplodeFog()
+    {
+        //Disable enemy
         CancelInvoke();
+        GetComponent<SpriteRenderer>().enabled = false;
+
+        //Play audio
+        AudioSource audio = GetComponent<AudioSource>();
+        audio.clip = blastSound;
+        audio.Play();
+
+        yield return new WaitForSeconds(0.65f);
+
         Destroy(gameObject);
     }
 

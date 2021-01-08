@@ -31,6 +31,11 @@ public class EntityStatus : MonoBehaviour
     [SerializeField]
     private Color normalColor = Color.black;
 
+    [Header("Audio")]
+    [SerializeField]
+    private AudioClip deathSound = null;
+    private AudioSource audioFX;
+
     //Management variables
     private float speedModifier;
     private float curHealth;
@@ -69,6 +74,8 @@ public class EntityStatus : MonoBehaviour
         totalTicks = 0;
         onDeathEvent = new UnityEvent();
         contaminateEffect = PoisonVial.SideEffect.NONE;
+
+        audioFX = GetComponent<AudioSource>();
     }
 
     // Method to call to damage this entity
@@ -263,6 +270,9 @@ public class EntityStatus : MonoBehaviour
     //Method to kill object when health is low
     IEnumerator Death()
     {
+        if (tag == "Player")
+            transform.position = new Vector3(27.5f, 0f, 0f);
+
         CancelInvoke();
         GetComponent<Collider2D>().enabled = false;
         GetComponent<SpriteRenderer>().enabled = false;
@@ -272,15 +282,18 @@ public class EntityStatus : MonoBehaviour
         if (aura != null)
             aura.DisableAura();
 
+        //Play audio clips
+        if (deathSound != null)
+        {
+            audioFX.clip = deathSound;
+            audioFX.Play();
+        }
+
         yield return new WaitForSeconds(1.0f);
 
         if (tag == "Enemy")
         {
             Destroy(gameObject);
-        }
-        else
-        {
-            Debug.Log("Player has died");
         }
     }
 

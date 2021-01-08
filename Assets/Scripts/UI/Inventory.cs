@@ -56,6 +56,7 @@ public class Inventory : MonoBehaviour
     [Header("Ingredient Inventory")]
     [SerializeField]
     private IngredientIcon[] ingredientIcons = null;
+    private int numIngTypes = 0;
 
     //Ingredient display information
     [SerializeField]
@@ -133,6 +134,8 @@ public class Inventory : MonoBehaviour
                 ingredientIcons[i].SetUpIcon(entry.Key, entry.Value);
                 i++;
             }
+
+            numIngTypes = ingredientInv.Count;
         }
         
         ClearIngredientInfo();
@@ -212,11 +215,13 @@ public class Inventory : MonoBehaviour
         //Clear out ingredient information
         if (ingredientInv != null)
         {
-            for(int i = 0; i < ingredientInv.Count; i++)
+            for(int i = 0; i < numIngTypes; i++)
             {
                 ingredientIcons[i].ClearIcon();
             }
         }
+
+        numIngTypes = 0;
 
         //Reset craft
         ResetCraft();
@@ -338,9 +343,17 @@ public class Inventory : MonoBehaviour
         displayVialIndex = DisplayVialEnum.None;
 
         potencyText.text = "Potency: 0";
+        potencyText.color = basicColor;
+
         poisonText.text = "Poison: 0";
+        poisonText.color = basicColor;
+
         reactivityText.text = "Reactivity: 0";
+        reactivityText.color = basicColor;
+
         stickinessText.text = "Stickiness: 0";
+        stickinessText.color = basicColor;
+
         sideEffectName.text = "Side Effect - ???:";
     }
 

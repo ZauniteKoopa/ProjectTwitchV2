@@ -7,11 +7,16 @@ public class ProjectileBehav : MonoBehaviour
     private float damage = 0.0f;
     private Vector2 speedVector = Vector2.zero;
     private string tgtTag = "";
+    private bool active = true;
 
     [SerializeField]
     private float projSpeed = 0.0f;
     [SerializeField]
     private float duration = 3.0f;
+
+    //On hit sound effect
+    [SerializeField]
+    AudioClip onHitSound = null;
 
     // Start is called before the first frame update
     void Start()
@@ -46,7 +51,7 @@ public class ProjectileBehav : MonoBehaviour
     //If collide with something, Destroy Yourself. If hit tgtTag, do damage to tgtTag
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.tag == "Wall" || collider.tag == tgtTag)
+        if (active && (collider.tag == "Wall" || collider.tag == tgtTag))
         {
             if (collider.tag == tgtTag)
             {
@@ -65,6 +70,32 @@ public class ProjectileBehav : MonoBehaviour
     {
         EntityStatus tgtStatus = collider.GetComponent<EntityStatus>();
         tgtStatus.DamageEntity(damage);
-        DestroyProjectile();
+        StartCoroutine(PlayOnHitSound(true));
     }
+
+    
+    //Method to play OnHit sound effect
+    protected IEnumerator PlayOnHitSound(bool dieAfter)
+    {
+        //If die after, disable
+        if (dieAfter)
+        {
+            active = false;
+            GetComponent<SpriteRenderer>().enabled = false;
+        }
+
+        //Play sound effect
+        if (onHitSound != null)
+        {
+            AudioSource audio = GetComponent<AudioSource>();
+            audio.clip = onHitSound;
+            audio.Play();
+
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        if (dieAfter)
+            DestroyProjectile();
+    }
+
 }

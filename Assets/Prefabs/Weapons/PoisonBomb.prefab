@@ -137,6 +137,7 @@ MonoBehaviour:
   tickDuration: 1
   initialTickDuration: 0.2
   maxTick: 5
+  blastSound: {fileID: 8300000, guid: fedc533c7a260376786fa7cc7dfb5382, type: 3}
 --- !u!82 &3114743228287919614
 AudioSource:
   m_ObjectHideFlags: 0
@@ -149,7 +150,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 09fe8817fad8829138e9bc8197c86029, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

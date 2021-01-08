@@ -14,6 +14,7 @@ public class PoisonVial
     private int reactivity;
     private int stickiness;
     private const int MAX_STAT = 5;
+    private const int MAX_AMMO = 60;
 
     //Ammo system
     private int ammo;
@@ -146,6 +147,8 @@ public class PoisonVial
 
             ammo += ingredients[i].GetAmmoOffered();
         }
+
+        ammo = Mathf.Min(ammo, MAX_AMMO);
 
         //If side effected detected, give a random side effect from the list
         if (potentialEffects != null && potentialEffects.Count > 0)

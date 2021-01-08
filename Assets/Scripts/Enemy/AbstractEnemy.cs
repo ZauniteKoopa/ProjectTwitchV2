@@ -100,7 +100,7 @@ public abstract class AbstractEnemy : MonoBehaviour
         {
             StartCoroutine(Confusion());
         }
-        else if (status.canMove)
+        else if (status.IsAlive() && status.canMove)
         {
             float moveSpeed = status.GetCurSpeed() * Time.fixedDeltaTime;
 

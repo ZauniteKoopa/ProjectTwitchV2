@@ -53,10 +53,12 @@ public class PoisonProjBehav : ProjectileBehav
                 dmgModifier = MIN_DMG_MODIFIER;
             else
                 dmgModifier -= REDUCTION_PER_HIT;
+            
+            StartCoroutine(PlayOnHitSound(false));
         }
         else
         {
-            DestroyProjectile();
+            StartCoroutine(PlayOnHitSound(true));
         }
     }
 
