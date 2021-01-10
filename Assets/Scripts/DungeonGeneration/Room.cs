@@ -26,7 +26,7 @@ public class Room : MonoBehaviour
     [SerializeField]
     private int minEnemies = 0;
     [SerializeField]
-    private Transform enemy = null;
+    private Transform[] enemies = null;
     [SerializeField]
     private RoomCollision spawnChecker = null;
     private int numEnemies;
@@ -53,6 +53,7 @@ public class Room : MonoBehaviour
         for (int i = 0; i < numEnemies; i++)
         {
             //Set up enemy and create patrol points
+            Transform enemy = enemies[Random.Range(0, enemies.Length)];
             Vector3 enemySize = enemy.localScale;
 
             int numPoints = enemy.GetComponent<AbstractEnemy>().GetNumPatrolPoints();

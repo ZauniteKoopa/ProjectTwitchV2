@@ -141,7 +141,7 @@ public class TwitchController : MonoBehaviour
 
         //Initialize poisonVial variables
         secVial = new PoisonVial(0, 2, 1, 2, Color.magenta, 30);
-        mainVial = new PoisonVial(3, 1, 2, 0, Color.yellow, 30, PoisonVial.SideEffect.PIERCING_SHOT);
+        mainVial = new PoisonVial(2, 1, 2, 0, Color.yellow, 30);
         thirdVial = null;
 
         reactiveBombs = new List<PoisonBombBehav>();
@@ -166,7 +166,7 @@ public class TwitchController : MonoBehaviour
             movement();
 
             //Primary attack
-            if (!fireTimerRunning && Input.GetButtonDown("Fire1"))
+            if (!fireTimerRunning && Input.GetButton("Fire1"))
                 primaryAttack();
 
             //Secondary attack

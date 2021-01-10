@@ -3677,9 +3677,12 @@ MonoBehaviour:
   - {fileID: 1879760697467434039}
   exit: {fileID: 0}
   willCameraSnap: 1
-  maxEnemies: 3
-  minEnemies: 1
-  enemy: {fileID: 4464128080512704785, guid: b93e366029e1d7d1aaafe708e867471d, type: 3}
+  maxEnemies: 4
+  minEnemies: 2
+  enemies:
+  - {fileID: 4464128080512704785, guid: b93e366029e1d7d1aaafe708e867471d, type: 3}
+  - {fileID: 4180922715996159294, guid: 4de8dc002b7b27143a4f6ceca9fed24a, type: 3}
+  - {fileID: 5574544641658675633, guid: 5e03a7a02080b392dbb1fd9255cbcd3f, type: 3}
   spawnChecker: {fileID: 7367689336644858851}
 --- !u!1001 &1049605301905622029
 PrefabInstance:

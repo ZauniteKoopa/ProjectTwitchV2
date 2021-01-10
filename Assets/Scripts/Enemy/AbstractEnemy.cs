@@ -23,8 +23,6 @@ public abstract class AbstractEnemy : MonoBehaviour
     private List<Waypoint> path;
     private int navIndex;
 
-    //Method 
-
     //Method to determine attack behavior
     [SerializeField]
     private float attackTimerDelay = 1f;
@@ -216,6 +214,7 @@ public abstract class AbstractEnemy : MonoBehaviour
     //Method to set target to player
     public void SetTgt(TwitchController player)
     {
+        attackTimer = Random.Range(0.0f, attackTimerDelay * 0.75f);
         tgt = player;
     }
 
