@@ -18,7 +18,7 @@ public class PoisonVial
 
     //Ammo system
     private int ammo;
-    private const int BEGIN_AMMO = 30;
+    private const int BEGIN_AMMO = 35;
 
     //Constants for damage/potency
     private const float BASE_DAMAGE = 1.5f;
@@ -73,6 +73,7 @@ public class PoisonVial
     private SideEffect sideEffect;
     private const int SIDE_EFFECT_REQ = 3;
     private const int EFFECTS_PER_TYPE = 3;
+    private bool upgradedToSideEffect = false;
 
     //Updates log kept for information purposes
     private int[] updateLog;
@@ -124,6 +125,8 @@ public class PoisonVial
     //Method to upgrade a single poison from a list of ingredients
     public void UpgradeVial(List<Ingredient> ingredients, int randomBonus)
     {
+        upgradedToSideEffect = false;
+
         //Clear UpgradeLog
         for(int i = 0; i < updateLog.Length; i++)
             updateLog[i] = 0;
@@ -155,6 +158,7 @@ public class PoisonVial
         {
             Ingredient.StatType sideEffectType = potentialEffects[Random.Range(0, potentialEffects.Count)];
             sideEffect = GiveSideEffect(sideEffectType);
+            upgradedToSideEffect = true;
         }
     }
 
@@ -283,6 +287,9 @@ public class PoisonVial
                 logInfo.Add(curStatInfo);
             }
         }
+
+        if (upgradedToSideEffect)
+            logInfo.Add(sideEffect.ToString());
 
         return logInfo;
     }

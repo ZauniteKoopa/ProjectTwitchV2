@@ -8,6 +8,8 @@ public class Room : MonoBehaviour
     //Variables concerning room openings: {N, E, S, W}
     [SerializeField]
     private GameObject[] roomOpenings = null;
+    [SerializeField]
+    private GameObject[] entranceBlockers = null;
     private List<GameObject> doors;
 
     //Variables concerning exit, if it has any
@@ -82,6 +84,11 @@ public class Room : MonoBehaviour
             curEnemy.GetComponent<AbstractEnemy>().SetPatrolPoints(points);
             curEnemy.GetComponent<EntityStatus>().onDeathEvent.AddListener(OnEnemyDeath);
         }
+
+        //Destroy all entrance blockers afterwards
+        for (int i = 0; i < entranceBlockers.Length; i++)
+            if (entranceBlockers[i] != null)
+                Destroy(entranceBlockers[i]);
     }
 
     //Method to enable openings given an array of booleans in NESW order

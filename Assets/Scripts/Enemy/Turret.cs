@@ -44,10 +44,13 @@ public class Turret : AbstractEnemy
 
         for (int i = 0; i < numBullets; i++)
         {
-            yield return new WaitForSeconds(fireRate);
-            Vector2 dirVect = new Vector2(tgt.position.x - transform.position.x, tgt.position.y - transform.position.y);
-            Transform curProj = Object.Instantiate(projectile, transform);
-            curProj.GetComponent<ProjectileBehav>().SetProj(dirVect, damage, false);
+            if (GetComponent<EntityStatus>().IsAlive())
+            {
+                yield return new WaitForSeconds(fireRate);
+                Vector2 dirVect = new Vector2(tgt.position.x - transform.position.x, tgt.position.y - transform.position.y);
+                Transform curProj = Object.Instantiate(projectile, transform);
+                curProj.GetComponent<ProjectileBehav>().SetProj(dirVect, damage, false);
+            }
         }
 
         indicator.gameObject.SetActive(false);

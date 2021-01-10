@@ -55,7 +55,7 @@ public class EntityStatus : MonoBehaviour
     public UnityEvent onDeathEvent;
 
     //Variables for side effects concerning contamination
-    private const float SIDE_EFFECT_DURATION = 3.5f;
+    private const float SIDE_EFFECT_DURATION = 3f;
     private const float SIDE_EFFECT_DMG_BUFF = 1.5f;
     private const float PARALYSIS_SPEED_REDUCTION = 0.1f;
     private const float DEATH_MARK_THRESHOLD = 0.4f;
@@ -318,10 +318,14 @@ public class EntityStatus : MonoBehaviour
         return speedModifier * baseSpeed;
     }
 
-    //Public method to affect speed
+    //Public method to affect speed - NON-BUFF
     public void ChangeSpeed(float speedFactor)
     {
         speedModifier *= speedFactor;
+
+        //duct tape solution to ensure that if speedModifier > 0, reset it to 1.0f
+        if (speedModifier > 1.0f)
+            speedModifier = 1.0f;
     }
 
     //Public accessor method to get current aamount of poison stacks

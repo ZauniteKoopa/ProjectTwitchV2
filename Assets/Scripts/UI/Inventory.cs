@@ -274,7 +274,7 @@ public class Inventory : MonoBehaviour
     //Signal handler method to handle ingredient selection to display info
     public void UpdateIngredientInfo(Ingredient ing)
     {
-        if (ing != null)
+        if (ing != null && ingredientInv.ContainsKey(ing))
         {
             ingredientName.text = "Ingredient - " + ing.GetName() + ":";
             List<string> upgrades = ing.GetUpgrades();
@@ -367,6 +367,7 @@ public class Inventory : MonoBehaviour
 
         craftVialSlot.Reset();
         craftingWarning.gameObject.SetActive(false);
+        ClearIngredientInfo();
     }
 
     //Method to actually craft using the materials in the crafting section

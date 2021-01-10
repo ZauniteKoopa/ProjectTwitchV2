@@ -22,7 +22,7 @@ public class PoisonProjBehav : ProjectileBehav
 
     //Spray and pray constants
     private const float SPRAY_CRIT_CHANCE = 0.4f;
-    private const float CRIT_DAMAGE_PERCENT = 3.0f;
+    private const float CRIT_DAMAGE_PERCENT = 2.0f;
     
 
     //Method to damage enemy

@@ -28,7 +28,7 @@ public class IngredientWorldObj : MonoBehaviour
     //Variables used for crafting
     [Header("Quick Crafting variables")]
     [SerializeField]
-    float maxCraftDuration = 5.0f;
+    float maxCraftDuration = 3.0f;
     [SerializeField]
     Image craftTimerUI = null;
     [SerializeField]

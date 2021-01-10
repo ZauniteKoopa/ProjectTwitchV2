@@ -436,7 +436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseHealth: 40
-  baseSpeed: 2.75
+  baseSpeed: 2.5
   healthRegen: 0.5
   canMove: 0
   aura: {fileID: 2400568530488900048}
