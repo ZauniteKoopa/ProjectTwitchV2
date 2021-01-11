@@ -29,7 +29,7 @@ public class DungeonGenerator : MonoBehaviour
     private Exit nextExit;
     
     //Room types to instance with
-    public enum RoomType {Enemy, Start, End, Treasure}
+    public enum RoomType {Enemy, Start, End, Treasure, Shop}
     [SerializeField]
     private Transform[] rooms = null;
     [SerializeField]
@@ -39,7 +39,11 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField]
     private Transform[] treasureRooms = null;
     [SerializeField]
+    private Transform shopRoom = null;
+    [SerializeField]
     private int treasureRarity = 7;
+    [SerializeField]
+    private int dungeonsPerShop = 5;
 
     //Constant variables for offset
     private const float VERTICAL_OFFSET = 12.0f;
@@ -53,11 +57,17 @@ public class DungeonGenerator : MonoBehaviour
     {
         //Set initial exit as next exit
         nextExit = initialEntry;
+        int shopDungeon = UnityEngine.Random.Range(0, Mathf.Min(numDungeons, dungeonsPerShop));
 
         for (int i = 0; i < numDungeons; i++)
         {
+            //Decide if this dungeon has a shop or not
+            bool hasShop = (i == shopDungeon);
+            if (hasShop)
+                shopDungeon += dungeonsPerShop;
+
             //Get initial blueprint of dungeon first and then make room from blueprint
-            BP_Vertex[,] blueprint = MakeBlueprint(rows, cols);
+            BP_Vertex[,] blueprint = MakeBlueprint(rows, cols, hasShop);
             MakeRooms(blueprint, i);
 
             //Increment originPos
@@ -68,7 +78,7 @@ public class DungeonGenerator : MonoBehaviour
 
     //Method to create blueprint of map to be made using Prim's Algorithm
     //  Pre: rows > 0, cols > 0
-    private BP_Vertex[,] MakeBlueprint(int rows, int cols)
+    private BP_Vertex[,] MakeBlueprint(int rows, int cols, bool hasShop)
     {
         //Set up entire grid
         BP_Vertex[,] blueprint = new BP_Vertex[rows, cols];
@@ -88,7 +98,7 @@ public class DungeonGenerator : MonoBehaviour
         ReaddEdges(blueprint, totalEdges - minEdges);
 
         //Assign room types in blueprint
-        AssignRoomTypes(blueprint);
+        AssignRoomTypes(blueprint, hasShop);
 
         return blueprint;
     }
@@ -184,7 +194,7 @@ public class DungeonGenerator : MonoBehaviour
     //Private helper method to assign room their own typing
     //  Blueprint must have bigger dimensions than 1x2 or 2x1 and all rooms are type "Enemy"
     //  TreasureRarity MUST have a bigger rarity than 1
-    private void AssignRoomTypes(BP_Vertex[,] blueprint)
+    private void AssignRoomTypes(BP_Vertex[,] blueprint, bool hasShop)
     {
         //Get numRows and numCols for reference
         int numRows = blueprint.GetLength(0);
@@ -210,16 +220,19 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
 
-        //Set treasure rooms based on rarity
+        //Set treasure rooms based on rarity. If has a shop, add it to count
         int maxTreasure = ((numRows * numCols) / treasureRarity) + 1;
         int numTreasure = UnityEngine.Random.Range(0, maxTreasure);
+        numTreasure += (hasShop) ? 1 : 0;
+        int shopNum = UnityEngine.Random.Range(1, numTreasure + 1);
+
         while(numTreasure > 0)
         {
             BP_Vertex room = blueprint[UnityEngine.Random.Range(0, numRows), UnityEngine.Random.Range(0, numCols)];
 
             if (room.roomType == RoomType.Enemy)
             {
-                room.roomType = RoomType.Treasure;
+                room.roomType = (hasShop && numTreasure == shopNum) ? RoomType.Shop : RoomType.Treasure;
                 numTreasure--;
             }
         }
@@ -257,6 +270,8 @@ public class DungeonGenerator : MonoBehaviour
                     curTemplate = endRoom;
                 else if (curType == RoomType.Treasure)
                     curTemplate = treasureRooms[UnityEngine.Random.Range(0, treasureRooms.Length)];
+                else if (curType == RoomType.Shop)
+                    curTemplate = shopRoom;
                 else
                     curTemplate = rooms[UnityEngine.Random.Range(0, rooms.Length)];
 

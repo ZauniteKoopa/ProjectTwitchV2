@@ -45,6 +45,58 @@ public class Room : MonoBehaviour
         doors = new List<GameObject>();
     }
 
+
+    //Method to activate room
+    public IEnumerator Activate(TwitchController twitch)
+    {
+        //if not activated previously, activate
+        if (!activated)
+        {
+            activated = true;
+            SetUpRoom(twitch);
+        }
+
+        //Camera snapping
+        if (willCameraSnap)
+        {
+            //Set up variables
+            float timer = 0f;
+            Camera mainCam = Camera.main;
+            mainCam.transform.parent = null;
+
+
+            Vector3 start = mainCam.transform.position;
+            Vector3 end = transform.position;
+            end.z = CAMERA_OFFSET;
+
+            while (timer < SNAP_TIME)
+            {
+                yield return new WaitForFixedUpdate();
+                timer += Time.fixedDeltaTime;
+                mainCam.transform.position = Vector3.Lerp(start, end, timer / SNAP_TIME);
+            }
+
+            mainCam.transform.position = end;
+        }
+    }
+
+    //Method to help set up room
+    protected virtual void SetUpRoom(TwitchController twitch)
+    {
+        //spawn and Activate all enemies
+        SpawnEnemies();
+
+        //Lock all doors
+        if (numEnemies > 0)
+        {
+            for (int i = 0; i < doors.Count; i++)
+                doors[i].SetActive(true);
+
+            player = twitch;
+            twitch.provoked = true;
+        }
+    }
+
     //Private method to instantiate enemies
     private void SpawnEnemies()
     {
@@ -113,52 +165,6 @@ public class Room : MonoBehaviour
     public Exit GetExit()
     {
         return exit;
-    }
-
-    //Method to activate room
-    public IEnumerator Activate(TwitchController twitch)
-    {
-        //if not activated previously, activate
-        if (!activated)
-        {
-            activated = true;
-
-            //spawn and Activate all enemies
-            SpawnEnemies();
-
-            //Lock all doors
-            if (numEnemies > 0)
-            {
-                for (int i = 0; i < doors.Count; i++)
-                    doors[i].SetActive(true);
-
-                player = twitch;
-                twitch.provoked = true;
-            }
-        }
-
-        //Camera snapping
-        if (willCameraSnap)
-        {
-            //Set up variables
-            float timer = 0f;
-            Camera mainCam = Camera.main;
-            mainCam.transform.parent = null;
-
-
-            Vector3 start = mainCam.transform.position;
-            Vector3 end = transform.position;
-            end.z = CAMERA_OFFSET;
-
-            while (timer < SNAP_TIME)
-            {
-                yield return new WaitForFixedUpdate();
-                timer += Time.fixedDeltaTime;
-                mainCam.transform.position = Vector3.Lerp(start, end, timer / SNAP_TIME);
-            }
-
-            mainCam.transform.position = end;
-        }
     }
 
     //Signal handler method when enemy has died

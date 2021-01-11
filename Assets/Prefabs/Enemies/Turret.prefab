@@ -815,9 +815,11 @@ MonoBehaviour:
   attackTimerDelay: 5
   isHostile: 1
   lootDropChance: 0.5
+  cogDropChance: 0.3
   loot:
   - {fileID: 2246876989593270844, guid: 0e9f2f7a1b7db8e4cb7f86090314e0c6, type: 3}
   - {fileID: 5214189503012270570, guid: f8ed9b60665319cbca78dc8c9f915e67, type: 3}
+  cog: {fileID: 2936727973780200726, guid: 1e28efe37393cf5c69a0d8bccbf5c39f, type: 3}
   canvas: {fileID: 942952560748466316}
   projectile: {fileID: 129548096930349944, guid: 70ef2264945803050889ea9e5f167033,
     type: 3}

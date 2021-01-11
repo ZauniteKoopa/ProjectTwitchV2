@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using TMPro;
 
 public class TwitchController : MonoBehaviour
 {
@@ -109,6 +110,11 @@ public class TwitchController : MonoBehaviour
     private Transform upgradePopup = null;
     [SerializeField]
     private Inventory inventory = null;
+    [SerializeField]
+    private TMP_Text cogsDisplay = null;
+
+    private int cogs = 0;
+    
 
     //Audio Source Management (Seperate class)
     [Header("Audio")]
@@ -553,6 +559,23 @@ public class TwitchController : MonoBehaviour
         caskIcon.SetUpVial(mainVial);
         secIcon.SetUpVial(secVial);
         thirdIcon.SetUpVial(thirdVial);
+    }
+
+
+    //Cog mutator method: can be positive or negative
+    public void AddCogs(int cogAmount)
+    {
+        cogs += cogAmount;
+        if (cogs >= 1000)
+            cogs = 999;
+        
+        cogsDisplay.text = "Cogs: " + cogs;
+    }
+
+    //Cog accessor method: tells you if you can afford price
+    public bool CanAfford(int price)
+    {
+        return cogs >= price;
     }
 
 

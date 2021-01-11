@@ -35,7 +35,11 @@ public abstract class AbstractEnemy : MonoBehaviour
     [SerializeField]
     private float lootDropChance = 0.5f;
     [SerializeField]
+    private float cogDropChance = 0.3f;
+    [SerializeField]
     private Transform[] loot = null;
+    [SerializeField]
+    private Transform cog = null;
 
     //List of things to disable
     [SerializeField]
@@ -229,12 +233,18 @@ public abstract class AbstractEnemy : MonoBehaviour
 
         //Check if the enemy actually drops loot
         float lootDrop = Random.Range(0f, 1f);
-
+        float cogChanceEnd = lootDropChance + cogDropChance;
+        
         if (lootDrop < lootDropChance)
         {
             int select = Random.Range(0, loot.Length);
             Transform chosenLoot = Object.Instantiate(loot[select], transform);
             chosenLoot.parent = null;
+        }
+        else if (lootDrop >= lootDropChance && lootDrop < cogChanceEnd)
+        {
+            Transform curCog = Object.Instantiate(cog, transform);
+            curCog.parent = null;
         }
     }
 
