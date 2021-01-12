@@ -277,7 +277,8 @@ public class DungeonGenerator : MonoBehaviour
 
                 //Instatiate object and edit properties. 
                 Transform curRoom = UnityEngine.Object.Instantiate(curTemplate, curRoomPos, Quaternion.identity);
-                bool flipped = (curType == RoomType.Enemy && UnityEngine.Random.Range(0, 2) == 0);
+                //bool flipped = (curType == RoomType.Enemy && UnityEngine.Random.Range(0, 2) == 0);
+                bool flipped = false;
                 if (flipped)
                     curRoom.Rotate(0f, 0f, 180f);
 
