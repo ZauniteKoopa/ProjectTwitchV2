@@ -33,6 +33,8 @@ public class IngredientWorldObj : MonoBehaviour
     Image craftTimerUI = null;
     [SerializeField]
     GameObject craftTimerBorder = null;
+    [SerializeField]
+    Transform popup = null;
     float craftTimer;
 
     //Ingredient
@@ -61,11 +63,11 @@ public class IngredientWorldObj : MonoBehaviour
         {
             //Quick craft during battle
             if (Input.GetButtonDown("BoltCraft"))
-                StartCoroutine(Craft("BoltCraft", player.provoked));
+                StartCoroutine(CheckCraft("BoltCraft", player.provoked));
             else if (Input.GetButtonDown("CaskCraft"))
-                StartCoroutine(Craft("CaskCraft", player.provoked));
+                StartCoroutine(CheckCraft("CaskCraft", player.provoked));
             else if (Input.GetButtonDown("ThirdCraft"))
-                StartCoroutine(Craft("ThirdCraft", player.provoked));
+                StartCoroutine(CheckCraft("ThirdCraft", player.provoked));
 
             //Collecting after battle
             if (Input.GetButtonDown("Contaminate") && !player.provoked)
@@ -76,10 +78,26 @@ public class IngredientWorldObj : MonoBehaviour
         }
     }
 
+    //IEnumerator that checks crafting before crafting
+    IEnumerator CheckCraft(string buttonInput, bool playerProvoked)
+    {
+        if (IsVialUpgradable(buttonInput))
+        {
+            yield return StartCoroutine(Craft(buttonInput, playerProvoked));
+        }
+        else
+        {
+            Transform curPopup = Object.Instantiate(popup, player.transform);
+            curPopup.GetComponent<TextPopup>().SetUpPopup("Vial not craftable");
+        }
+    }
+
     //IEnumerator used to update progress
     IEnumerator Craft(string buttonInput, bool playerProvoked)
     {
         //Disable player movement and set up charge
+        char buttonInputAbbrv = buttonInput[0];
+
         if (playerProvoked)
         {
             craftTimer = 0.0f;
@@ -105,11 +123,11 @@ public class IngredientWorldObj : MonoBehaviour
             List<Ingredient> ingredients = new List<Ingredient>();
             ingredients.Add(mainIngredient);
 
-            if (buttonInput == "BoltCraft")
+            if (buttonInputAbbrv == 'B')
                 player.UpgradePrimary(ingredients);
-            else if (buttonInput == "CaskCraft")
+            else if (buttonInputAbbrv == 'C')
                 player.UpgradeSec(ingredients);
-            else if (buttonInput == "ThirdCraft")
+            else if (buttonInputAbbrv == 'T')
                 player.UpgradeThird(ingredients);
 
             GetComponent<SpriteRenderer>().enabled = false;
@@ -118,6 +136,24 @@ public class IngredientWorldObj : MonoBehaviour
             yield return new WaitForSeconds(1.5f);
             Destroy(gameObject);
         }
+    }
+
+
+    //Private helper method to return whether or not it is upgradable or not
+    //  Pre: player != null
+    private bool IsVialUpgradable(string buttonInput)
+    {
+        char buttonInputAbbrv = buttonInput[0];
+        int vialIndex = -1;
+
+        if (buttonInputAbbrv == 'B')
+            vialIndex = 0;
+        else if (buttonInputAbbrv == 'C')
+            vialIndex = 1;
+        else if (buttonInputAbbrv == 'T')
+            vialIndex = 2;
+
+        return player.IsVialUpgradable(vialIndex);
     }
 
     //Method when player enters collision field

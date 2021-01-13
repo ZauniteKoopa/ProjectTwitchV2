@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
+using UnityEngine.UI;
 
 public class TwitchController : MonoBehaviour
 {
@@ -112,6 +113,8 @@ public class TwitchController : MonoBehaviour
     private Inventory inventory = null;
     [SerializeField]
     private TMP_Text cogsDisplay = null;
+    [SerializeField]
+    private Image vialEquippedDisplay = null;
 
     private int cogs = 0;
     
@@ -149,6 +152,7 @@ public class TwitchController : MonoBehaviour
         secVial = new PoisonVial(0, 2, 1, 2, Color.magenta, 40);
         mainVial = new PoisonVial(2, 1, 2, 0, Color.yellow, 40);
         thirdVial = null;
+        vialEquippedDisplay.color = mainVial.GetColor();
 
         reactiveBombs = new List<PoisonBombBehav>();
     }
@@ -353,6 +357,7 @@ public class TwitchController : MonoBehaviour
             caskIcon.ShowDisabled();
             boltIcon.ShowDisabled();
             mainVial = null;
+            vialEquippedDisplay.color = Color.black;
         }
     }
 
@@ -423,6 +428,7 @@ public class TwitchController : MonoBehaviour
         boltIcon.SetUpVial(mainVial);
         caskIcon.SetUpVial(mainVial, canThrow);
         secIcon.SetUpVial(secVial);
+        swapEquippedDisplay();
 
         canSwap = false;
         Invoke("refreshSwap", swapDelay);
@@ -440,9 +446,35 @@ public class TwitchController : MonoBehaviour
         boltIcon.SetUpVial(mainVial);
         caskIcon.SetUpVial(mainVial, canThrow);
         thirdIcon.SetUpVial(thirdVial);
+        swapEquippedDisplay();
 
         canSwap = false;
         Invoke("refreshSwap", swapDelay);
+    }
+
+
+    //Helper method to update vial display for equipped.
+    void swapEquippedDisplay()
+    {
+        string equippedPopup = "Equipped: ";
+
+        //Check if main vial is null
+        if (mainVial == null)
+        {
+            equippedPopup += "Nothing";
+            vialEquippedDisplay.color = Color.black;
+        }
+        else
+        {
+            //Get color and display the side effect this vial has. If none, print "???"
+            vialEquippedDisplay.color = mainVial.GetColor();
+            PoisonVial.SideEffect mainEffect = mainVial.GetSideEffect();
+
+            equippedPopup += (mainEffect == PoisonVial.SideEffect.NONE) ? "???" : mainEffect.ToString();
+        }
+
+        Transform curPopup = Object.Instantiate(upgradePopup, transform);
+        curPopup.GetComponent<TextPopup>().SetUpPopup(equippedPopup);
     }
 
 
@@ -463,6 +495,21 @@ public class TwitchController : MonoBehaviour
     {
         crafting = false;
         status.canMove = true;
+    }
+
+
+    //Accessor method to check if poison is valid
+    //  Pre: 0 = main, 1 = sec, 2 = third. If anything else, just return false
+    public bool IsVialUpgradable(int vialIndex)
+    {
+        if (vialIndex == 0)
+            return mainVial == null || mainVial.IsUpgradable();
+        else if (vialIndex == 1)
+            return secVial == null || secVial.IsUpgradable();
+        else if (vialIndex == 2)
+            return thirdVial == null || thirdVial.IsUpgradable();
+        else
+            return false;
     }
     
 

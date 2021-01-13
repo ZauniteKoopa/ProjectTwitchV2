@@ -16,6 +16,12 @@ public class Room : MonoBehaviour
     [SerializeField]
     private Exit exit = null;
 
+    //Variables concerning room rotation
+    [SerializeField]
+    private Transform rotator = null;
+    [SerializeField]
+    private Transform[] uprightObstacles = null;
+
     //Constant variables for camera snapping
     [SerializeField]
     private bool willCameraSnap = true;
@@ -174,6 +180,23 @@ public class Room : MonoBehaviour
 
         if (numEnemies <= 0)
             StartCoroutine(Deactivate());
+    }
+
+    //Method to rotate the room
+    //  Returns true if successful
+    public bool RotateRoom()
+    {
+        if (rotator == null)
+            return false;
+
+        //Rotate room. If there are upright obstacles, rotate them as well so they stay upright
+        rotator.Rotate(0f, 0f, 180f);
+        for (int i = 0; i < uprightObstacles.Length; i++)
+        {
+            uprightObstacles[i].Rotate(0f, 0f, 180f);
+        }
+
+        return true;
     }
 
     //IEnumerator to deactivate

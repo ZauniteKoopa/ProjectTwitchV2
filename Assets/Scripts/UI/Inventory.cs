@@ -45,6 +45,8 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private TMP_Text stickinessText = null;
     [SerializeField]
+    private TMP_Text craftableText = null;
+    [SerializeField]
     private TMP_Text sideEffectName = null;
     [SerializeField]
     private Color specializedColor = Color.black;
@@ -321,6 +323,9 @@ public class Inventory : MonoBehaviour
             DisplayStat(reactivityText, Ingredient.StatType.Reactivity, vialInfo[2], s);
             DisplayStat(stickinessText, Ingredient.StatType.Stickiness, vialInfo[3], s);
 
+            craftableText.text = "Upgradable?: ";
+            craftableText.text += (vial.IsUpgradable()) ? "Yes" : "No";
+
             sideEffectName.text = "Side Effect - " + vial.GetSideEffectName() + ":";
         }
         else
@@ -354,6 +359,7 @@ public class Inventory : MonoBehaviour
         stickinessText.text = "Stickiness: 0";
         stickinessText.color = basicColor;
 
+        craftableText.text = "Upgradable: No";
         sideEffectName.text = "Side Effect - ???:";
     }
 
@@ -376,7 +382,7 @@ public class Inventory : MonoBehaviour
         //Find what icon needs to be updated: if craftVial is null --> no icon was selected beforehand. Choose the next free one
         //If there are no free icons, you can't craft
         VialIcon updatedIcon = null;
-        if (craftVialSlot.GetVial() != null)                  //Updating a poison
+        if (craftVialSlot.GetVial() != null && craftVialSlot.GetVial().IsUpgradable())                  //Updating a poison
         {
             updatedIcon = (craftVialSlot.GetVial() == boltVial) ? boltIcon : updatedIcon;
             updatedIcon = (craftVialSlot.GetVial() == caskVial) ? caskIcon : updatedIcon;
@@ -436,7 +442,7 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            DisplayCraftWarning("NO VIAL OR SLOT SELECTED TO UPGRADE OR FILL");
+            DisplayCraftWarning("NO CRAFTABLE VIAL OR SLOT SELECTED TO UPGRADE OR FILL");
         }
     }
 

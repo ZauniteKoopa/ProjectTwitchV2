@@ -13,7 +13,9 @@ public class PoisonVial
     private int poison;
     private int reactivity;
     private int stickiness;
+    private int totalStat;
     private const int MAX_STAT = 5;
+    private const int TOTAL_STAT_LIMIT = 12;
     private const int MAX_AMMO = 60;
 
     //Ammo system
@@ -86,6 +88,8 @@ public class PoisonVial
         poison = poi;
         reactivity = r;
         stickiness = s;
+        totalStat = pot + poi + r + s;
+
         poisonColor = c;
         ammo = initialAmmo;
         sideEffect = SideEffect.NONE;
@@ -100,6 +104,8 @@ public class PoisonVial
         poison = poi;
         reactivity = r;
         stickiness = s;
+        totalStat = pot + poi + r + s;
+
         poisonColor = c;
         ammo = initialAmmo;
         sideEffect = effect;
@@ -116,6 +122,8 @@ public class PoisonVial
         poison = 0;
         reactivity = 0;
         stickiness = 0;
+        totalStat = 0;
+
         poisonColor = new Color(Random.Range(0.2f, 1f), Random.Range(0.2f, 1f), Random.Range(0.2f, 1f), 1f);
 
         updateLog = new int[4];
@@ -198,8 +206,9 @@ public class PoisonVial
             upgradedStat = stickiness;
         }
 
-        //record in log
+        //record in log and get total stats
         updateLog[(int)s] += bonus;
+        totalStat += (upgradedStat - beforeStat);
         return upgradedStat >= SIDE_EFFECT_REQ && beforeStat < SIDE_EFFECT_REQ;
     }
 
@@ -354,5 +363,12 @@ public class PoisonVial
         effectType /= EFFECTS_PER_TYPE;
 
         return (Ingredient.StatType)effectType;
+    }
+
+
+    //Method to check if this vial is upgradable or not
+    public bool IsUpgradable()
+    {
+        return totalStat < TOTAL_STAT_LIMIT;
     }
 }
