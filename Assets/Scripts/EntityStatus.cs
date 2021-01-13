@@ -154,6 +154,8 @@ public class EntityStatus : MonoBehaviour
         else
         {
             PoisonDamageEntity(initDmg, initStacks, null);
+            if (aura != null && curPoisonStacks >= AURA_REQ)
+                aura.EnableAura(poison);
         }
     }
 
@@ -186,7 +188,7 @@ public class EntityStatus : MonoBehaviour
         dmg *= (poison.GetSideEffect() == PoisonVial.SideEffect.GREATER_DECAY) ? GREATER_DECAY_MODIFIER : 1.0f;
         curHealth -= (poison.GetPoisonDmg() * curPoisonStacks);
 
-        if (totalTicks % 3 == 0 && aura != null)
+        if (totalTicks % 2 == 0 && aura != null)
             aura.AuraPoisonTick();
         
         //Decide what to do next depending on health and tick timer

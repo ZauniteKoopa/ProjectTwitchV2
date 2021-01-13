@@ -1,0 +1,21 @@
+
+Bolts pierces through enemies, dealing damage to every enemy in the path. Damage will be reduced based on how many enemies hit
+Thrown cask becomes acidic, dealing significant amounts of damage for every tick within the fog
+Bolts have a 40% chance to crit. Critical damage deals double damage to enemies hit
+Bolts will do more damage the more infected an enemy is
+When enemies have at least 3 stacks, will emit a poison fog, infecting those around them every 2 ticks. Poison will not override if enemy is already infection.
+Enemies will decay faster under the influence of this poison and any poisonous emitted from your cask
+Upon contamination, enemies will explode if they have at least 3 stacks, infecting those around them with half of their stacks.
+Upon contamination, cask fog will explode, dealing damage and further infecting those caught in it. This explosion occurs before contamination and the fog will disappear afterwards
+Upon contamination, all enemies under 40% health will die. If enemies do not die from contamination, enemies will receive 1.5x damage for 3 seconds
+Bolts explode on impact, leaving a small brief slime puddle that deals damage and slow everyone caught in it
+When an enemy has been infected with at least 3 stacks, they leak a sticky substance around them, slowing those who are caught in it
+Upon contamination with this poison, enemies will be slowed heavily and receive 1.5x more damage for 3 seconds
+
+
+
+
+
+
+
+

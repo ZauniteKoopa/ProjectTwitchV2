@@ -49,9 +49,14 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private TMP_Text sideEffectName = null;
     [SerializeField]
+    private TMP_Text sideEffectDescription = null;
+    [SerializeField]
+    private TextAsset sideEffectInfo = null;
+    [SerializeField]
     private Color specializedColor = Color.black;
     [SerializeField]
     private Color basicColor = Color.black;
+    private string[] effectsDescriptions;
 
     //Ingredient inventory to manage
     Dictionary<Ingredient, int> ingredientInv;
@@ -81,6 +86,11 @@ public class Inventory : MonoBehaviour
         curHighlight = null;
         active = false;
         displayVialIndex = DisplayVialEnum.None;
+
+        if (sideEffectInfo != null)
+        {
+            effectsDescriptions = (sideEffectInfo.text.Split('\n'));
+        }
     }
 
     //On start listen to all icons
@@ -327,6 +337,11 @@ public class Inventory : MonoBehaviour
             craftableText.text += (vial.IsUpgradable()) ? "Yes" : "No";
 
             sideEffectName.text = "Side Effect - " + vial.GetSideEffectName() + ":";
+
+            if (sideEffectInfo != null)
+            {
+                sideEffectDescription.text = effectsDescriptions[(int)vial.GetSideEffect()];
+            }
         }
         else
         {
@@ -361,6 +376,7 @@ public class Inventory : MonoBehaviour
 
         craftableText.text = "Upgradable: No";
         sideEffectName.text = "Side Effect - ???:";
+        sideEffectDescription.text = "";
     }
 
     // method to reset all crafting
@@ -388,7 +404,7 @@ public class Inventory : MonoBehaviour
             updatedIcon = (craftVialSlot.GetVial() == caskVial) ? caskIcon : updatedIcon;
             updatedIcon = (craftVialSlot.GetVial() == thirdVial) ? thirdIcon : updatedIcon;
         }
-        else                                                  //Replacing a poison
+        else if (craftVialSlot.GetVial() == null)                                                 //Replacing a poison
         {
             updatedIcon = (displayVialIndex == DisplayVialEnum.Primary) ? boltIcon : updatedIcon;
             updatedIcon = (displayVialIndex == DisplayVialEnum.Secondary) ? caskIcon : updatedIcon;

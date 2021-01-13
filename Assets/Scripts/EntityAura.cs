@@ -180,7 +180,6 @@ public class EntityAura : MonoBehaviour
             for (int i = 0; i < damaged.Count; i++)
             {
                 float dmg = effectLevel * NOXIOUS_DAMAGE;
-                Debug.Log(dmg);
                 damaged[i].WeakPoisonDamageEntity(effectLevel * NOXIOUS_DAMAGE, numStacks / 2, poison);
             }
         }
