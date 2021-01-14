@@ -44,7 +44,7 @@ public class Turret : AbstractEnemy
 
         for (int i = 0; i < numBullets; i++)
         {
-            if (GetComponent<EntityStatus>().IsAlive())
+            if (GetComponent<EntityStatus>().IsAlive() && TgtVisible())
             {
                 yield return new WaitForSeconds(fireRate);
                 Vector2 dirVect = new Vector2(tgt.position.x - transform.position.x, tgt.position.y - transform.position.y);

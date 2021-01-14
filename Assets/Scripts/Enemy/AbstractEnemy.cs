@@ -248,6 +248,13 @@ public abstract class AbstractEnemy : MonoBehaviour
         }
     }
 
+
+    //Method to check if target is visible
+    protected bool TgtVisible()
+    {
+        return tgt.IsVisible(GetComponent<Collider2D>());
+    }
+
     
     //Accessor method to maximum patrol points for this enemy
     public int GetNumPatrolPoints()
