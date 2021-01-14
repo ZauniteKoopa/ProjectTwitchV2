@@ -15,12 +15,12 @@ public class PoisonVial
     private int stickiness;
     private int totalStat;
     private const int MAX_STAT = 5;
-    private const int TOTAL_STAT_LIMIT = 12;
+    private const int TOTAL_STAT_LIMIT = 10;
     private const int MAX_AMMO = 60;
 
     //Ammo system
     private int ammo;
-    private const int BEGIN_AMMO = 35;
+    private const int BEGIN_AMMO = 30;
 
     //Constants for damage/potency
     private const float BASE_DAMAGE = 1.5f;
@@ -31,10 +31,10 @@ public class PoisonVial
     private const float POISON_GROWTH = 0.25f;
 
     //constants for reactivity
-    private const float BASE_CONTAMINATE_DMG = 1f;
+    private const float BASE_CONTAMINATE_DMG = 5f;
     private const float BASE_CON_GROWTH = 1.25f;
     private const float BASE_STACK_DMG = 1f;
-    private const float STACK_DMG_GROWTH = 0.5f;
+    private const float STACK_DMG_GROWTH = 0.75f;
 
     //constants for stickiness
     private const float BASE_SLOWNESS = 0.85f;
