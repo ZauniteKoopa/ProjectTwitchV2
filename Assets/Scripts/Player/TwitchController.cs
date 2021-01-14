@@ -26,7 +26,6 @@ public class TwitchController : MonoBehaviour
     //Poison vials && swap management
     private PoisonVial mainVial = null;
     private PoisonVial secVial = null;
-    private PoisonVial thirdVial = null;
     private bool canSwap;
     private float swapDelay = 0.2f;
     private bool crafting;
@@ -106,15 +105,13 @@ public class TwitchController : MonoBehaviour
     [SerializeField]
     private VialIcon secIcon = null;
     [SerializeField]
-    private VialIcon thirdIcon = null;
-    [SerializeField]
-    private Transform upgradePopup = null;
-    [SerializeField]
     private Inventory inventory = null;
     [SerializeField]
     private TMP_Text cogsDisplay = null;
     [SerializeField]
     private Image vialEquippedDisplay = null;
+    [SerializeField]
+    private Transform upgradePopup = null;
 
     private int cogs = 0;
     
@@ -151,7 +148,6 @@ public class TwitchController : MonoBehaviour
         //Initialize poisonVial variables
         secVial = new PoisonVial(0, 2, 1, 2, Color.magenta, 40);
         mainVial = new PoisonVial(2, 1, 2, 0, Color.yellow, 40);
-        thirdVial = null;
         vialEquippedDisplay.color = mainVial.GetColor();
 
         reactiveBombs = new List<PoisonBombBehav>();
@@ -164,7 +160,6 @@ public class TwitchController : MonoBehaviour
         caskIcon.SetUpVial(mainVial);
         boltIcon.SetUpVial(mainVial);
         secIcon.SetUpVial(secVial);
-        thirdIcon.SetUpVial(thirdVial);
     }
 
 
@@ -215,12 +210,9 @@ public class TwitchController : MonoBehaviour
             if (canSwap && Input.GetButton("PrimarySwitch"))
                 swapSec();
 
-            if (canSwap && Input.GetButton("SecondarySwitch"))
-                swapThird();
-
             //Opening inventory
             if (!provoked && Input.GetButtonDown("Inventory"))
-                inventory.Open(mainVial, secVial, thirdVial);
+                inventory.Open(mainVial, secVial);
 
         }
     }
@@ -434,34 +426,13 @@ public class TwitchController : MonoBehaviour
         Invoke("refreshSwap", swapDelay);
     }
 
-    //method to swap between primary and third
-    void swapThird()
-    {
-        //swap
-        PoisonVial temp = mainVial;
-        mainVial = thirdVial;
-        thirdVial = temp;
-
-        //update UI
-        boltIcon.SetUpVial(mainVial);
-        caskIcon.SetUpVial(mainVial, canThrow);
-        thirdIcon.SetUpVial(thirdVial);
-        swapEquippedDisplay();
-
-        canSwap = false;
-        Invoke("refreshSwap", swapDelay);
-    }
-
 
     //Helper method to update vial display for equipped.
     void swapEquippedDisplay()
     {
-        string equippedPopup = "Equipped: ";
-
         //Check if main vial is null
         if (mainVial == null)
         {
-            equippedPopup += "Nothing";
             vialEquippedDisplay.color = Color.black;
         }
         else
@@ -469,12 +440,8 @@ public class TwitchController : MonoBehaviour
             //Get color and display the side effect this vial has. If none, print "???"
             vialEquippedDisplay.color = mainVial.GetColor();
             PoisonVial.SideEffect mainEffect = mainVial.GetSideEffect();
-
-            equippedPopup += (mainEffect == PoisonVial.SideEffect.NONE) ? "???" : mainEffect.ToString();
         }
 
-        Transform curPopup = Object.Instantiate(upgradePopup, transform);
-        curPopup.GetComponent<TextPopup>().SetUpPopup(equippedPopup);
     }
 
 
@@ -499,15 +466,13 @@ public class TwitchController : MonoBehaviour
 
 
     //Accessor method to check if poison is valid
-    //  Pre: 0 = main, 1 = sec, 2 = third. If anything else, just return false
+    //  Pre: 0 = main, 1 = sec. If anything else, just return false
     public bool IsVialUpgradable(int vialIndex)
     {
         if (vialIndex == 0)
             return mainVial == null || mainVial.IsUpgradable();
         else if (vialIndex == 1)
             return secVial == null || secVial.IsUpgradable();
-        else if (vialIndex == 2)
-            return thirdVial == null || thirdVial.IsUpgradable();
         else
             return false;
     }
@@ -554,25 +519,6 @@ public class TwitchController : MonoBehaviour
     }
 
 
-    public void UpgradeThird(List<Ingredient> ingredients)
-    {
-        int bonus = (provoked) ? 0 : 1;
-
-        if (thirdVial == null)
-        {
-            thirdVial = new PoisonVial(ingredients, bonus);
-            thirdIcon.SetUpVial(thirdVial);
-        }
-        else
-        {
-            thirdVial.UpgradeVial(ingredients, bonus);
-            thirdIcon.UpdateVial();
-        }
-
-        StartCoroutine(DisplayVialUpdates(thirdVial));
-    }
-
-
     //IEnumerator to display update popups after a cask update
     IEnumerator DisplayVialUpdates(PoisonVial vial)
     {
@@ -600,12 +546,10 @@ public class TwitchController : MonoBehaviour
         PoisonVial[] inventoryVials = inventory.GetVials();
         mainVial = inventoryVials[0];
         secVial = inventoryVials[1];
-        thirdVial = inventoryVials[2];
 
         boltIcon.SetUpVial(mainVial);
         caskIcon.SetUpVial(mainVial);
         secIcon.SetUpVial(secVial);
-        thirdIcon.SetUpVial(thirdVial);
     }
 
 

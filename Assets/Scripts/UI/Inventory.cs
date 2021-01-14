@@ -16,23 +16,18 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private VialIcon caskIcon = null;
     [SerializeField]
-    private VialIcon thirdIcon = null;
-    [SerializeField]
     private Image boltHighlight = null;
     [SerializeField]
     private Image caskHighlight = null;
-    [SerializeField]
-    private Image thirdHighlight = null;
     private Image curHighlight;
 
     //Index display
-    private enum DisplayVialEnum {None, Primary, Secondary, Third};
+    private enum DisplayVialEnum {None, Primary, Secondary};
     private DisplayVialEnum displayVialIndex;
 
     //variables to player's poison vial. MUST BE LOADED UPON OPEN
     private PoisonVial boltVial = null;
     private PoisonVial caskVial = null;
-    private PoisonVial thirdVial = null;
 
     //Variables to display information about poison vials
     [Header("Vial Information")]
@@ -124,18 +119,16 @@ public class Inventory : MonoBehaviour
 
 
     //Method to open inventory with specific vials
-    public void Open(PoisonVial bv, PoisonVial cv, PoisonVial tv)
+    public void Open(PoisonVial bv, PoisonVial cv)
     {
         //Set up poison vials
         boltVial = bv;
         caskVial = cv;
-        thirdVial = tv;
         displayVialIndex = DisplayVialEnum.None;
 
         //Set up UI icons
         boltIcon.SetUpVial(bv);
         caskIcon.SetUpVial(cv);
-        thirdIcon.SetUpVial(tv);
 
         //Update inventories if necessary
         if (ingredientInv != null)
@@ -183,13 +176,6 @@ public class Inventory : MonoBehaviour
                 else
                     craftVialSlot.Reset();
             }
-            else if (Input.GetButtonDown("ThirdCraft"))
-            {
-                if (craftVialSlot.GetVial() != thirdVial)
-                    craftVialSlot.SetUpCraftVial(thirdVial, thirdIcon);
-                else
-                    craftVialSlot.Reset();
-            }
             else if (Input.GetButtonDown("Inventory"))
             {
                 CallClose();
@@ -212,7 +198,6 @@ public class Inventory : MonoBehaviour
         //Set all vials to null
         boltVial = null;
         caskVial = null;
-        thirdVial = null;
 
         //Set highlights to null if any
         if (curHighlight != null)
@@ -270,19 +255,6 @@ public class Inventory : MonoBehaviour
     }
 
 
-    //method to show third vial
-    public void ShowThirdVial()
-    {
-        if (curHighlight != null)
-            curHighlight.enabled = false;
-        
-        thirdHighlight.enabled = true;
-        curHighlight = thirdHighlight;
-        DisplayVialInfo(thirdVial);
-        displayVialIndex = DisplayVialEnum.Third;
-    }
-
-
     //Signal handler method to handle ingredient selection to display info
     public void UpdateIngredientInfo(Ingredient ing)
     {
@@ -315,8 +287,6 @@ public class Inventory : MonoBehaviour
             ShowBoltVial();
         else if (vial == caskVial)
             ShowCaskVial();
-        else if (vial == thirdVial)
-            ShowThirdVial();
     }
 
 
@@ -402,13 +372,11 @@ public class Inventory : MonoBehaviour
         {
             updatedIcon = (craftVialSlot.GetVial() == boltVial) ? boltIcon : updatedIcon;
             updatedIcon = (craftVialSlot.GetVial() == caskVial) ? caskIcon : updatedIcon;
-            updatedIcon = (craftVialSlot.GetVial() == thirdVial) ? thirdIcon : updatedIcon;
         }
         else if (craftVialSlot.GetVial() == null)                                                 //Replacing a poison
         {
             updatedIcon = (displayVialIndex == DisplayVialEnum.Primary) ? boltIcon : updatedIcon;
             updatedIcon = (displayVialIndex == DisplayVialEnum.Secondary) ? caskIcon : updatedIcon;
-            updatedIcon = (displayVialIndex == DisplayVialEnum.Third) ? thirdIcon : updatedIcon;
         }
 
         //If slot was found, continue with the crafting process
@@ -485,22 +453,15 @@ public class Inventory : MonoBehaviour
             caskIcon.SetUpVial(caskVial);
             ShowCaskVial();
         }
-        else if(icon == thirdIcon)
-        {
-            thirdVial = newVial;
-            thirdIcon.SetUpVial(thirdVial);
-            ShowThirdVial();
-        }
     }
 
     //Method that returns an array of PoisonVials used to help update info in player
-    //  Post: returns an array in this order {Bolt, Cask, Third}
+    //  Post: returns an array in this order {Bolt, Cask}
     public PoisonVial[] GetVials()
     {
         PoisonVial[] vials = new PoisonVial[3];
         vials[0] = boltVial;
         vials[1] = caskVial;
-        vials[2] = thirdVial;
 
         return vials;
     }

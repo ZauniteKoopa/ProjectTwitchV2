@@ -66,8 +66,6 @@ public class IngredientWorldObj : MonoBehaviour
                 StartCoroutine(CheckCraft("BoltCraft", player.provoked));
             else if (Input.GetButtonDown("CaskCraft"))
                 StartCoroutine(CheckCraft("CaskCraft", player.provoked));
-            else if (Input.GetButtonDown("ThirdCraft"))
-                StartCoroutine(CheckCraft("ThirdCraft", player.provoked));
 
             //Collecting after battle
             if (Input.GetButtonDown("Contaminate") && !player.provoked)
@@ -127,8 +125,6 @@ public class IngredientWorldObj : MonoBehaviour
                 player.UpgradePrimary(ingredients);
             else if (buttonInputAbbrv == 'C')
                 player.UpgradeSec(ingredients);
-            else if (buttonInputAbbrv == 'T')
-                player.UpgradeThird(ingredients);
 
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<Collider2D>().enabled = false;

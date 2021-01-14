@@ -90,7 +90,8 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     {
         if (count == 0)
         {
-            icon.color = ingredient.GetColor();
+            if (ingredient != null)
+                icon.color = ingredient.GetColor();
         }
 
         count++;
