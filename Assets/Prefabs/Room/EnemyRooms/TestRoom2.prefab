@@ -3841,7 +3841,7 @@ PrefabInstance:
     - target: {fileID: 3400390964647268113, guid: a33d9b5a03829e307997d4b6d7b4afc7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3400390964647268113, guid: a33d9b5a03829e307997d4b6d7b4afc7,
         type: 3}
@@ -3896,7 +3896,7 @@ PrefabInstance:
     - target: {fileID: 3400390964647268113, guid: a33d9b5a03829e307997d4b6d7b4afc7,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5000001
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3400390964647268125, guid: a33d9b5a03829e307997d4b6d7b4afc7,
         type: 3}
@@ -4146,6 +4146,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3400390964647268113, guid: a33d9b5a03829e307997d4b6d7b4afc7,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3400390964647268125, guid: a33d9b5a03829e307997d4b6d7b4afc7,
         type: 3}
       propertyPath: m_Name
@@ -4175,7 +4180,7 @@ PrefabInstance:
     - target: {fileID: 3400390964647268113, guid: a33d9b5a03829e307997d4b6d7b4afc7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 3400390964647268113, guid: a33d9b5a03829e307997d4b6d7b4afc7,
         type: 3}
@@ -4230,7 +4235,7 @@ PrefabInstance:
     - target: {fileID: 3400390964647268113, guid: a33d9b5a03829e307997d4b6d7b4afc7,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5000001
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3400390964647268125, guid: a33d9b5a03829e307997d4b6d7b4afc7,
         type: 3}
@@ -4537,6 +4542,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3400390964647268113, guid: a33d9b5a03829e307997d4b6d7b4afc7,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3400390964647268125, guid: a33d9b5a03829e307997d4b6d7b4afc7,
         type: 3}

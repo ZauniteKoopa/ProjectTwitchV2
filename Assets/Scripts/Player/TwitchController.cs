@@ -481,7 +481,7 @@ public class TwitchController : MonoBehaviour
     //Method to upgrade poisons
     public void UpgradePrimary(List<Ingredient> ingredients)
     {
-        int bonus = (provoked) ? 0 : 1;
+        int bonus = 1;
 
         if (mainVial == null)
         {
@@ -502,7 +502,7 @@ public class TwitchController : MonoBehaviour
 
     public void UpgradeSec(List<Ingredient> ingredients)
     {
-        int bonus = (provoked) ? 0 : 1;
+        int bonus = 1;
 
         if (secVial == null)
         {
