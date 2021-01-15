@@ -7,8 +7,6 @@ public class Turret : AbstractEnemy
     //Projectile transform
     [SerializeField]
     Transform projectile = null;
-    [SerializeField]
-    Transform indicator = null;
 
     [SerializeField]
     float fireRate = 0.4f;
@@ -34,25 +32,30 @@ public class Turret : AbstractEnemy
     //  Returns true if reached destination
     protected override bool HostileMovement(float moveDelta, Vector3 tgtPos, bool onPath)
     {
+        Vector3 stareVector = tgtPos - transform.position;
+        stareVector.Normalize();
+        dir = stareVector;
+
         return false;
     }
 
     //Method called for choosing how to attack
     protected override IEnumerator Attack(Transform tgt)
     {
-        indicator.gameObject.SetActive(true);
+        animState = EnemyAnimState.ATTACK;
 
         for (int i = 0; i < numBullets; i++)
         {
             if (GetComponent<EntityStatus>().IsAlive() && TgtVisible())
             {
                 yield return new WaitForSeconds(fireRate);
+                dir = tgt.position - transform.position;
                 Vector2 dirVect = new Vector2(tgt.position.x - transform.position.x, tgt.position.y - transform.position.y);
                 Transform curProj = Object.Instantiate(projectile, transform);
                 curProj.GetComponent<ProjectileBehav>().SetProj(dirVect, damage, false);
             }
         }
 
-        indicator.gameObject.SetActive(false);
+        animState = EnemyAnimState.IDLE;
     }
 }

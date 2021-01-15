@@ -32,6 +32,7 @@ public class TestEnemy : AbstractEnemy
         Vector3 moveVector = tgtPos - transform.position;
         moveVector.Normalize();
         transform.Translate(moveVector * moveDelta);
+        dir = moveVector;
 
         //Check if patrol point has been reached
         float distance = Vector3.Distance(transform.position, tgtPos);
@@ -44,6 +45,7 @@ public class TestEnemy : AbstractEnemy
         //Move enemy to or away target according to hostile distance constants
         isMovingAway = Vector3.Distance(transform.position, GetTgtPosition()) < HOSTILE_MIN_DISTANCE;
         Vector3 moveVector = tgtPos - transform.position;
+        dir = moveVector;
         float distance = Vector3.Distance(transform.position, tgtPos);
 
         moveVector.Normalize();
@@ -63,6 +65,7 @@ public class TestEnemy : AbstractEnemy
     protected override IEnumerator Attack(Transform tgt)
     {
         //Wait for delay
+        animState = EnemyAnimState.ATTACK;
         yield return new WaitForSeconds(0.5f);
 
         //Make projectile if enemy is still alive at this time
@@ -72,5 +75,7 @@ public class TestEnemy : AbstractEnemy
             Transform curProj = Object.Instantiate(projectile, transform);
             curProj.GetComponent<ProjectileBehav>().SetProj(dirVect, damage, false);
         }
+
+        animState = EnemyAnimState.IDLE;
     }
 }

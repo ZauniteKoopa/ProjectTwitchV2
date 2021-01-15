@@ -1,0 +1,836 @@
+fileFormatVersion: 2
+guid: 430519fcc65a7fc778f001b01ba8158f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 900582745548374518
+    second: BeedrillSpriteSheet_0
+  - first:
+      213: 5030148981500291901
+    second: BeedrillSpriteSheet_1
+  - first:
+      213: 1391195557998641100
+    second: BeedrillSpriteSheet_2
+  - first:
+      213: -3490389307801467823
+    second: BeedrillSpriteSheet_3
+  - first:
+      213: 6337368347026483900
+    second: BeedrillSpriteSheet_4
+  - first:
+      213: -7119313615249113053
+    second: BeedrillSpriteSheet_5
+  - first:
+      213: -7138309711118877648
+    second: BeedrillSpriteSheet_6
+  - first:
+      213: -3579194683617020036
+    second: BeedrillSpriteSheet_7
+  - first:
+      213: 1233299709492241635
+    second: BeedrillSpriteSheet_8
+  - first:
+      213: 7853409021609832439
+    second: BeedrillSpriteSheet_9
+  - first:
+      213: 8380873132999447632
+    second: BeedrillSpriteSheet_10
+  - first:
+      213: 8968169413003722562
+    second: BeedrillSpriteSheet_11
+  - first:
+      213: -3418235439122627504
+    second: BeedrillSpriteSheet_12
+  - first:
+      213: 3429885528091715395
+    second: BeedrillSpriteSheet_13
+  - first:
+      213: -7697499874325388404
+    second: BeedrillSpriteSheet_14
+  - first:
+      213: 3069811720328550741
+    second: BeedrillSpriteSheet_15
+  - first:
+      213: -2047439129118565927
+    second: BeedrillSpriteSheet_16
+  - first:
+      213: 7016254655212652794
+    second: BeedrillSpriteSheet_17
+  - first:
+      213: 8069833641646453624
+    second: BeedrillSpriteSheet_18
+  - first:
+      213: 5619801531278047215
+    second: BeedrillSpriteSheet_19
+  - first:
+      213: -730471829281894934
+    second: BeedrillSpriteSheet_20
+  - first:
+      213: 1770852924198622535
+    second: BeedrillSpriteSheet_21
+  - first:
+      213: -3897640974271225469
+    second: BeedrillSpriteSheet_22
+  - first:
+      213: -176139289045427302
+    second: BeedrillSpriteSheet_23
+  - first:
+      213: 2050005503028972142
+    second: BeedrillSpriteSheet_24
+  - first:
+      213: -8624747357898644129
+    second: BeedrillSpriteSheet_25
+  - first:
+      213: 6004446540892911256
+    second: BeedrillSpriteSheet_26
+  - first:
+      213: -7243686452871446388
+    second: BeedrillSpriteSheet_27
+  - first:
+      213: 366088048755587812
+    second: BeedrillSpriteSheet_28
+  - first:
+      213: -2194903333517812581
+    second: BeedrillSpriteSheet_29
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 20
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_0
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 147
+        width: 24
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f1c14f4c338f7c00800000000000000
+      internalID: 900582745548374518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_1
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 147
+        width: 25
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3b2e9909ddaec540800000000000000
+      internalID: 5030148981500291901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_2
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 147
+        width: 25
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ccf3c973df48e4310800000000000000
+      internalID: 1391195557998641100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_3
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 96
+        width: 25
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1540cacda65af8fc0800000000000000
+      internalID: -3490389307801467823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_4
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 95
+        width: 25
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cba615f4fead2f750800000000000000
+      internalID: 6337368347026483900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_5
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 94
+        width: 25
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32089769cfd133d90800000000000000
+      internalID: -7119313615249113053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_6
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 64
+        width: 26
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03cb90c5321afec90800000000000000
+      internalID: -7138309711118877648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_7
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 64
+        width: 29
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c777a0d0665245ec0800000000000000
+      internalID: -3579194683617020036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_8
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 63
+        width: 27
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e4a0ed2d8f8d1110800000000000000
+      internalID: 1233299709492241635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_9
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 38
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ffe6e065e9ecfc60800000000000000
+      internalID: 7853409021609832439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_10
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 37
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0541c00f5b7de4470800000000000000
+      internalID: 8380873132999447632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_11
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 36
+        width: 28
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24f3c93d096557c70800000000000000
+      internalID: 8968169413003722562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_12
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 154
+        width: 26
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 054c17c8afcff80d0800000000000000
+      internalID: -3418235439122627504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_13
+      rect:
+        serializedVersion: 2
+        x: 281
+        y: 155
+        width: 30
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 347e82a27b6699f20800000000000000
+      internalID: 3429885528091715395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_14
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 155
+        width: 29
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c83a83cb5acfc2590800000000000000
+      internalID: -7697499874325388404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_15
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 126
+        width: 25
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 559938dbe792a9a20800000000000000
+      internalID: 3069811720328550741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_16
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 126
+        width: 32
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d917a9b5f80693e0800000000000000
+      internalID: -2047439129118565927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_17
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 126
+        width: 26
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af881a96f6ebe5160800000000000000
+      internalID: 7016254655212652794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_18
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 96
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87375d6f0fecdff60800000000000000
+      internalID: 8069833641646453624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_19
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 97
+        width: 27
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe7360cb7bb8dfd40800000000000000
+      internalID: 5619801531278047215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_20
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 97
+        width: 25
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aed0931ddb7dcd5f0800000000000000
+      internalID: -730471829281894934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_21
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 64
+        width: 25
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74512582a55539810800000000000000
+      internalID: 1770852924198622535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_22
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 63
+        width: 31
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3816e8a3f2cc8e9c0800000000000000
+      internalID: -3897640974271225469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_23
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 64
+        width: 30
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9b1575ff3a3e8df0800000000000000
+      internalID: -176139289045427302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_24
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 35
+        width: 23
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6a43a3c425137c10800000000000000
+      internalID: 2050005503028972142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_25
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 37
+        width: 30
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5566fe49fdbe4880800000000000000
+      internalID: -8624747357898644129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_26
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 36
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 896beb6e054145350800000000000000
+      internalID: 6004446540892911256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_27
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 122
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c80c940cc81497b90800000000000000
+      internalID: -7243686452871446388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_28
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 121
+        width: 23
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4eab796042b941500800000000000000
+      internalID: 366088048755587812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeedrillSpriteSheet_29
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 121
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9c99591c032a81e0800000000000000
+      internalID: -2194903333517812581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

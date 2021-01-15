@@ -49,6 +49,11 @@ public abstract class AbstractEnemy : MonoBehaviour
     private bool lostPlayer;
     private bool inAction;
 
+    //Animation state variables to help management
+    public enum EnemyAnimState {IDLE, MOVE, ATTACK};
+    protected Vector3 dir = Vector3.down;
+    protected EnemyAnimState animState = EnemyAnimState.IDLE;
+
     //On awake initialize variables
     private void Awake()
     {
@@ -267,6 +272,18 @@ public abstract class AbstractEnemy : MonoBehaviour
     {
         Debug.Assert(points != null && points.Length > 0);
         patrolPoints = points;
+    }
+
+
+    //Accessor method for animation manager
+    public Vector3 GetForwardVector()
+    {
+        return dir;
+    }
+
+    public int GetAnimState()
+    {
+        return (int)animState;
     }
 
 

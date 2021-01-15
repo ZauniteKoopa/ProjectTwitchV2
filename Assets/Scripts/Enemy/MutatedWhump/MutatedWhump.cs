@@ -7,7 +7,10 @@ public class MutatedWhump : AbstractEnemy
     [SerializeField]
     float damage = 4f;
 
+    //State variables for animation to reference
     bool stunned = false;
+
+    //Constants
     private const float STUNNED_DURATION = 2f;
     private const float ATTACKING_DISTANCE = 1.4f;
     private const float PASSIVE_REACHED_DISTANCE = 0.25f;
@@ -27,6 +30,9 @@ public class MutatedWhump : AbstractEnemy
             //Move enemy to point
             Vector3 moveVector = tgtPos - transform.position;
             moveVector.Normalize();
+            dir = moveVector;
+            animState = EnemyAnimState.MOVE;
+
             transform.Translate(moveVector * moveDelta);
 
             //Check if patrol point has been reached
@@ -47,6 +53,8 @@ public class MutatedWhump : AbstractEnemy
             Vector3 moveVector = tgtPos - transform.position;
             float distance = Vector3.Distance(transform.position, tgtPos);
             moveVector.Normalize();
+            dir = moveVector;
+            animState = EnemyAnimState.MOVE;
 
             transform.Translate(moveVector * moveDelta);
 
@@ -65,9 +73,17 @@ public class MutatedWhump : AbstractEnemy
         if (dist <= ATTACKING_DISTANCE)
         {
             stunned = true;
+            animState = EnemyAnimState.IDLE;
             tgt.GetComponent<EntityStatus>().DamageEntity(damage);
             yield return new WaitForSeconds(STUNNED_DURATION);
             stunned = false;
         }
+    }
+
+
+    //Accessor methods for animation manager
+    public bool IsStunned()
+    {
+        return stunned;
     }
 }

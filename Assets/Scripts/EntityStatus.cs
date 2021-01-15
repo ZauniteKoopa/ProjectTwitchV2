@@ -29,7 +29,9 @@ public class EntityStatus : MonoBehaviour
     [SerializeField]
     private TMP_Text stacksUI = null;
     [SerializeField]
-    private Color normalColor = Color.black;
+    private Image stacksBorder = null;
+    [SerializeField]
+    private Color normalColor = Color.white;
 
     [Header("Audio")]
     [SerializeField]
@@ -121,7 +123,7 @@ public class EntityStatus : MonoBehaviour
         if (vial != null)
         {
             poison = vial;
-            GetComponent<SpriteRenderer>().color = vial.GetColor();
+            stacksBorder.color = vial.GetColor();
 
             if (aura != null && curPoisonStacks >= AURA_REQ)
                 aura.EnableAura(vial);
@@ -208,7 +210,7 @@ public class EntityStatus : MonoBehaviour
                 curTick = 0;
                 totalTicks = 0;
                 poison = null;
-                GetComponent<SpriteRenderer>().color = normalColor;
+                stacksBorder.color = normalColor;
 
                 if (aura != null)
                     aura.DisableAura();

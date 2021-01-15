@@ -1,0 +1,596 @@
+fileFormatVersion: 2
+guid: dc763a2bd955299268d0ecb4db6ff78e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6501325089055820154
+    second: MagnezoneSpriteSheet_0
+  - first:
+      213: -6727792413564700379
+    second: MagnezoneSpriteSheet_1
+  - first:
+      213: 101517047326817814
+    second: MagnezoneSpriteSheet_2
+  - first:
+      213: -3535423780640690792
+    second: MagnezoneSpriteSheet_3
+  - first:
+      213: 3237564965620081297
+    second: MagnezoneSpriteSheet_4
+  - first:
+      213: -5185689341905026946
+    second: MagnezoneSpriteSheet_5
+  - first:
+      213: 6348582628586114220
+    second: MagnezoneSpriteSheet_6
+  - first:
+      213: 7996807958648155440
+    second: MagnezoneSpriteSheet_7
+  - first:
+      213: 3473725540831706513
+    second: MagnezoneSpriteSheet_8
+  - first:
+      213: 8298804365541161981
+    second: MagnezoneSpriteSheet_9
+  - first:
+      213: -2475064637818948210
+    second: MagnezoneSpriteSheet_10
+  - first:
+      213: 7089853623698076011
+    second: MagnezoneSpriteSheet_11
+  - first:
+      213: 8344689432563902245
+    second: MagnezoneSpriteSheet_12
+  - first:
+      213: 6573471126914197735
+    second: MagnezoneSpriteSheet_13
+  - first:
+      213: -2998414092408671271
+    second: MagnezoneSpriteSheet_14
+  - first:
+      213: -8067094922572056830
+    second: MagnezoneSpriteSheet_15
+  - first:
+      213: -7093403335204588353
+    second: MagnezoneSpriteSheet_16
+  - first:
+      213: -1300020175002988096
+    second: MagnezoneSpriteSheet_17
+  - first:
+      213: -210405809226446594
+    second: MagnezoneSpriteSheet_18
+  - first:
+      213: -721320227014626598
+    second: MagnezoneSpriteSheet_19
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 20
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 186
+        width: 40
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a79c18619b8593a50800000000000000
+      internalID: 6501325089055820154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_1
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 185
+        width: 33
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52978eaf17412a2a0800000000000000
+      internalID: -6727792413564700379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_2
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 137
+        width: 37
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61ebf887739a86100800000000000000
+      internalID: 101517047326817814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_3
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 95
+        width: 36
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89d61709dc6afeec0800000000000000
+      internalID: -3535423780640690792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_4
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 47
+        width: 36
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 192e801de242eec20800000000000000
+      internalID: 3237564965620081297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_5
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 264
+        width: 37
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e70c83cb40bb808b0800000000000000
+      internalID: -5185689341905026946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_6
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 264
+        width: 35
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cac4714b342ba1850800000000000000
+      internalID: 6348582628586114220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_7
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 265
+        width: 37
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03d6d30387e5afe60800000000000000
+      internalID: 7996807958648155440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_8
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 232
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19db97c89f6253030800000000000000
+      internalID: 3473725540831706513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_9
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 231
+        width: 34
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfbba8cf9964b2370800000000000000
+      internalID: 8298804365541161981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_10
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 232
+        width: 34
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e85bbaa43ddc6add0800000000000000
+      internalID: -2475064637818948210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_11
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 194
+        width: 32
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b613a0e9e48346260800000000000000
+      internalID: 7089853623698076011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_12
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 193
+        width: 33
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5276deca3da4ec370800000000000000
+      internalID: 8344689432563902245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_13
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 195
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e8e1058929a93b50800000000000000
+      internalID: 6573471126914197735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_14
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 120
+        width: 32
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d3b47ce44e7366d0800000000000000
+      internalID: -2998414092408671271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_15
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 119
+        width: 31
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2073cb2c8ebeb0090800000000000000
+      internalID: -8067094922572056830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_16
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 120
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb43f84cf3b2f8d90800000000000000
+      internalID: -7093403335204588353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_17
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 47
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c11b14e98665fde0800000000000000
+      internalID: -1300020175002988096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_18
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 47
+        width: 33
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef80162080d741df0800000000000000
+      internalID: -210405809226446594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MagnezoneSpriteSheet_19
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 49
+        width: 34
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad23d73431b5df5f0800000000000000
+      internalID: -721320227014626598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
