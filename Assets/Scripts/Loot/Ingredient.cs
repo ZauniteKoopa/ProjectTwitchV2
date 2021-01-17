@@ -121,14 +121,31 @@ public class Ingredient
     }
 
     //Method that returns a list of stats for poison to use when upgrading
-    public List<StatType> GetStatUpgrades()
+    //  Pre: int[] is an array of the vials stats in StatType enum order
+    public List<StatType> GetStatUpgrades(int[] vialStats)
     {
         List<StatType> upgrades = new List<StatType>();
+        HashSet<StatType> disabledTypes = new HashSet<StatType>();
         
         for(int i = 0; i < statsOffered; i++)
         {
-            int selectedIndex = Random.Range(0, availableTypes.Count);
-            upgrades.Add(availableTypes[selectedIndex]);
+            if (disabledTypes.Count < availableTypes.Count)
+            {
+                //Randomly choose a selected index
+                int selectedIndex = Random.Range(0, availableTypes.Count);
+                StatType selectedType = availableTypes[selectedIndex];
+
+                //If selectedIndex of vialStat is equal to max stat, go to next index
+                while (disabledTypes.Count < availableTypes.Count && vialStats[(int)selectedType] == PoisonVial.MAX_STAT)
+                {
+                    disabledTypes.Add(selectedType);
+                    selectedIndex = (selectedIndex + 1) % availableTypes.Count;
+                    selectedType = availableTypes[selectedIndex];
+                }
+
+                //Add that to list of upgrades
+                upgrades.Add(availableTypes[selectedIndex]);
+            }
         }
 
         return upgrades;

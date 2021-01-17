@@ -108,6 +108,7 @@ MonoBehaviour:
   maxCraftDuration: 1.5
   craftTimerUI: {fileID: 9051591175021837804}
   craftTimerBorder: {fileID: 9051591174711373431}
+  popup: {fileID: 8042739256895509070, guid: 3a90e3298f64a9c369274618cf346f06, type: 3}
 --- !u!58 &9051591174592059890
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -68,7 +68,7 @@ public class IngredientWorldObj : MonoBehaviour
                 StartCoroutine(CheckCraft("CaskCraft", player.provoked));
 
             //Collecting after battle
-            if (Input.GetButtonDown("Contaminate") && !player.provoked)
+            if (Input.GetButtonDown("Contaminate") && player != null && !player.provoked)
             {
                 player.AddToInventory(mainIngredient);
                 Destroy(gameObject);

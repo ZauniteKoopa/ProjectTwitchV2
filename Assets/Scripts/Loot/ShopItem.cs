@@ -18,6 +18,8 @@ public class ShopItem : AbstractInteractable
 
     [SerializeField]
     private float healthGain = 12.5f;
+    [SerializeField]
+    private bool canBeHealth = true;
     private int cost;
     private Ingredient ing;
 
@@ -25,7 +27,7 @@ public class ShopItem : AbstractInteractable
     // Start is called before the first frame update
     void Start()
     {
-        float select = Random.Range(0.0f, 1.0f);
+        float select = (canBeHealth) ? Random.Range(0.0f, 1.0f) : 0.0f;
 
         if (select < ingChance)
         {

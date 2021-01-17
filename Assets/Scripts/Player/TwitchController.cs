@@ -127,6 +127,12 @@ public class TwitchController : MonoBehaviour
     [SerializeField]
     private AudioClip contaminateFX = null;
 
+
+    //Variable to help manage animation
+    private enum TwitchAnimState {IDLE, MOVING, SHOOTING, CONTAMINATION, CASK};
+    private TwitchAnimState animState = TwitchAnimState.IDLE;
+    private Vector3 forward = Vector3.down;
+
     //Provoked flag
     public bool provoked;
 
@@ -185,25 +191,7 @@ public class TwitchController : MonoBehaviour
             //Contamination
             if (canCon && Input.GetButtonDown("Contaminate") && conManager.CanContaminate())
             {
-                //Activate reactive bombs
-                int i = reactiveBombs.Count - 1;
-                while (i >= 0 && reactiveBombs[i] != null)
-                {
-                    reactiveBombs[i].CombustionBlast();
-                    i--;
-                }
-                reactiveBombs.Clear();
-
-                //Contaminate
-                conManager.ContaminateAll();
-                canCon = false;
-                contaminateIcon.ShowDisabled();
-
-                //play sound fx
-                audioFX.clip = contaminateFX;
-                audioFX.Play();
-                
-                Invoke("refreshContaminate", conCD);
+                StartCoroutine(Contaminate());
             }
 
             //Swapping
@@ -230,7 +218,18 @@ public class TwitchController : MonoBehaviour
         speedModifier *= (Input.GetButton("Fire1")) ? attackMoveReduction : 1.0f;
 
         Vector3 dir = new Vector3(hDir, vDir, 0);
+
+
         dir.Normalize();
+        if (!Input.GetButton("Fire1") && dir.magnitude != 0f)
+        {
+            forward = dir;
+            animState = TwitchAnimState.MOVING;
+        }
+        else if (!Input.GetButton("Fire1") && dir.magnitude == 0f)
+        {
+            animState = TwitchAnimState.IDLE;
+        }
 
         transform.Translate(dir * status.GetCurSpeed() * Time.fixedDeltaTime * speedModifier);
     }
@@ -251,6 +250,8 @@ public class TwitchController : MonoBehaviour
             Vector3 mousePos = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0);
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
             Vector2 dirVect = new Vector2 (mousePos.x - transform.position.x, mousePos.y - transform.position.y);
+            forward = mousePos - transform.position;
+            animState = TwitchAnimState.SHOOTING;
 
             //make projectile
             bool usesPoison = checkVial(mainVial, boltCost);
@@ -282,6 +283,7 @@ public class TwitchController : MonoBehaviour
         }
         else
         {
+            animState = TwitchAnimState.IDLE;
             fireTimerRunning = false;
         }
     }
@@ -313,6 +315,8 @@ public class TwitchController : MonoBehaviour
 
         /* Execute action: play sound, disable movement for some time and throw cask */
         status.canMove = false;
+        forward = dirVector;
+        animState = TwitchAnimState.CASK;
         audioFX.clip = caskThrowFX;
         audioFX.Play();
 
@@ -388,6 +392,38 @@ public class TwitchController : MonoBehaviour
         }
 
         Invoke("refreshStealth", stealthCD);
+    }
+
+
+    //IEnumerator for contamination
+    IEnumerator Contaminate()
+    {
+        //Contaminate animation
+        canCon = false;
+        contaminateIcon.ShowDisabled();
+        animState = TwitchAnimState.CONTAMINATION;
+        Debug.Log("contaminate animation");
+        status.canMove = false;
+        yield return new WaitForSeconds(0.3f);
+        status.canMove = true;
+
+        //Activate reactive bombs
+        int i = reactiveBombs.Count - 1;
+        while (i >= 0 && reactiveBombs[i] != null)
+        {
+            reactiveBombs[i].CombustionBlast();
+            i--;
+        }
+        reactiveBombs.Clear();
+
+        //Contaminate
+        conManager.ContaminateAll();
+
+        //play sound fx
+        audioFX.clip = contaminateFX;
+        audioFX.Play();
+                
+        Invoke("refreshContaminate", conCD);
     }
 
 
@@ -607,5 +643,17 @@ public class TwitchController : MonoBehaviour
     {
         if (crafting)
             DisableCraftMode();
+    }
+
+
+    //accessor methods for animation manager
+    public int GetAnimState()
+    {
+        return (int)animState;
+    }
+
+    public Vector3 GetForwardVector()
+    {
+        return forward;
     }
 }

@@ -14,7 +14,7 @@ public class PoisonVial
     private int reactivity;
     private int stickiness;
     private int totalStat;
-    private const int MAX_STAT = 5;
+    public const int MAX_STAT = 5;
     private const int TOTAL_STAT_LIMIT = 10;
     private const int MAX_AMMO = 60;
 
@@ -28,11 +28,11 @@ public class PoisonVial
 
     //constants for poison
     private const float BASE_POISON = 0f;
-    private const float POISON_GROWTH = 0.25f;
+    private const float POISON_GROWTH = 0.2f;
 
     //constants for reactivity
-    private const float BASE_CONTAMINATE_DMG = 4f;
-    private const float BASE_CON_GROWTH = 1.5f;
+    private const float BASE_CONTAMINATE_DMG = 3f;
+    private const float BASE_CON_GROWTH = 1f;
     private const float BASE_STACK_DMG = 1f;
     private const float STACK_DMG_GROWTH = 0.5f;
 
@@ -139,7 +139,7 @@ public class PoisonVial
         for(int i = 0; i < updateLog.Length; i++)
             updateLog[i] = 0;
 
-        //Make a list for side effect generation if no stat effect found
+        //Make a list for side effect generation if no side effect found
         List<Ingredient.StatType> potentialEffects = null;
         if (sideEffect == SideEffect.NONE)
             potentialEffects = new List<Ingredient.StatType>();
@@ -147,7 +147,7 @@ public class PoisonVial
         //Upgrade vial 1 ingredient at a time. If side effect upgrade detected, add to potential effects
         for (int i = 0; i < ingredients.Count; i++)
         {
-            List<Ingredient.StatType> upgrades = ingredients[i].GetStatUpgrades();
+            List<Ingredient.StatType> upgrades = ingredients[i].GetStatUpgrades(GetStats());
             for (int upgrade = 0; upgrade < upgrades.Count; upgrade++)
             {
                 bool sideEffect = UpgradeStat(upgrades[upgrade], randomBonus);

@@ -3732,6 +3732,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShopItem (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 50367144209774609, guid: 239a10601d217ba43a8dbd1fa559d561,
+        type: 3}
+      propertyPath: canBeHealth
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 50367144209774611, guid: 239a10601d217ba43a8dbd1fa559d561,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3826,6 +3831,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ShopItem (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 50367144209774609, guid: 239a10601d217ba43a8dbd1fa559d561,
+        type: 3}
+      propertyPath: canBeHealth
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 50367144209774611, guid: 239a10601d217ba43a8dbd1fa559d561,
         type: 3}
