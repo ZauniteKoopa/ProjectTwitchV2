@@ -1,12 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class Ingredient
 {
     //Array with booleans to be used, in enum order
     public enum StatType {Potency, Poison, Reactivity, Stickiness, None};
-    public enum IngredientType {Puffcap, MutatedHeart, ShimmerOil, WhumpFeces, SewerFlower, RustedSteel, RottenBlood, ChemtechFuel}
+
+    public enum IngredientType 
+    {
+        [Description("Puffcap")]
+        Puffcap,
+        [Description("Mutated Heart")]
+        MutatedHeart,
+        [Description("Shimmer Oil")]
+        ShimmerOil,
+        [Description("Whump Feces")]
+        WhumpFeces,
+        [Description("Sewer Flower")]
+        SewerFlower,
+        [Description("Rusted Steel")]
+        RustedSteel,
+        [Description("Rotten Blood")]
+        RottenBlood,
+        [Description("Chemtech Fuel")]
+        ChemtechFuel
+    }
 
     public IngredientType type;
     private List<StatType> availableTypes;
@@ -183,7 +203,7 @@ public class Ingredient
     //Method to get string name
     public string GetName()
     {
-        return type.ToString();
+        return type.GetDescription();
     }
 
     //Method to get available types

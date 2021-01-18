@@ -23,7 +23,7 @@ public class PoisonVial
     private const int BEGIN_AMMO = 30;
 
     //Constants for damage/potency
-    private const float BASE_DAMAGE = 2.25f;
+    private const float BASE_DAMAGE = 2f;
     private const float DMG_GROWTH = 1f;
 
     //constants for poison
@@ -46,7 +46,7 @@ public class PoisonVial
     {
         [Description("???")]
         NONE,
-        [Description("Piercing Shot")]
+        [Description("Rat-ta-tat-tat")]
         PIERCING_SHOT,
         [Description("Acid Spill")]
         ACID_SPILL,
@@ -322,7 +322,7 @@ public class PoisonVial
     //Access side effect name (TO BE CHANGED)
     public string GetSideEffectName()
     {
-        return sideEffect.ToString();
+        return sideEffect.GetDescription();
     }
 
     //Access side effect enum
