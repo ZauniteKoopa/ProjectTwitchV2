@@ -274,10 +274,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 6
-  potency: 0
+  potency: 1
   poison: 1
   reactivity: 0
-  stickiness: 1
+  stickiness: 0
   statsOffered: 1
   ingColor: {r: 1, g: 0, b: 0, a: 1}
   maxCraftDuration: 1.5

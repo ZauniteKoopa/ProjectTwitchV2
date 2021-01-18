@@ -19,11 +19,15 @@ public class CraftIngredientSlot : MonoBehaviour, IDropHandler, IPointerDownHand
     //Event when dragged on
     public IngredientSelectDelegate OnIngredientSelect;
 
+    //Audio
+    private AudioSource audioFX;
+
     // Start is called before the first frame update
     void Awake()
     {
         ingredientIcon = null;
         OnIngredientSelect = new IngredientSelectDelegate();
+        audioFX = GetComponent<AudioSource>();
     }
 
     //Method to drop Ingredient Icon in this slot
@@ -34,6 +38,8 @@ public class CraftIngredientSlot : MonoBehaviour, IDropHandler, IPointerDownHand
             IngredientIcon ingIcon = eventData.pointerDrag.GetComponent<IngredientIcon>();
             if (ingIcon != null && ingIcon.GetIngredient() != null)
             {
+                audioFX.Play(0);
+
                 //if there's an ingredient icon already in here, give an ingredient back to that icon
                 if (ingredientIcon != null)
                 {

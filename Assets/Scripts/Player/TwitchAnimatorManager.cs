@@ -10,17 +10,27 @@ public class TwitchAnimatorManager : MonoBehaviour
     private SpriteRenderer sprite;
 
     // On awake set up reference variables
-    void Awake()
+    void Start()
     {
+        //Get reference variables
         state = GetComponent<TwitchController>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+
+        //connect to state machine
+        state.OnForwardDirUpdate.AddListener(OnDirectionChange);
+        state.OnAnimStateUpdate.AddListener(OnAnimStateChange);
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    //Callback function when state changed direction
+    public void OnDirectionChange(Vector3 newDir)
     {
-        anim.SetInteger("animState", state.GetAnimState());
-        GeneralAnimation.UpdateAnimOrientation(state.GetForwardVector(), anim, sprite);
+        GeneralAnimation.UpdateAnimOrientation(newDir, anim, sprite);
+    }
+
+    //Callback function when character changed state
+    public void OnAnimStateChange(int state)
+    {
+        anim.SetInteger("animState", state);
     }
 }

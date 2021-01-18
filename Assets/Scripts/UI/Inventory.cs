@@ -75,12 +75,27 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private TMP_Text craftingWarning = null;
 
+    //Audio
+    [Header("Audio")]
+    [SerializeField]
+    private AudioClip openClip = null;
+    [SerializeField]
+    private AudioClip craftClip = null;
+    [SerializeField]
+    private AudioClip errorClip = null;
+    [SerializeField]
+    private AudioClip[] sideEffectClips = null;
+    private AudioSource audioFX;
+
+
+
     // Awake is called to initialize some variables
     void Awake()
     {
         curHighlight = null;
         active = false;
         displayVialIndex = DisplayVialEnum.None;
+        audioFX = GetComponent<AudioSource>();
 
         if (sideEffectInfo != null)
         {
@@ -163,14 +178,15 @@ public class Inventory : MonoBehaviour
             //Keyboard controls for crafting
             if (Input.GetButtonDown("BoltCraft"))
             {
+                ShowBoltVial();
                 if (craftVialSlot.GetVial() != boltVial)
                     craftVialSlot.SetUpCraftVial(boltVial, boltIcon);
                 else
                     craftVialSlot.Reset();
-                Debug.Log("button pushed");
             }
             else if (Input.GetButtonDown("CaskCraft"))
             {
+                ShowCaskVial();
                 if (craftVialSlot.GetVial() != caskVial)
                     craftVialSlot.SetUpCraftVial(caskVial, caskIcon);
                 else
@@ -224,6 +240,7 @@ public class Inventory : MonoBehaviour
         ResetCraft();
 
         //Close the menu
+        audioFX.clip = openClip;
         gameObject.SetActive(false);
         Time.timeScale = 1.0f;
     }
@@ -305,6 +322,7 @@ public class Inventory : MonoBehaviour
 
             craftableText.text = "Upgradable?: ";
             craftableText.text += (vial.IsUpgradable()) ? "Yes" : "No";
+            craftableText.color = (vial.IsUpgradable()) ? Color.black : Color.red;
 
             sideEffectName.text = "Side Effect - " + vial.GetSideEffectName() + ":";
 
@@ -344,7 +362,8 @@ public class Inventory : MonoBehaviour
         stickinessText.text = "Stickiness: 0";
         stickinessText.color = basicColor;
 
-        craftableText.text = "Upgradable: No";
+        craftableText.text = "Upgradable: ???";
+        craftableText.color = Color.black;
         sideEffectName.text = "Side Effect - ???:";
         sideEffectDescription.text = "";
     }
@@ -408,12 +427,18 @@ public class Inventory : MonoBehaviour
             if (ingredientList.Count > 0)
             {
                 PoisonVial craftVial = craftVialSlot.GetVial();
+                bool hadNoSideEffect = (craftVial == null) || (craftVial.GetSideEffect() == PoisonVial.SideEffect.NONE);
 
                 //Get poison vial to update icon with
                 if (craftVial == null)
                     craftVial = new PoisonVial(ingredientList, 1);
                 else
                     craftVial.UpgradeVial(ingredientList, 1);
+
+                //Play audio
+                
+                audioFX.clip = (hadNoSideEffect && craftVial.GetSideEffect() != PoisonVial.SideEffect.NONE) ? sideEffectClips[Random.Range(0, sideEffectClips.Length)] : craftClip;
+                audioFX.Play(0);
 
                 //Update display information and craft
                 UpdateVialDisplayInfo(updatedIcon, craftVial);
@@ -436,6 +461,8 @@ public class Inventory : MonoBehaviour
     {
         craftingWarning.gameObject.SetActive(true);
         craftingWarning.text = warning;
+        audioFX.clip = errorClip;
+        audioFX.Play(0);
     }
 
     //Helper method to update vial information in the UI

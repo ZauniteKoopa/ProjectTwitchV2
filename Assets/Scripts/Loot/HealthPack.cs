@@ -23,6 +23,7 @@ public class HealthPack : AbstractInteractable
         EntityStatus playerStatus = player.GetComponent<EntityStatus>();
         float healthGain = Random.Range(minHealthGain, maxHealthGain);
         playerStatus.Heal(healthGain);
+        GetComponent<AudioSource>().Play(0);
 
         yield return new WaitForSeconds(0.2f);
 

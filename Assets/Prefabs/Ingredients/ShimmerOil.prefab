@@ -251,7 +251,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5914f24fc9210efc6a5d0c79703c243a, type: 3}
-  m_Color: {r: 0.48458603, g: 0.5188679, b: 0, a: 1}
+  m_Color: {r: 0.9, g: 0.8, b: 0.1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -275,11 +275,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   potency: 0
-  poison: 1
+  poison: 0
   reactivity: 1
-  stickiness: 0
+  stickiness: 1
   statsOffered: 1
-  ingColor: {r: 0.4862745, g: 0.5176471, b: 0, a: 1}
+  ingColor: {r: 0.9, g: 0.8, b: 0.1, a: 1}
   maxCraftDuration: 1.5
   craftTimerUI: {fileID: 428348292168606439}
   craftTimerBorder: {fileID: 428348291875156348}

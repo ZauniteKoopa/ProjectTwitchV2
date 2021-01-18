@@ -467,7 +467,7 @@ MonoBehaviour:
   - {x: -3.5, y: -3, z: 0}
   attackTimerDelay: 3.5
   isHostile: 0
-  lootDropChance: 0.4
+  lootDropChance: 0.5
   cogDropChance: 0.3
   loot:
   - {fileID: 7351858614600386105, guid: 51ae25e3bac4764dbba15897b3fbe135, type: 3}

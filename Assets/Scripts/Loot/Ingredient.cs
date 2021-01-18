@@ -64,11 +64,11 @@ public class Ingredient
                 break;
             
             case IngredientType.MutatedHeart:
-                ConstructorHelper(new bool[] {true, false, false, true}, new Color(0.46f, 0.27f, 0.27f));
+                ConstructorHelper(new bool[] {true, false, false, true}, new Color(0.46f, 0.0f, 0.0f));
                 break;
             
             case IngredientType.ShimmerOil:
-                ConstructorHelper(new bool[] {false, true, true, false}, new Color(0.5f, 0.5f, 0f));
+                ConstructorHelper(new bool[] {false, false, true, true}, new Color(0.9f, 0.8f, 0.1f));
                 break;
             
             case IngredientType.WhumpFeces:
@@ -76,7 +76,7 @@ public class Ingredient
                 break;
 
             case IngredientType.SewerFlower:
-                ConstructorHelper(new bool[] {true, false, true, false}, new Color(1f, 0f, 0.75f));
+                ConstructorHelper(new bool[] {false, true, true, false}, new Color(1f, 0f, 0.75f));
                 break;
 
             case IngredientType.RustedSteel:
@@ -84,7 +84,7 @@ public class Ingredient
                 break;
 
             case IngredientType.RottenBlood:
-                ConstructorHelper(new bool[] {false, true, false, true}, new Color(1f, 0f, 0f));
+                ConstructorHelper(new bool[] {true, true, false, false}, new Color(1f, 0f, 0f));
                 break;
 
             case IngredientType.ChemtechFuel:

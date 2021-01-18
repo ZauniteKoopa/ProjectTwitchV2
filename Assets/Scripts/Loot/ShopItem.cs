@@ -23,10 +23,13 @@ public class ShopItem : AbstractInteractable
     private int cost;
     private Ingredient ing;
 
+    private AudioSource audioFX;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        audioFX = GetComponent<AudioSource>();
         float select = (canBeHealth) ? Random.Range(0.0f, 1.0f) : 0.0f;
 
         if (select < ingChance)
@@ -62,6 +65,9 @@ public class ShopItem : AbstractInteractable
             //Disable shop object
             costUI.gameObject.SetActive(false);
             GetComponent<SpriteRenderer>().color = Color.black;
+
+            //Play sound effect
+            audioFX.Play(0);
         }
         else
         {

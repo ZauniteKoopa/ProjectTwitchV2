@@ -274,8 +274,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
-  potency: 1
-  poison: 0
+  potency: 0
+  poison: 1
   reactivity: 1
   stickiness: 0
   statsOffered: 1

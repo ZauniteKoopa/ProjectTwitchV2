@@ -5,6 +5,12 @@ using UnityEngine.Events;
 using TMPro;
 using UnityEngine.UI;
 
+//Event classes
+[System.Serializable]
+public class ForwardVectorUpdateDelegate : UnityEvent<Vector3> {}
+[System.Serializable]
+public class AnimStateUpdateDelegate : UnityEvent<int> {}
+
 public class TwitchController : MonoBehaviour
 {
     //Attack hitbox properties
@@ -77,6 +83,10 @@ public class TwitchController : MonoBehaviour
     private float stealthBuffDuration = 5.0f;
     [SerializeField]
     private InvisibilityRange invisRange = null;
+    [SerializeField]
+    private GameObject invisGauge = null;
+    [SerializeField]
+    private Image invisGaugeBar = null;
     private bool invisible;
     private bool attackBuffed;
     private bool canStealth;
@@ -131,7 +141,9 @@ public class TwitchController : MonoBehaviour
     //Variable to help manage animation
     private enum TwitchAnimState {IDLE, MOVING, SHOOTING, CONTAMINATION, CASK};
     private TwitchAnimState animState = TwitchAnimState.IDLE;
-    private Vector3 forward = Vector3.down;
+    public ForwardVectorUpdateDelegate OnForwardDirUpdate;
+    public AnimStateUpdateDelegate OnAnimStateUpdate;
+    
 
     //Provoked flag
     public bool provoked;
@@ -150,6 +162,10 @@ public class TwitchController : MonoBehaviour
         canSwap = true;
         crafting = false;
         provoked = false;
+
+        //Initialize events
+        OnForwardDirUpdate = new ForwardVectorUpdateDelegate();
+        OnAnimStateUpdate = new AnimStateUpdateDelegate();
 
         //Initialize poisonVial variables
         secVial = new PoisonVial(0, 2, 1, 2, Color.magenta, 40);
@@ -223,12 +239,14 @@ public class TwitchController : MonoBehaviour
         dir.Normalize();
         if (!Input.GetButton("Fire1") && dir.magnitude != 0f)
         {
-            forward = dir;
+            OnForwardDirUpdate.Invoke(dir);
+            OnAnimStateUpdate.Invoke((int)TwitchAnimState.MOVING);
             animState = TwitchAnimState.MOVING;
         }
         else if (!Input.GetButton("Fire1") && dir.magnitude == 0f)
         {
             animState = TwitchAnimState.IDLE;
+            OnAnimStateUpdate.Invoke((int)TwitchAnimState.IDLE);
         }
 
         transform.Translate(dir * status.GetCurSpeed() * Time.fixedDeltaTime * speedModifier);
@@ -250,7 +268,8 @@ public class TwitchController : MonoBehaviour
             Vector3 mousePos = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0);
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
             Vector2 dirVect = new Vector2 (mousePos.x - transform.position.x, mousePos.y - transform.position.y);
-            forward = mousePos - transform.position;
+            OnForwardDirUpdate.Invoke(mousePos - transform.position);
+            OnAnimStateUpdate.Invoke((int)TwitchAnimState.SHOOTING);
             animState = TwitchAnimState.SHOOTING;
 
             //make projectile
@@ -284,6 +303,7 @@ public class TwitchController : MonoBehaviour
         else
         {
             animState = TwitchAnimState.IDLE;
+            OnAnimStateUpdate.Invoke((int)TwitchAnimState.IDLE);
             fireTimerRunning = false;
         }
     }
@@ -315,7 +335,8 @@ public class TwitchController : MonoBehaviour
 
         /* Execute action: play sound, disable movement for some time and throw cask */
         status.canMove = false;
-        forward = dirVector;
+        OnForwardDirUpdate.Invoke(dirVector);
+        OnAnimStateUpdate.Invoke((int)TwitchAnimState.CASK);
         animState = TwitchAnimState.CASK;
         audioFX.clip = caskThrowFX;
         audioFX.Play();
@@ -368,20 +389,32 @@ public class TwitchController : MonoBehaviour
         //Get necessary variables
         SpriteRenderer render = GetComponent<SpriteRenderer>();
         float timer = 0.0f;
+        invisGaugeBar.fillAmount = 0f;
 
         //Initiate stealth delay
         audioFX.clip = stealthingFX;
         audioFX.Play(0);
         render.color = stealthDelayColor;
-        yield return new WaitForSeconds(stealthDelay);
+        invisGauge.SetActive(true);
+
+        while (timer < stealthDelay)
+        {
+            yield return new WaitForFixedUpdate();
+            timer += Time.fixedDeltaTime;
+            invisGaugeBar.fillAmount = timer / stealthDelay;
+        }
 
         //Actually make character invisible and do stealth
+        timer = 0.0f;
+        invisGaugeBar.fillAmount = 1f;
         invisible = true;
         render.color = stealthColor;
+
         while (invisible && timer < stealthDuration)
         {
             yield return new WaitForFixedUpdate();
             timer += Time.fixedDeltaTime;
+            invisGaugeBar.fillAmount = (stealthDuration - timer) / stealthDuration;
         }
 
         //When get out of stealth, check if attack buff was activated or not (attacking in stealth will activate attack buff)
@@ -391,6 +424,7 @@ public class TwitchController : MonoBehaviour
             render.color = normalColor;
         }
 
+        invisGauge.SetActive(false);
         Invoke("refreshStealth", stealthCD);
     }
 
@@ -402,9 +436,9 @@ public class TwitchController : MonoBehaviour
         canCon = false;
         contaminateIcon.ShowDisabled();
         animState = TwitchAnimState.CONTAMINATION;
-        Debug.Log("contaminate animation");
+        OnAnimStateUpdate.Invoke((int)animState);
         status.canMove = false;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
         status.canMove = true;
 
         //Activate reactive bombs
@@ -643,17 +677,5 @@ public class TwitchController : MonoBehaviour
     {
         if (crafting)
             DisableCraftMode();
-    }
-
-
-    //accessor methods for animation manager
-    public int GetAnimState()
-    {
-        return (int)animState;
-    }
-
-    public Vector3 GetForwardVector()
-    {
-        return forward;
     }
 }

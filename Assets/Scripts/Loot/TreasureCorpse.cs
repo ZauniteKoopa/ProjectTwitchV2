@@ -15,6 +15,7 @@ public class TreasureCorpse : AbstractInteractable
     {
         //Open corpse to indicate that it's activated
         GetComponent<SpriteRenderer>().color = Color.black;
+        GetComponent<AudioSource>().Play(0);
         yield return new WaitForSeconds(0.6f);
 
         //Collect ingredients

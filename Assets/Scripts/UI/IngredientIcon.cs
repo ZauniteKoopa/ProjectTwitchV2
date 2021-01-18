@@ -11,6 +11,7 @@ public class IngredientSelectDelegate : UnityEvent<Ingredient> {}
 
 public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
+    //UI
     [SerializeField]
     private Image icon = null;
     [SerializeField]

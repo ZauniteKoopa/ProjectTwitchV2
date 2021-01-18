@@ -16,6 +16,9 @@ public class CraftVialSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
     [SerializeField]
     private Image vialSlot = null;
 
+    //Audio
+    private AudioSource audioFX = null;
+
     //Event method for selection
     public VialSelectDelegate OnCraftVialSelect;
 
@@ -23,11 +26,13 @@ public class CraftVialSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
     void Awake()
     {
         OnCraftVialSelect = new VialSelectDelegate();
+        audioFX = GetComponent<AudioSource>();
     }
 
     //Public method to set Craft Vial slot to this craft vial
     public void SetUpCraftVial(PoisonVial pv, VialIcon ui)
     {
+        audioFX.Play(0);
         vial = pv;
         vialSlot.sprite = ui.GetSprite();
         vialSlot.color = pv.GetColor();

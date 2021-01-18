@@ -23,7 +23,7 @@ public class PoisonVial
     private const int BEGIN_AMMO = 30;
 
     //Constants for damage/potency
-    private const float BASE_DAMAGE = 1.5f;
+    private const float BASE_DAMAGE = 2.25f;
     private const float DMG_GROWTH = 1f;
 
     //constants for poison
