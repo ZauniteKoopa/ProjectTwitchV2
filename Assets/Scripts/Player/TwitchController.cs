@@ -467,6 +467,12 @@ public class TwitchController : MonoBehaviour
         return !invisible || invisRange.IsInRange(perceiver);
     }
 
+    //Check if Twitch is stealthing
+    public bool IsStealthing()
+    {
+        return invisible;
+    }
+
 
     //Method to activate stealth attack buff when attacking, if invisible
     void StartStealthAttackBuff()
