@@ -5,6 +5,9 @@ using UnityEngine;
 public class Warwick : AbstractBoss
 {
     //Variables to help with scouting
+    [SerializeField]
+    private float phaseThreeMoveSpeedBuff = 1.2f;
+
     [Header("Scouting")]
     private bool isTgtBleeding = false;
     private float sniffTimer = 0f;
@@ -69,12 +72,15 @@ public class Warwick : AbstractBoss
         if (sniffTimer >= sniffedTimeEnd && !IsTgtStealthing())
             sniffTimer = 0f;
 
+        //Get movement
+        float moveSpeedFactor = (phase >= 3) ? phaseThreeMoveSpeedBuff : 1.0f;
+
         //Randomly choose 1 of 2 attacks
         int select = Random.Range(0, 2);
         if (select == 0)
-            yield return StartCoroutine(Lunge());
+            yield return StartCoroutine(Lunge(moveSpeedFactor));
         else
-            yield return StartCoroutine(HungeringStrike());
+            yield return StartCoroutine(HungeringStrike(moveSpeedFactor));
         
     }
 
@@ -102,7 +108,7 @@ public class Warwick : AbstractBoss
         audioFX.Play(0);
         GetComponent<SpriteRenderer>().color = discoveryColor;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.8f);
 
         GetComponent<SpriteRenderer>().color = normalColor;
     }
@@ -115,12 +121,12 @@ public class Warwick : AbstractBoss
     }
 
     //Method used to attack do dash attack
-    private IEnumerator Lunge()
+    private IEnumerator Lunge(float moveSpeedFactor)
     {
         //Set up lunge
         Vector3 lungeDir = GetTgtPos() - transform.position;
         lungeDir.Normalize();
-        float lungeSpeed = GetMoveSpeed() * lungeSpeedFactor;
+        float lungeSpeed = GetMoveSpeed() * lungeSpeedFactor * moveSpeedFactor;
         GetComponent<SpriteRenderer>().color = lungeColor;
 
         yield return new WaitForSeconds(0.25f);
@@ -134,7 +140,6 @@ public class Warwick : AbstractBoss
         while (timer < lungeTime && !hitWall)
         {
             yield return new WaitForFixedUpdate();
-            lungeSpeed = GetMoveSpeed() * lungeSpeedFactor;
             transform.Translate(lungeDir * lungeSpeed * Time.fixedDeltaTime);
 
             //Damage tgt if close enough
@@ -153,32 +158,35 @@ public class Warwick : AbstractBoss
             transform.Translate(-2 * lungeDir * lungeSpeed * Time.fixedDeltaTime);
         }
 
-        GetComponent<SpriteRenderer>().color = normalColor;
+        if (isActive)
+        {
+            GetComponent<SpriteRenderer>().color = normalColor;
+        }
 
     }
 
     
     //Method to do spin attack
-    private IEnumerator HungeringStrike()
+    private IEnumerator HungeringStrike(float moveSpeedFactor)
     {
         //Run towards player
         float timer = 0f;
         
-        while (Vector3.Distance(GetTgtPos(), transform.position) > spinAttackDist && timer < spinAttackRun && TgtVisible())
+        while (Vector3.Distance(GetTgtPos(), transform.position) > spinAttackDist && timer < spinAttackRun && TgtVisible() && isActive)
         {
             yield return new WaitForFixedUpdate();
 
             //Move towards
             Vector3 dir = GetTgtPos() - transform.position;
             dir.Normalize();
-            transform.Translate(dir * GetMoveSpeed() * Time.fixedDeltaTime);
+            transform.Translate(dir * GetMoveSpeed() * moveSpeedFactor * Time.fixedDeltaTime);
 
             //Update timer
             timer += Time.fixedDeltaTime;
         }
 
         //actually do spin attack if visible
-        if (TgtVisible())
+        if (TgtVisible() && isActive)
         {
             GetComponent<SpriteRenderer>().color = spinColor;
             spinBox.Anticipation();
@@ -186,7 +194,10 @@ public class Warwick : AbstractBoss
             spinBox.Attack(spinAttackDmg);
         }
 
-        GetComponent<SpriteRenderer>().color = normalColor;
+        if (isActive)
+        {
+            GetComponent<SpriteRenderer>().color = normalColor;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -31,7 +31,13 @@ public class RoomCollision : MonoBehaviour
     public bool ValidPoint(Vector3 point, Vector3 size)
     {
         Bounds testBound = new Bounds(point, size * 1.25f);
+        point.z = GetComponent<Collider2D>().bounds.center.z;
 
+        //Check if it is even inside the room
+        if (!GetComponent<Collider2D>().bounds.Contains(point))
+            return false;
+
+        //Check if it didn't hit anything inside room
         for (int i = 0; i < collisions.Count; i++)
         {
             if (testBound.Intersects(collisions[i].bounds))

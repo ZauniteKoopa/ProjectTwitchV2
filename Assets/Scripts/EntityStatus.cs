@@ -16,6 +16,7 @@ public class EntityStatus : MonoBehaviour
     [SerializeField]
     private float healthRegen = 0.0f;
     public bool canMove;
+    public bool invulnerable;
 
     //Aura variable
     [Header("Aura")]
@@ -55,6 +56,9 @@ public class EntityStatus : MonoBehaviour
 
     //Events
     public UnityEvent onDeathEvent;
+    float phaseReq = 0.75f;
+    float phaseDec = 0.25f;
+    
 
     //Variables for side effects concerning contamination
     private const float SIDE_EFFECT_DURATION = 3f;
@@ -70,6 +74,7 @@ public class EntityStatus : MonoBehaviour
         curHealth = baseHealth;
         speedModifier = 1.0f;
         canMove = true;
+        invulnerable = false;
 
         curPoisonStacks = 0;
         curTick = 0;
@@ -83,65 +88,74 @@ public class EntityStatus : MonoBehaviour
     // Method to call to damage this entity
     public void DamageEntity(float dmg)
     {
-        //Check if undamaged and decrement health
-        float dmgModifier = (contaminateEffect != PoisonVial.SideEffect.NONE) ? SIDE_EFFECT_DMG_BUFF : 1.0f;
-        bool undamaged = (curHealth >= baseHealth);
-
-        curHealth -= (dmg * dmgModifier);
-
-        if (healthBar != null)
-            healthBar.fillAmount = curHealth / baseHealth;
-
-        //If health is zero, kill either enemy or player. If alive and not poisoned, activate loop
-        if (curHealth <= 0.0f)
+        if (!invulnerable)
         {
-            StartCoroutine(Death());
-        }
-        else     //To keep only 2 invoke loops concerning health at max, only activate health regen loop if undamaged and not poisoned
-        {
-            SendMessage("OnEntityDamage", null, SendMessageOptions.DontRequireReceiver);
+            //Check if undamaged and decrement health
+            float dmgModifier = (contaminateEffect != PoisonVial.SideEffect.NONE) ? SIDE_EFFECT_DMG_BUFF : 1.0f;
+            bool undamaged = (curHealth >= baseHealth);
 
-            if (undamaged && curPoisonStacks == 0)
+            curHealth -= (dmg * dmgModifier);
+
+            if (healthBar != null)
+                healthBar.fillAmount = curHealth / baseHealth;
+
+            //If health is zero, kill either enemy or player. If alive and not poisoned, activate loop
+            if (curHealth <= 0.0f)
             {
-                Invoke("HealthRegenLoop", REGEN_TIME);
+                StartCoroutine(Death());
+            }
+            else     //To keep only 2 invoke loops concerning health at max, only activate health regen loop if undamaged and not poisoned
+            {
+                SendMessage("OnEntityDamage", null, SendMessageOptions.DontRequireReceiver);
+                CheckPhaseChange();
+
+                if (undamaged && curPoisonStacks == 0)
+                {
+                    Invoke("HealthRegenLoop", REGEN_TIME);
+                }
             }
         }
+        
     }
 
     //Method to do poison damage to do this enemy
     //  If vial is null, we just stick with the same poison
     public void PoisonDamageEntity(float initDmg, int initStacks, PoisonVial vial)
     {
-        //Check if enemy wasn't poisoned initially
-        bool notPoisoned = curPoisonStacks == 0;
-            
-        curPoisonStacks += initStacks;
-        if (curPoisonStacks > MAX_POISON_STACKS)
-            curPoisonStacks = MAX_POISON_STACKS;
-
-        //Poison enemy first if enemy were to be poisoned
-        if (vial != null)
+        if (!invulnerable)
         {
-            poison = vial;
-            stacksBorder.color = vial.GetColor();
+            //Check if enemy wasn't poisoned initially
+            bool notPoisoned = curPoisonStacks == 0;
+                
+            curPoisonStacks += initStacks;
+            if (curPoisonStacks > MAX_POISON_STACKS)
+                curPoisonStacks = MAX_POISON_STACKS;
 
-            if (aura != null && curPoisonStacks >= AURA_REQ)
-                aura.EnableAura(vial);
+            //Poison enemy first if enemy were to be poisoned
+            if (vial != null)
+            {
+                poison = vial;
+                stacksBorder.color = vial.GetColor();
+
+                if (aura != null && curPoisonStacks >= AURA_REQ)
+                    aura.EnableAura(vial);
+            }
+                
+            //Update UI
+            if (stacksUI != null)
+                stacksUI.text = "" + curPoisonStacks;
+                
+            //Reset timer
+            curTick = 0;
+
+            //Activate invoke if first time poisoned
+            if (notPoisoned)
+                Invoke("PoisonTickLoop", TICK_TIME);
+
+
+            DamageEntity(initDmg);
         }
-            
-        //Update UI
-        if (stacksUI != null)
-            stacksUI.text = "" + curPoisonStacks;
-            
-        //Reset timer
-        curTick = 0;
-
-        //Activate invoke if first time poisoned
-        if (notPoisoned)
-            Invoke("PoisonTickLoop", TICK_TIME);
-
-
-        DamageEntity(initDmg);
+        
     }
 
 
@@ -202,6 +216,8 @@ public class EntityStatus : MonoBehaviour
         {
             if (healthBar != null)
                 healthBar.fillAmount = curHealth / baseHealth;
+
+            CheckPhaseChange();
 
             //If maxTicks has passed, disable poison and start healthregen loop, else continue PoisonTickLoop
             if (curTick == MAX_TICKS)
@@ -269,6 +285,17 @@ public class EntityStatus : MonoBehaviour
             ChangeSpeed(1.0f / PARALYSIS_SPEED_REDUCTION);
         
         contaminateEffect = PoisonVial.SideEffect.NONE;
+    }
+
+
+    //Helper method to check phase change, only applies to bosses
+    private void CheckPhaseChange()
+    {
+        if (GetComponent<AbstractBoss>() != null && curHealth <= baseHealth * phaseReq)
+        {
+            phaseReq -= phaseDec;
+            SendMessage("OnPhaseChange", null, SendMessageOptions.DontRequireReceiver);
+        }
     }
 
     //Method to kill object when health is low

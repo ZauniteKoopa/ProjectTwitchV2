@@ -28,7 +28,7 @@ public class PoisonVial
 
     //constants for poison
     private const float BASE_POISON = 0f;
-    private const float POISON_GROWTH = 0.2f;
+    private const float POISON_GROWTH = 0.15f;
 
     //constants for reactivity
     private const float BASE_CONTAMINATE_DMG = 3f;

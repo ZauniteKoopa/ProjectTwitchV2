@@ -21,6 +21,20 @@ public abstract class AbstractBoss : MonoBehaviour
     [SerializeField]
     private float attackDelay = 0.75f;
 
+    //Array of Ingredients / Loot that is dropped each phase
+    [SerializeField]
+    private int numLootDropped = 2;
+    [SerializeField]
+    private Transform[] loot = null;
+    [SerializeField]
+    private RoomCollision arena = null;
+    [SerializeField]
+    private float spawnRadius = 4f;
+
+    //Testing UI
+    [SerializeField]
+    private Color invincibleColor = Color.white;
+
 
     // Start is called before the first frame update
     void Start()
@@ -65,7 +79,51 @@ public abstract class AbstractBoss : MonoBehaviour
     //Callback function to deal with enemy changing to next phase
     public void OnPhaseChange()
     {
+        //Invulnerability
+        StartCoroutine(InvulnerablePhaseChange());
 
+        //Drop loot
+        for (int i = 0; i < numLootDropped; i++)
+        {
+            //Get loot type
+            Transform lootType = loot[Random.Range(0, loot.Length)];
+            Vector3 lootSize = lootType.localScale;
+
+            //Find a position within the room and test it
+            Vector3 curPoint;
+
+            do 
+            {
+                float posY = Random.Range(-spawnRadius, spawnRadius);
+                float posX = Random.Range(-spawnRadius, spawnRadius);
+
+                curPoint = new Vector3(posX, posY, -1);
+                curPoint = transform.TransformPoint(curPoint);
+            }
+            while (!arena.ValidPoint(curPoint, lootSize));
+
+            //Spawns loot at that point
+            Object.Instantiate(lootType, curPoint, Quaternion.identity);
+        }
+
+        //Increment phase change
+        phase++;
+        Debug.Log("PHASE CHANGE: " + phase);
+    }
+
+    //Helper method for invulnerability
+    private IEnumerator InvulnerablePhaseChange()
+    {
+        isActive = false;
+        GetComponent<SpriteRenderer>().color = invincibleColor;
+        status.invulnerable = true;
+
+        yield return new WaitForSeconds(3.5f);
+
+        isActive = true;
+        status.invulnerable = false;
+        GetComponent<SpriteRenderer>().color = Color.white;
+        StartCoroutine(DecisionTree());
     }
 
 
