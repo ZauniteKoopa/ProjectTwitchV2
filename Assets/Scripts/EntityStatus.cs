@@ -293,7 +293,7 @@ public class EntityStatus : MonoBehaviour
             audioFX.Play();
         }
 
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(deathSound.length);
 
         if (tag == "Enemy")
         {

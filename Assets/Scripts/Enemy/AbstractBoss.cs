@@ -59,7 +59,7 @@ public abstract class AbstractBoss : MonoBehaviour
     //Callback functions to deal with enemy dying
     public void OnEntityDeath()
     {
-
+        StopAllCoroutines();
     }
 
     //Callback function to deal with enemy changing to next phase

@@ -8955,8 +8955,9 @@ GameObject:
   - component: {fileID: 1021741910}
   - component: {fileID: 1021741914}
   - component: {fileID: 1021741915}
+  - component: {fileID: 1021741916}
   m_Layer: 8
-  m_Name: TestBox
+  m_Name: TestWarwick
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8977,17 +8978,19 @@ MonoBehaviour:
   tgt: {fileID: 600906420}
   attackDelay: 1.25
   sniffedTimeEnd: 2
-  lungeSpeed: 12
+  lungeSpeedFactor: 2.25
   lungeTime: 0.75
   lungeDmgDist: 1.5
-  lungeDmg: 3
+  lungeDmg: 5
   spinAttackDist: 2
   spinAttackRun: 2.5
   spinAttackAnticipation: 0.5
-  spinAttackDmg: 5
+  spinAttackDmg: 8
   spinBox: {fileID: 689875546}
   sniffingClips: []
-  discoverClips: []
+  discoveryClips:
+  - {fileID: 8300000, guid: f530c16d12966884b8807055e7878f63, type: 3}
+  - {fileID: 8300000, guid: d8f127502cb357f6894a9bd2b8cb8cbe, type: 3}
   lungeColor: {r: 1, g: 0.6261432, b: 0, a: 1}
   spinColor: {r: 1, g: 0, b: 0, a: 1}
   sniffColor: {r: 0.036493182, g: 1, b: 0, a: 1}
@@ -9120,7 +9123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseHealth: 60
-  baseSpeed: 5
+  baseSpeed: 5.5
   healthRegen: 0
   canMove: 1
   aura: {fileID: 751154668}
@@ -9128,10 +9131,106 @@ MonoBehaviour:
   stacksUI: {fileID: 1800655261}
   stacksBorder: {fileID: 277775320}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
-  deathSound: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: 57aa447a4a90c20ccae2b64246111654, type: 3}
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!82 &1021741916
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021741909}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1028664100
 GameObject:
   m_ObjectHideFlags: 0

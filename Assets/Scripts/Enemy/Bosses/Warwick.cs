@@ -9,15 +9,15 @@ public class Warwick : AbstractBoss
     private bool isTgtBleeding = false;
     private float sniffTimer = 0f;
     [SerializeField]
-    private float sniffedTimeEnd = 2f;
+    private float sniffedTimeEnd = 0.5f;
 
     [Header("Lunge")]
     [SerializeField]
-    private float lungeSpeed = 10f;
+    private float lungeSpeedFactor = 2.25f;
     [SerializeField]
     private float lungeTime = 0.75f;
     [SerializeField]
-    private float lungeDmgDist = 1.75f;
+    private float lungeDmgDist = 2f;
     [SerializeField]
     private float lungeDmg = 0f;
 
@@ -40,7 +40,7 @@ public class Warwick : AbstractBoss
     [SerializeField]
     private AudioClip[] sniffingClips = null;
     [SerializeField]
-    private AudioClip[] discoverClips = null;
+    private AudioClip[] discoveryClips = null;
     private AudioSource audioFX = null;
 
     //Box UI
@@ -92,19 +92,17 @@ public class Warwick : AbstractBoss
             sniffTimer += Time.fixedDeltaTime;
         }
 
-        Debug.Log("???");
-
         sniffTimer = sniffedTimeEnd;
     }
 
     //Method used upon discovery
     protected override IEnumerator Discovery()
     {
-        // audioFX.clip = discoveryClips[Random.Range(0, discoveryClips.Length)];
-        // audioFX.Play(0);
+        audioFX.clip = discoveryClips[Random.Range(0, discoveryClips.Length)];
+        audioFX.Play(0);
         GetComponent<SpriteRenderer>().color = discoveryColor;
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(1.5f);
 
         GetComponent<SpriteRenderer>().color = normalColor;
     }
@@ -122,6 +120,7 @@ public class Warwick : AbstractBoss
         //Set up lunge
         Vector3 lungeDir = GetTgtPos() - transform.position;
         lungeDir.Normalize();
+        float lungeSpeed = GetMoveSpeed() * lungeSpeedFactor;
         GetComponent<SpriteRenderer>().color = lungeColor;
 
         yield return new WaitForSeconds(0.25f);
@@ -135,6 +134,7 @@ public class Warwick : AbstractBoss
         while (timer < lungeTime && !hitWall)
         {
             yield return new WaitForFixedUpdate();
+            lungeSpeed = GetMoveSpeed() * lungeSpeedFactor;
             transform.Translate(lungeDir * lungeSpeed * Time.fixedDeltaTime);
 
             //Damage tgt if close enough
