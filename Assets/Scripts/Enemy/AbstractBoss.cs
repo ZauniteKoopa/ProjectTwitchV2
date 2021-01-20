@@ -74,6 +74,7 @@ public abstract class AbstractBoss : MonoBehaviour
     public void OnEntityDeath()
     {
         StopAllCoroutines();
+        CancelInvoke();
     }
 
     //Callback function to deal with enemy changing to next phase
@@ -90,25 +91,34 @@ public abstract class AbstractBoss : MonoBehaviour
             Vector3 lootSize = lootType.localScale;
 
             //Find a position within the room and test it
-            Vector3 curPoint;
-
-            do 
-            {
-                float posY = Random.Range(-spawnRadius, spawnRadius);
-                float posX = Random.Range(-spawnRadius, spawnRadius);
-
-                curPoint = new Vector3(posX, posY, -1);
-                curPoint = transform.TransformPoint(curPoint);
-            }
-            while (!arena.ValidPoint(curPoint, lootSize));
+            Vector3 spawnPoint = GetSpawnPos(lootSize);
 
             //Spawns loot at that point
-            Object.Instantiate(lootType, curPoint, Quaternion.identity);
+            Object.Instantiate(lootType, spawnPoint, Quaternion.identity);
         }
 
         //Increment phase change
         phase++;
         Debug.Log("PHASE CHANGE: " + phase);
+    }
+
+    //Helper method to get spawn position
+    protected Vector3 GetSpawnPos(Vector3 size)
+    {
+        //Find a position within the room and test it
+        Vector3 curPoint;
+
+        do 
+        {
+            float posY = Random.Range(-spawnRadius, spawnRadius);
+            float posX = Random.Range(-spawnRadius, spawnRadius);
+
+            curPoint = new Vector3(posX, posY, -1);
+            curPoint = transform.TransformPoint(curPoint);
+        }
+        while (!arena.ValidPoint(curPoint, size));
+
+        return curPoint;
     }
 
     //Helper method for invulnerability

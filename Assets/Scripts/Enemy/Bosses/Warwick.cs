@@ -38,6 +38,28 @@ public class Warwick : AbstractBoss
     private bool lunging;
     private bool hitWall; 
 
+
+    [Header("Howling")]
+    [SerializeField]
+    private float slowFactor = 0.75f;
+    [SerializeField]
+    private SlowAoE howlBox = null;
+    [SerializeField]
+    private float howlAnticipation = 0.75f;
+
+    [Header("Leaking")]
+    [SerializeField]
+    private Transform leakPuddle = null;
+    [SerializeField]
+    private float leakInterval = 3f;
+    [SerializeField]
+    private float leakSlow = 0.5f;
+    [SerializeField]
+    private float puddleDuration = 6f;
+    [SerializeField]
+    private int numPuddles = 3;
+    private bool leaking = false;
+
     //Audio
     [Header("Audio")]
     [SerializeField]
@@ -58,6 +80,8 @@ public class Warwick : AbstractBoss
     private Color normalColor = Color.white;
     [SerializeField]
     private Color discoveryColor = Color.white;
+    [SerializeField]
+    private Color howlColor = Color.white;
 
     //Method on awake
     void Awake()
@@ -72,15 +96,31 @@ public class Warwick : AbstractBoss
         if (sniffTimer >= sniffedTimeEnd && !IsTgtStealthing())
             sniffTimer = 0f;
 
+        //Check leaking
+        if (phase >= 4 && !leaking)
+        {
+            leaking = true;
+            SpawnLeak();
+        }
+
         //Get movement
         float moveSpeedFactor = (phase >= 3) ? phaseThreeMoveSpeedBuff : 1.0f;
 
         //Randomly choose 1 of 2 attacks
-        int select = Random.Range(0, 2);
+        int selectMax = Mathf.Min(1 + phase, 4);
+        int select = Random.Range(0, selectMax);
+
         if (select == 0)
             yield return StartCoroutine(Lunge(moveSpeedFactor));
-        else
+        else if (select == 1)
             yield return StartCoroutine(HungeringStrike(moveSpeedFactor));
+        else if (select == 2)
+            yield return StartCoroutine(Howl());
+        else if (select == 3)
+        {
+            yield return StartCoroutine(Lunge(moveSpeedFactor));
+            yield return StartCoroutine(HungeringStrike(moveSpeedFactor));
+        }
         
     }
 
@@ -90,6 +130,14 @@ public class Warwick : AbstractBoss
     {
         // audioFX.clip = sniffingClips[Random.Range(0, sniffingClips.Length)];
         // audioFX.Play(0);
+
+        //Check leaking
+        if (phase >= 4 && !leaking)
+        {
+            leaking = true;
+            SpawnLeak();
+        }
+
         GetComponent<SpriteRenderer>().color = sniffColor;
 
         while (!TgtVisible())
@@ -200,6 +248,34 @@ public class Warwick : AbstractBoss
         }
     }
 
+    //Method to howl
+    private IEnumerator Howl()
+    {
+        GetComponent<SpriteRenderer>().color = howlColor;
+        howlBox.Anticipation();
+        yield return new WaitForSeconds(howlAnticipation);
+        howlBox.Attack(slowFactor);
+
+        if (isActive)
+        {
+            GetComponent<SpriteRenderer>().color = normalColor;
+        }
+    }
+
+    //Invoke loop method to induce leaks
+    private void SpawnLeak()
+    {
+        for (int i = 0; i < numPuddles; i++)
+        {
+            Vector3 spawnPoint = GetSpawnPos(leakPuddle.localScale);
+            Transform curPuddle = Object.Instantiate(leakPuddle, spawnPoint, Quaternion.identity);
+            curPuddle.GetComponent<SlowZone>().SetUp(leakSlow, puddleDuration);
+        }
+
+        Invoke("SpawnLeak", leakInterval);
+    }
+
+    //Method for wall collisions
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.tag == "Wall")
