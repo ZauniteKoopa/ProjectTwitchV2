@@ -43,9 +43,32 @@ public abstract class AbstractBoss : MonoBehaviour
         isAttacking = true;
         isActive = true;
         status = GetComponent<EntityStatus>();
-        StartCoroutine(DecisionTree());
-        
+        status.invulnerable = true;
     }
+
+    //Method used to activate boss
+    public void Activate(TwitchController player)
+    {
+        if (player != null)
+        {
+            tgt = player;
+            player.provoked = true;
+            StartCoroutine(StartAI());
+        }
+    }
+
+    //Private IEnumerator to start the boss up
+    private IEnumerator StartAI()
+    {
+        //Method to do dialogue stuff
+        yield return new WaitForSeconds(1f);
+
+        //Do decision tree
+        status.invulnerable = false;
+        StartCoroutine(DecisionTree());
+    }
+
+
 
     // Decision Tree that's played in every interval between attacks
     private IEnumerator DecisionTree()
@@ -73,6 +96,7 @@ public abstract class AbstractBoss : MonoBehaviour
     //Callback functions to deal with enemy dying
     public void OnEntityDeath()
     {
+        tgt.provoked = false;
         StopAllCoroutines();
         CancelInvoke();
     }
@@ -99,7 +123,6 @@ public abstract class AbstractBoss : MonoBehaviour
 
         //Increment phase change
         phase++;
-        Debug.Log("PHASE CHANGE: " + phase);
     }
 
     //Helper method to get spawn position

@@ -172,14 +172,16 @@ public class Warwick : AbstractBoss
     private IEnumerator Lunge(float moveSpeedFactor)
     {
         //Set up lunge
-        Vector3 lungeDir = GetTgtPos() - transform.position;
-        lungeDir.Normalize();
-        float lungeSpeed = GetMoveSpeed() * lungeSpeedFactor * moveSpeedFactor;
         GetComponent<SpriteRenderer>().color = lungeColor;
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.4f);
         
-        //Timer for lunge
+        //Set up variables for lunge
+        float lungeSpeed = GetMoveSpeed() * lungeSpeedFactor * moveSpeedFactor;
+        Vector3 lungeDir = GetTgtPos() - transform.position;
+        lungeDir.Normalize();
+
+        //Timer
         float timer = 0f;
         hitWall = false;
         bool dmgTgt = false;
