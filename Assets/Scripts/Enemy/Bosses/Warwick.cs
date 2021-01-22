@@ -13,6 +13,7 @@ public class Warwick : AbstractBoss
     private float sniffTimer = 0f;
     [SerializeField]
     private float sniffedTimeEnd = 0.5f;
+    private bool scoutedPlayer = false;
 
     [Header("Lunge")]
     [SerializeField]
@@ -60,13 +61,24 @@ public class Warwick : AbstractBoss
     private int numPuddles = 3;
     private bool leaking = false;
 
+    int prevAttack = 5;
+
     //Audio
     [Header("Audio")]
     [SerializeField]
-    private AudioClip[] sniffingClips = null;
-    [SerializeField]
     private AudioClip[] discoveryClips = null;
+    [SerializeField]
+    private AudioClip lungeClip = null;
+    [SerializeField]
+    private AudioClip strikeClip = null;
+    [SerializeField]
+    private AudioClip howlClip = null;
+    [SerializeField]
+    private AudioSource voiceSource = null;
+    [SerializeField]
     private AudioSource audioFX = null;
+    [SerializeField]
+    private AudioSource leakingSound = null;
 
     //Box UI
     [Header("Color Testing")]
@@ -86,7 +98,7 @@ public class Warwick : AbstractBoss
     //Method on awake
     void Awake()
     {
-        audioFX = GetComponent<AudioSource>();
+
     }
 
     //Method used to choose attack
@@ -106,9 +118,12 @@ public class Warwick : AbstractBoss
         //Get movement
         float moveSpeedFactor = (phase >= 3) ? phaseThreeMoveSpeedBuff : 1.0f;
 
-        //Randomly choose 1 of 2 attacks
+        //Randomly choose 1 of 4 attacks. Warwick cannot howl if he howled previously or scouted out player
         int selectMax = Mathf.Min(1 + phase, 4);
         int select = Random.Range(0, selectMax);
+        if (prevAttack == 2 && (select == prevAttack || scoutedPlayer))
+            select = Random.Range(0, 1) == 0 ? 0 : 3;
+        prevAttack = select;
 
         if (select == 0)
             yield return StartCoroutine(Lunge(moveSpeedFactor));
@@ -121,6 +136,9 @@ public class Warwick : AbstractBoss
             yield return StartCoroutine(Lunge(moveSpeedFactor));
             yield return StartCoroutine(HungeringStrike(moveSpeedFactor));
         }
+
+        //Reset scouted player flag
+        scoutedPlayer = false;
         
     }
 
@@ -128,9 +146,6 @@ public class Warwick : AbstractBoss
     //Method used to scout
     protected override IEnumerator Scout(int phase)
     {
-        // audioFX.clip = sniffingClips[Random.Range(0, sniffingClips.Length)];
-        // audioFX.Play(0);
-
         //Check leaking
         if (phase >= 4 && !leaking)
         {
@@ -140,7 +155,7 @@ public class Warwick : AbstractBoss
 
         GetComponent<SpriteRenderer>().color = sniffColor;
 
-        while (!TgtVisible())
+        while (!TgtVisible() && sniffTimer < sniffedTimeEnd)
         {
             yield return new WaitForFixedUpdate();
             sniffTimer += Time.fixedDeltaTime;
@@ -152,8 +167,9 @@ public class Warwick : AbstractBoss
     //Method used upon discovery
     protected override IEnumerator Discovery()
     {
-        audioFX.clip = discoveryClips[Random.Range(0, discoveryClips.Length)];
-        audioFX.Play(0);
+        scoutedPlayer = true;
+        voiceSource.clip = discoveryClips[Random.Range(0, discoveryClips.Length)];
+        voiceSource.Play(0);
         GetComponent<SpriteRenderer>().color = discoveryColor;
 
         yield return new WaitForSeconds(1.8f);
@@ -185,7 +201,8 @@ public class Warwick : AbstractBoss
         float timer = 0f;
         hitWall = false;
         bool dmgTgt = false;
-
+        audioFX.clip = lungeClip;
+        audioFX.Play(0);
 
         while (timer < lungeTime && !hitWall)
         {
@@ -241,6 +258,8 @@ public class Warwick : AbstractBoss
             GetComponent<SpriteRenderer>().color = spinColor;
             spinBox.Anticipation();
             yield return new WaitForSeconds(spinAttackAnticipation);
+            audioFX.clip = strikeClip;
+            audioFX.Play(0);
             spinBox.Attack(spinAttackDmg);
         }
 
@@ -256,6 +275,8 @@ public class Warwick : AbstractBoss
         GetComponent<SpriteRenderer>().color = howlColor;
         howlBox.Anticipation();
         yield return new WaitForSeconds(howlAnticipation);
+        audioFX.clip = howlClip;
+        audioFX.Play(0);
         howlBox.Attack(slowFactor);
 
         if (isActive)
@@ -275,6 +296,7 @@ public class Warwick : AbstractBoss
         }
 
         Invoke("SpawnLeak", leakInterval);
+        leakingSound.Play(0);
     }
 
     //Method for wall collisions

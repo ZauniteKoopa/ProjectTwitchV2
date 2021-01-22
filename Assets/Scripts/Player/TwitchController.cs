@@ -124,6 +124,10 @@ public class TwitchController : MonoBehaviour
     private Transform upgradePopup = null;
 
     private int cogs = 0;
+
+    //Slowdown when getting hit
+    private bool processingDamaged = false;
+    private const float DAMAGED_PERIOD = 0.5f;
     
 
     //Audio Source Management (Seperate class)
@@ -131,11 +135,15 @@ public class TwitchController : MonoBehaviour
     [SerializeField]
     private AudioSource audioFX = null;
     [SerializeField]
+    private AudioSource voiceAudio = null;
+    [SerializeField]
     private AudioClip caskThrowFX = null;
     [SerializeField]
     private AudioClip stealthingFX = null;
     [SerializeField]
     private AudioClip contaminateFX = null;
+    [SerializeField]
+    private AudioClip[] hurtClips = null;
 
 
     //Variable to help manage animation
@@ -683,5 +691,24 @@ public class TwitchController : MonoBehaviour
     {
         if (crafting)
             DisableCraftMode();
+
+        if (!processingDamaged)
+            StartCoroutine(ProcessDamage());
+        
+    }
+
+    //Does slowdown upon getting damaged
+    private IEnumerator ProcessDamage()
+    {
+        processingDamaged = true;
+        Time.timeScale = 0.2f;
+
+        voiceAudio.clip = hurtClips[Random.Range(0, hurtClips.Length)];
+        voiceAudio.Play(0);
+
+        yield return new WaitForSeconds(DAMAGED_PERIOD * 0.2f);
+
+        Time.timeScale = 1f;
+        processingDamaged = false;
     }
 }

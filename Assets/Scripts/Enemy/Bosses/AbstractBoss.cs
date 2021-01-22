@@ -88,7 +88,7 @@ public abstract class AbstractBoss : MonoBehaviour
         }
 
         //Begin the loop again by starting decision tree ONLY IF boss is alive
-        if (isActive)
+        if (isActive && tgt.GetComponent<EntityStatus>().IsAlive())
             StartCoroutine(DecisionTree());
         
     }

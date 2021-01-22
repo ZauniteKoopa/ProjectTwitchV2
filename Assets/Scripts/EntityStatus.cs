@@ -65,6 +65,7 @@ public class EntityStatus : MonoBehaviour
     private const float SIDE_EFFECT_DMG_BUFF = 1.5f;
     private const float PARALYSIS_SPEED_REDUCTION = 0.1f;
     private const float DEATH_MARK_THRESHOLD = 0.4f;
+    private const float BOSS_DEATH_MARK_THRESHOLD = 0.15f;
     private PoisonVial.SideEffect contaminateEffect;
 
 
@@ -257,7 +258,10 @@ public class EntityStatus : MonoBehaviour
             //Actually do contaminate damage. If DEATH_MARK, check if can execute (below threshhold)
             if (poison.GetSideEffect() == PoisonVial.SideEffect.DEATH_MARK && curHealth < DEATH_MARK_THRESHOLD * baseHealth)
             {
-                DamageEntity(baseHealth);
+                float deathMarkReq = (GetComponent<AbstractBoss>() != null) ? BOSS_DEATH_MARK_THRESHOLD : DEATH_MARK_THRESHOLD;
+
+                if (curHealth < deathMarkReq * baseHealth)
+                    DamageEntity(baseHealth);
             }
             else
             {

@@ -32,8 +32,8 @@ public class PoisonBombBehav : MonoBehaviour
     //---------------
 
     //Acid Spill constant
-    private const float BASE_ACID_DAMAGE = 1.25f;
-    private const float ACID_DAMAGE_GROWTH = 1.25f;
+    private const float BASE_ACID_DAMAGE = 0.75f;
+    private const float ACID_DAMAGE_GROWTH = 1f;
 
     //Combustion Blast constants
     private const float BASE_BLAST_DAMAGE = 2.5f;
