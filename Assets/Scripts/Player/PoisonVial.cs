@@ -298,7 +298,7 @@ public class PoisonVial
         }
 
         if (upgradedToSideEffect)
-            logInfo.Add(sideEffect.ToString());
+            logInfo.Add(sideEffect.GetDescription());
 
         return logInfo;
     }
@@ -370,5 +370,11 @@ public class PoisonVial
     public bool IsUpgradable()
     {
         return totalStat < TOTAL_STAT_LIMIT;
+    }
+
+    //Accessor method to get stat total
+    public float GetStatTotal()
+    {
+        return totalStat;
     }
 }

@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using TMPro;
+
+[System.Serializable]
+public class InventoryCloseDelegate : UnityEvent<PoisonVial[]> {}
 
 public class Inventory : MonoBehaviour
 {
@@ -87,7 +91,15 @@ public class Inventory : MonoBehaviour
     private AudioClip[] sideEffectClips = null;
     private AudioSource audioFX;
 
+    //Events upon close
+    public InventoryCloseDelegate onClose;
 
+
+    //Method to connect player to inventory
+    public void InitInventory()
+    {
+        onClose = new InventoryCloseDelegate();
+    }
 
     // Awake is called to initialize some variables
     void Awake()
@@ -169,6 +181,7 @@ public class Inventory : MonoBehaviour
     //Active method loop
     private IEnumerator MenuLoop()
     {
+        
         active = true;
 
         while(active)
@@ -183,6 +196,7 @@ public class Inventory : MonoBehaviour
                     craftVialSlot.SetUpCraftVial(boltVial, boltIcon);
                 else
                     craftVialSlot.Reset();
+                // yield return new WaitForSecondsRealtime(0.05f);
             }
             else if (Input.GetButtonDown("CaskCraft"))
             {
@@ -191,6 +205,7 @@ public class Inventory : MonoBehaviour
                     craftVialSlot.SetUpCraftVial(caskVial, caskIcon);
                 else
                     craftVialSlot.Reset();
+                // yield return new WaitForSecondsRealtime(0.05f);
             }
             else if (Input.GetButtonDown("Inventory"))
             {
@@ -211,6 +226,9 @@ public class Inventory : MonoBehaviour
     //Method to close inventory
     private void Close()
     {
+        //Trigger event
+        onClose.Invoke(GetVials());
+
         //Set all vials to null
         boltVial = null;
         caskVial = null;
@@ -320,8 +338,7 @@ public class Inventory : MonoBehaviour
             DisplayStat(reactivityText, Ingredient.StatType.Reactivity, vialInfo[2], s);
             DisplayStat(stickinessText, Ingredient.StatType.Stickiness, vialInfo[3], s);
 
-            craftableText.text = "Upgradable?: ";
-            craftableText.text += (vial.IsUpgradable()) ? "Yes" : "No";
+            craftableText.text = "Total Stats: " + vial.GetStatTotal() + "/10";
             craftableText.color = (vial.IsUpgradable()) ? Color.black : Color.red;
 
             sideEffectName.text = "Side Effect - " + vial.GetSideEffectName() + ":";
@@ -484,7 +501,7 @@ public class Inventory : MonoBehaviour
 
     //Method that returns an array of PoisonVials used to help update info in player
     //  Post: returns an array in this order {Bolt, Cask}
-    public PoisonVial[] GetVials()
+    private PoisonVial[] GetVials()
     {
         PoisonVial[] vials = new PoisonVial[3];
         vials[0] = boltVial;

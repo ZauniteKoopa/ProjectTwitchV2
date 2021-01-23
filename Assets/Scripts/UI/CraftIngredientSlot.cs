@@ -4,9 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-// [System.Serializable]
-// public class IngredientSelectDelegate : UnityEvent<Ingredient> {}
-
 public class CraftIngredientSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
 {
     //UI elements

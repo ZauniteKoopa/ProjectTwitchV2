@@ -187,6 +187,8 @@ public class TwitchController : MonoBehaviour
     // Start is called before the first frame update: intializes variables connected to other objects (UI)
     void Start()
     {
+        inventory.InitInventory();
+        inventory.onClose.AddListener(OnInventoryClose);
         caskIcon.SetUpVial(mainVial);
         boltIcon.SetUpVial(mainVial);
         secIcon.SetUpVial(secVial);
@@ -224,7 +226,10 @@ public class TwitchController : MonoBehaviour
 
             //Opening inventory
             if (!provoked && Input.GetButtonDown("Inventory"))
+            {
+                status.canMove = false;
                 inventory.Open(mainVial, secVial);
+            }
 
         }
     }
@@ -625,9 +630,10 @@ public class TwitchController : MonoBehaviour
 
 
     //Method to align poison vials with those in the inventory
-    public void GetVialsFromInventory()
-    {
-        PoisonVial[] inventoryVials = inventory.GetVials();
+    public void OnInventoryClose(PoisonVial[] inventoryVials)
+    {   
+        status.canMove = true;
+
         mainVial = inventoryVials[0];
         secVial = inventoryVials[1];
 
