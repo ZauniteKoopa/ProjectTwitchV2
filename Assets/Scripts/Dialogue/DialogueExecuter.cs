@@ -117,6 +117,7 @@ public class DialogueExecuter : MonoBehaviour
 
             //Overall dialogue loop
             yield return new WaitForFixedUpdate();
+            yield return new WaitForFixedUpdate();
 
             do
             {

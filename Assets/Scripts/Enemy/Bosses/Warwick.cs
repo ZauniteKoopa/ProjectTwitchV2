@@ -24,6 +24,8 @@ public class Warwick : AbstractBoss
     private float lungeDmgDist = 2f;
     [SerializeField]
     private float lungeDmg = 0f;
+    [SerializeField]
+    private float minLungeSpeed = 8f;
 
     [Header("Hungering Strike")]
     [SerializeField]
@@ -194,6 +196,7 @@ public class Warwick : AbstractBoss
         
         //Set up variables for lunge
         float lungeSpeed = GetMoveSpeed() * lungeSpeedFactor * moveSpeedFactor;
+        lungeSpeed = Mathf.Max(lungeSpeed, minLungeSpeed);
         Vector3 lungeDir = GetTgtPos() - transform.position;
         lungeDir.Normalize();
 

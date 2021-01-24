@@ -35,6 +35,10 @@ public abstract class AbstractBoss : MonoBehaviour
     [SerializeField]
     private Color invincibleColor = Color.white;
 
+    //Dialogue introduction
+    [SerializeField]
+    private TextAsset dialogueIntro = null;
+
 
     // Start is called before the first frame update
     void Start()
@@ -61,7 +65,11 @@ public abstract class AbstractBoss : MonoBehaviour
     private IEnumerator StartAI()
     {
         //Method to do dialogue stuff
-        yield return new WaitForSeconds(1f);
+        DialogueExecuter executer = DialogueExecuter.Instance;
+        yield return StartCoroutine(executer.LoadDialogue(dialogueIntro, tgt.GetComponent<EntityStatus>()));
+
+        //Delay to have player get ready
+        yield return new WaitForSeconds(0.5f);
 
         //Do decision tree
         status.invulnerable = false;

@@ -1,0 +1,39 @@
+Twitch
+TwitchGrunt
+Yordle, answer your king this question. Twitch has been seeing more Whumps in his kingdom, looting HIS goods. Is that your doing?
+
+ChumpWhump
+ChumpWhumpScared
+Wh-what? No. No no no no. That ain't me, your majesty! I'm just your... local cogs discarder! Nothing more!
+
+Twitch
+TwitchLaugh
+Oh. So you wouldn't mind if I skewer their skulls and see them suffocate in poison? Little wretched thieves..
+
+ChumpWhump
+ChumpWhumpRoar
+Roar! You leave them alone! They're just minding their business your majesty.
+
+Twitch
+TwitchSuspcious
+Hah! I knew it! So you're responsible!
+
+ChumpWhump
+ChumpWhumpAnnoyed
+I-I... It's called having a heart, your majesty. Maybe if you actually get to know the little buggers, you would have a heart too!
+
+Twitch
+TwitchGrunt
+Oh? And does your heart care of the wretched surface bugs invading to take over the kingdom!? Maybe Twitch should bring you to them so they can spray their fluid OVER YOUR FACE!
+
+ChumpWhump
+ChumpWhumpRoar
+Don't test me, RAT! You don't want to mess with this yordle. In this here shop, there will be no Whump killing!
+
+Twitch
+TwitchLaugh
+HAH! What can you do yordle, I AM THE KING!
+
+ChumpWhump
+ChumpWhumpCocky
+I got my ways your majesty. And trust me, you don't want to see them. Besides, you need to get rid of those cogs, yeah?

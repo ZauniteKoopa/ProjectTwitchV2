@@ -1,0 +1,27 @@
+Twitch
+TwitchGrunt
+You.... Don't you know whose sewer you're in? I'm... I'm...
+
+Twitch
+TwitchSad
+Doh...You're.. big... Is that blood you're eating?
+
+Warwick
+WarwickObservation
+I smell vermin... The fear in your eyes... Leave! Unless you want me to pick at your bones! Grrrr. Your scent is becoming exhausting.
+
+Twitch
+TwitchScared
+N-No! Th-this! This is the scent of the sewer king! A-and you're not allowed here, wolf-man! n-now.. Now... leave?
+
+Warwick
+WarwickThreat
+King? There's no king! I smell.. blood.. a murderer... those poisons aren't just shit on the floor! Isn't it!? I wonder how many will live if I exterminate you, pest!
+
+Twitch
+TwitchScared
+N-no! These surface dwellers.. They invaded first! They took away MY loot! MY juice! MY-
+
+Warwick
+WarwickBloodFrenzy
+Excuses! Excuses! EXCUSES! I'm tired of them! Vermin like you.. DIE!!!
