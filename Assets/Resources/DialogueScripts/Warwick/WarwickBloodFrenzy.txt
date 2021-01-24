@@ -1,0 +1,15 @@
+Twitch
+TwitchGrunt
+You.... Don't you know whose sewer you're in? I'm...
+
+Warwick
+WarwickBloodFrenzy
+I smell.. blood! Blood... SPILLED! Grrrr... YOU! Yes... YOU!
+
+Twitch
+TwitchScared
+Aagh! W-What? Uh... I'm.. the.. king?
+
+Warwick
+WarwickFrenzy
+You.. SMELL OF BLOOD! Can't.. CONTROL! AAAGH!

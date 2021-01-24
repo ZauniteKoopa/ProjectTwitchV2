@@ -510,4 +510,20 @@ public class Inventory : MonoBehaviour
         return vials;
     }
 
+    //Method to check if player has a certain ingredient in his inventory
+    public bool HasIngredient(Ingredient.IngredientType ingType)
+    {
+        if (ingredientInv != null)
+        {
+            Ingredient ing = new Ingredient(ingType, 1);
+
+            if (ingredientInv.ContainsKey(ing))
+            {
+                return ingredientInv[ing] > 0;
+            }
+        }
+
+        return false;
+    }
+
 }

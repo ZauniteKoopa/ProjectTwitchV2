@@ -7,6 +7,8 @@ public abstract class AbstractBoss : MonoBehaviour
 {
     //Own entity status
     private EntityStatus status = null;
+    [SerializeField]
+    RelationshipManager.CharacterName charName = RelationshipManager.CharacterName.Warwick;
     
     //Variables concerning target
     [SerializeField]
@@ -66,7 +68,8 @@ public abstract class AbstractBoss : MonoBehaviour
     {
         //Method to do dialogue stuff
         DialogueExecuter executer = DialogueExecuter.Instance;
-        yield return StartCoroutine(executer.LoadDialogue(dialogueIntro, tgt.GetComponent<EntityStatus>()));
+        TextAsset script = RelationshipManager.GetRelationship(charName).TalkToCharacter();
+        yield return StartCoroutine(executer.LoadDialogue(script, tgt.GetComponent<EntityStatus>()));
 
         //Delay to have player get ready
         yield return new WaitForSeconds(0.5f);

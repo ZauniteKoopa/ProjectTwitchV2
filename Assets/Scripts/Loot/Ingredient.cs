@@ -218,4 +218,41 @@ public class Ingredient
 
         return upgrades;
     }
+
+
+    //Static method to get Ingredient type from string. (Mostly for input parsing)
+    //  strings MUST BE IN ABBREVIATED INGREDIENT FORMAT for efficiency (Sewer Flower is "sf")
+    public static IngredientType ParseIngredientType(string ingName)
+    {
+        //Switch based on what type
+        switch (ingName)
+        {
+            case "pc":
+                return IngredientType.Puffcap;
+            
+            case "mh":
+                return IngredientType.MutatedHeart;
+            
+            case "so":
+                return IngredientType.ShimmerOil;
+            
+            case "wf":
+                return IngredientType.WhumpFeces;
+
+            case "sf":
+                return IngredientType.SewerFlower;
+
+            case "rs":
+                return IngredientType.RustedSteel;
+
+            case "rb":
+                return IngredientType.RottenBlood;
+
+            case "cf":
+                return IngredientType.ChemtechFuel;
+            
+            default:
+                throw new System.Exception("Unidentified ingredient type parsing");
+        }
+    }
 }
