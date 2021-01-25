@@ -24,7 +24,7 @@ public class PoisonVial
 
     //Constants for damage/potency
     private const float BASE_DAMAGE = 2f;
-    private const float DMG_GROWTH = 1f;
+    private const float DMG_GROWTH = 0.65f;
 
     //constants for poison
     private const float BASE_POISON = 0f;
@@ -32,9 +32,9 @@ public class PoisonVial
 
     //constants for reactivity
     private const float BASE_CONTAMINATE_DMG = 3f;
-    private const float BASE_CON_GROWTH = 1f;
+    private const float BASE_CON_GROWTH = 0.5f;
     private const float BASE_STACK_DMG = 1f;
-    private const float STACK_DMG_GROWTH = 0.5f;
+    private const float STACK_DMG_GROWTH = 0.25f;
 
     //constants for stickiness
     private const float BASE_SLOWNESS = 0.85f;

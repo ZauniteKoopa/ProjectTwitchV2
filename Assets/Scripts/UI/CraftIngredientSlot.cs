@@ -33,7 +33,7 @@ public class CraftIngredientSlot : MonoBehaviour, IDropHandler, IPointerDownHand
         if (eventData.pointerDrag != null)
         {
             IngredientIcon ingIcon = eventData.pointerDrag.GetComponent<IngredientIcon>();
-            if (ingIcon != null && ingIcon.GetIngredient() != null)
+            if (ingIcon != null && ingIcon.IngredientExists())
             {
                 audioFX.Play(0);
 

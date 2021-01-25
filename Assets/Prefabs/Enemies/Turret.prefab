@@ -675,11 +675,12 @@ MonoBehaviour:
   baseSpeed: 0
   healthRegen: 0.5
   canMove: 0
+  invulnerable: 0
   aura: {fileID: 2785145988971767295}
   healthBar: {fileID: 2777551956720215110}
   stacksUI: {fileID: 5093960937836500040}
   stacksBorder: {fileID: 22530048178076078}
-  normalColor: {r: 0.8235294, g: 0.49803922, b: 0.09019608, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
   deathSound: {fileID: 8300000, guid: 4a70ac0eece2958b0829486fbc2d647c, type: 3}
   onDeathEvent:
     m_PersistentCalls:

@@ -9756,7 +9756,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321cdbde173cafeafae55b1cb58108ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 380
+  baseHealth: 340
   baseSpeed: 5.5
   healthRegen: 0
   canMove: 1

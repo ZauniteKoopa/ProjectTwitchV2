@@ -108,14 +108,14 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     //Event handler when clicking down on icon
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (ingredient != null)
+        if (ingredient != null && count > 0)
             OnIngredientSelect.Invoke(ingredient);
     }
 
     //Event handler when beginning to drag
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (ingredient != null)
+        if (ingredient != null && count > 0)
         {
             canvasGroup.blocksRaycasts = false;
             canvasGroup.alpha = 0.6f;
@@ -125,7 +125,7 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     //Event handler when dragging icon
     public void OnDrag(PointerEventData eventData)
     {
-        if (ingredient != null)
+        if (ingredient != null && count > 0)
         {
             rectTransform.anchoredPosition += (eventData.delta / canvas.scaleFactor);
         }
@@ -158,5 +158,11 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
             float percent = timer / ICON_SNAPBACK_TIME;
             rectTransform.anchoredPosition = Vector3.Lerp(curPos, startPosition, percent);
         }
+    }
+
+    //Public method to check if ingredient even exist
+    public bool IngredientExists()
+    {
+        return ingredient != null && count > 0;
     }
 }
