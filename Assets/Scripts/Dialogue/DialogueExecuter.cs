@@ -116,8 +116,7 @@ public class DialogueExecuter : MonoBehaviour
             dialogueDisplay.text = dialogue;
 
             //Overall dialogue loop
-            yield return new WaitForFixedUpdate();
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForSeconds(0.2f);
 
             do
             {

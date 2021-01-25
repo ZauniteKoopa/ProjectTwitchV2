@@ -32,10 +32,17 @@ public class CraftVialSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
     //Public method to set Craft Vial slot to this craft vial
     public void SetUpCraftVial(PoisonVial pv, VialIcon ui)
     {
-        audioFX.Play(0);
-        vial = pv;
-        vialSlot.sprite = ui.GetSprite();
-        vialSlot.color = pv.GetColor();
+        if (pv != null)
+        {
+             audioFX.Play(0);
+            vial = pv;
+            vialSlot.sprite = ui.GetSprite();
+            vialSlot.color = pv.GetColor();
+        }
+        else
+        {
+            Reset();
+        }
     }
 
     //Public method to reset this craft slot

@@ -37,10 +37,6 @@ public abstract class AbstractBoss : MonoBehaviour
     [SerializeField]
     private Color invincibleColor = Color.white;
 
-    //Dialogue introduction
-    [SerializeField]
-    private TextAsset dialogueIntro = null;
-
 
     // Start is called before the first frame update
     void Start()

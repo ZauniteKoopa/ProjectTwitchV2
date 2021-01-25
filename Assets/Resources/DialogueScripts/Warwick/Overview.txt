@@ -7,3 +7,8 @@ WarwickBossIntro
 i
 rb
 WarwickBloodFrenzy
+
+2
+i
+mh
+WarwickBloodFrenzy
