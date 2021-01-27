@@ -1,3 +1,19 @@
 ChumpWhump
-ChumpWhumpGreet
-You bought a health pack.
+ChumpWhumpJoking
+Wowie! You went for that health pack really quickly there, your majesty! Must be some tough creatures out there in the sewers.
+
+Twitch
+TwitchGrunt
+Hmph! More annoying than usual.. They should obey Twitch! NOT ATTACK HIM! Hm.... Now I think of it.. Yordle, if you see your king injured, why not just give him the pack!? Twitch shouldn't be forced to giving worthless shiny cogs in, even if they're a burden.
+
+ChumpWhump
+ChumpWhumpScared
+Uh.. Well.. Oh! I just.. didn't want to assume the great Twitch could be hurt by anything. I always believed as a wee small whump that the great plague rat was invincible! Ain't he invincible?
+
+Twitch
+TwitchSad
+Doh.. You are right, yordle. Twitch should be an invincible king.. He did survive without these worthless health packs before! Though they do help..
+
+ChumpWhump
+ChumpWhumpJoking
+Exactly! So... we should keep business as usual then! A great sewer king doesn't need to rely on an old surface dweller like me. Just rely on me to dispose of cogs and you can have my garbage in return. Just per usual!

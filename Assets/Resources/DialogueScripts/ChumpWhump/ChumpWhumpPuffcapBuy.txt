@@ -1,3 +1,19 @@
+Twitch
+TwitchJoy
+Oh ho! Yordle! How did you find these exquisite puffcaps in your stash? You haven't been stealing from your king, have you?
+
 ChumpWhump
-ChumpWhumpGreet
-You bought Shrooms.
+ChumpWhumpGrunt
+Huh? Those? Those have been moldy for years! Just found it in the back of the storage. They're not even good for usin.
+
+Twitch
+TwitchLaugh
+I think the right word you're looking for is "ripe", yordle. The puffcap's the PERFECT ripeness! I don't understand how you surface dwellers survive. Maybe Twitch should teach the savages...
+
+ChumpWhump
+ChumpWhumpAnnoyed
+Hey! I'm over here, rat! And if you come closer, I can show you what these "savages" can do!
+
+Twitch
+TwitchScared
+Eh... Forget I said anything, yordle. I'll just stay over here. Far.. Far.. Far away.
