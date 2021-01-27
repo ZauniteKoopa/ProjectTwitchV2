@@ -3395,7 +3395,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2121784038891831787}
   - component: {fileID: 695964282587483308}
-  - component: {fileID: 4796700209046437317}
+  - component: {fileID: 6897849521959751909}
   m_Layer: 0
   m_Name: Shop
   m_TagString: Untagged
@@ -3441,7 +3441,7 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &4796700209046437317
+--- !u!114 &6897849521959751909
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3450,7 +3450,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8758704592400928262}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc0c4918fafae7cffac5f4b1a1b6ef8e, type: 3}
+  m_Script: {fileID: 11500000, guid: 3356834339de74a7698f06e484e32a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   roomOpenings:
@@ -3467,6 +3467,7 @@ MonoBehaviour:
   minEnemies: 0
   enemies: []
   spawnChecker: {fileID: 0}
+  owner: 1
 --- !u!1 &9155133574251171984
 GameObject:
   m_ObjectHideFlags: 0
@@ -4211,7 +4212,7 @@ PrefabInstance:
         type: 3}
       propertyPath: room
       value: 
-      objectReference: {fileID: 4796700209046437317}
+      objectReference: {fileID: 6897849521959751909}
     - target: {fileID: 9104410896364283300, guid: 9a9a4ed427c01af33a54a4c3d23ebb75,
         type: 3}
       propertyPath: m_LocalPosition.x

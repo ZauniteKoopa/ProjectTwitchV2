@@ -230,7 +230,6 @@ public class TwitchController : MonoBehaviour
                 status.canMove = false;
                 inventory.Open(mainVial, secVial);
             }
-
         }
     }
 
@@ -716,5 +715,19 @@ public class TwitchController : MonoBehaviour
 
         Time.timeScale = 1f;
         processingDamaged = false;
+    }
+
+    //Method to force character into idle animation during dialogue scenes
+    public void ForceToIdle()
+    {
+        animState = TwitchAnimState.IDLE;
+        OnAnimStateUpdate.Invoke((int)TwitchAnimState.IDLE);
+        status.canMove = false;
+
+        if (invisible)
+        {
+            GetComponent<SpriteRenderer>().color = normalColor;
+            invisible = false;
+        }
     }
 }

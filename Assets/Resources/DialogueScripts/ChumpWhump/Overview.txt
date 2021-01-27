@@ -3,7 +3,7 @@ f
 1
 ChumpWhumpFirstEncounter
 
-3
+5
 f
 2
 ChumpWhumpSecondEncounter
@@ -17,3 +17,23 @@ ChumpWhumpShimmer
 i
 pc
 ChumpWhumpPuffcap
+
+3
+h
+0
+ChumpWhumpHealthPackBuy
+
+6
+b
+pc
+ChumpWhumpPuffcapBuy
+
+6
+b
+wf
+ChumpWhumpWhumpFecesBuy
+
+7
+bo
+0
+ChumpWhumpBoughtOut

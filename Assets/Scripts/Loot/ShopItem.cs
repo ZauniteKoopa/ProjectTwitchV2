@@ -23,6 +23,10 @@ public class ShopItem : AbstractInteractable
     private int cost;
     private Ingredient ing;
 
+    //Who owns the object
+    [SerializeField]
+    private RelationshipManager.CharacterName seller = RelationshipManager.CharacterName.ChumpWhump;
+
     private AudioSource audioFX;
 
 
@@ -65,6 +69,17 @@ public class ShopItem : AbstractInteractable
             //Disable shop object
             costUI.gameObject.SetActive(false);
             GetComponent<SpriteRenderer>().color = Color.black;
+
+            //Notify shop keeper that someone bought it
+            ShopkeeperRelationship shopkeeper = (ShopkeeperRelationship)RelationshipManager.GetRelationship(seller);
+            if (ing == null)
+            {
+                shopkeeper.OnBuyHealthPack();
+            }
+            else
+            {
+                shopkeeper.OnBuyIngredient(ing.GetIngType());
+            }
 
             //Play sound effect
             audioFX.Play(0);

@@ -177,6 +177,12 @@ public class Ingredient
         return AMMO_OFFERED;
     }
 
+    //Method to access type
+    public IngredientType GetIngType()
+    {
+        return type;
+    }
+
     //Method to get hashcode according to type, not to pointer location
     public override int GetHashCode()
     {

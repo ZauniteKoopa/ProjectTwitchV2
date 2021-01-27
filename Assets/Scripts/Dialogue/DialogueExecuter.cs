@@ -86,7 +86,7 @@ public class DialogueExecuter : MonoBehaviour
     private IEnumerator ExecuteScript(string[] script, EntityStatus player)
     {
         //Disable player movement
-        player.canMove = false;
+        player.GetComponent<TwitchController>().ForceToIdle();
 
         for (int i = 0; i < script.Length; i+=SCRIPT_SEGMENT_LENGTH)
         {

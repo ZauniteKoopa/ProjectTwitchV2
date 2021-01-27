@@ -67,8 +67,7 @@ public class RelationshipManager : MonoBehaviour
     private void ParseDialogueOverview()
     {
         //Initialize variables
-        freqEvents = new Dictionary<int, DialogueEvent>();
-        ingredientEvents = new Dictionary<Ingredient.IngredientType, DialogueEvent>();
+        InitReqDicts();
 
         TextAsset rawOverview = Resources.Load<TextAsset>("DialogueScripts/" + character.ToString() + "/Overview");
         string[] overview = rawOverview.text.Split('\n');
@@ -94,20 +93,34 @@ public class RelationshipManager : MonoBehaviour
                 string reqType = overview[i + 1];
                 string reqInfo = overview[i + 2];
 
-                if (reqType == "f")
-                {
-                    int freq = int.Parse(reqInfo);
-                    freqEvents.Add(freq, curEvent);
-                }
-                else if (reqType == "i")
-                {
-                    Ingredient.IngredientType ingType = Ingredient.ParseIngredientType(reqInfo);
-                    ingredientEvents.Add(ingType, curEvent);
-                }
-
+                ParseEventSegment(curEvent, reqType, reqInfo);
             }
         }
+    }
 
+    
+    //Virtual method to initialize req dictionaries
+    protected virtual void InitReqDicts()
+    {
+        freqEvents = new Dictionary<int, DialogueEvent>();
+        ingredientEvents = new Dictionary<Ingredient.IngredientType, DialogueEvent>();
+    }
+    
+
+    //Virtual method to parse a single dialogue event segment
+    //  overview is the overview found in the txt file and i is the starting index
+    protected virtual void ParseEventSegment(DialogueEvent curEvent, string reqType, string reqInfo)
+    {
+        if (reqType == "f")
+        {
+            int freq = int.Parse(reqInfo);
+            freqEvents.Add(freq, curEvent);
+        }
+        else if (reqType == "i")
+        {
+            Ingredient.IngredientType ingType = Ingredient.ParseIngredientType(reqInfo);
+            ingredientEvents.Add(ingType, curEvent);
+        }
     }
 
 
@@ -118,6 +131,18 @@ public class RelationshipManager : MonoBehaviour
         //Increment times met to indicate you met once
         numTimesMet++;
 
+        //Find dialogue event depending on frequency of times met
+        DialogueEvent bestEvent = GetBestEvent();
+
+        //Return the best script. If it doesn't exist, just go to defaultScript
+        return (bestEvent != null) ? bestEvent.GetScript() : defaultScript;
+    }
+
+
+    //Virtual override method to get the best event
+    //  If no event found, return null
+    protected virtual DialogueEvent GetBestEvent()
+    {
         //Find dialogue event depending on frequency of times met
         DialogueEvent bestEvent = null;
         if (freqEvents.ContainsKey(numTimesMet))
@@ -135,15 +160,12 @@ public class RelationshipManager : MonoBehaviour
             }
         }
 
-        //Return the best script. If it doesn't exist, just go to defaultScript
-        return (bestEvent != null) ? bestEvent.GetScript() : defaultScript;
+        return bestEvent;
     }
 
 
-
-
     //Private nested class to handle Text Assets as seperate Dialogue Events
-    class DialogueEvent
+    protected class DialogueEvent
     {
         private int priority;
         private TextAsset script;
@@ -159,6 +181,9 @@ public class RelationshipManager : MonoBehaviour
         //  If it is equal, flip a coin to see if it's higher
         public bool IsHigherPriority(DialogueEvent other)
         {
+            if (other == this)
+                return false;
+
             if (other.priority == priority)
                 return Random.Range(0, 2) == 0;
             
