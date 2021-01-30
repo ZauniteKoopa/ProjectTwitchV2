@@ -37,7 +37,7 @@ public class PoisonVial
     private const float STACK_DMG_GROWTH = 0.25f;
 
     //constants for stickiness
-    private const float BASE_SLOWNESS = 0.85f;
+    private const float BASE_SLOWNESS = 0.9f;
     private const float SLOWNESS_GROWTH = -0.025f;
 
     //Side effects variables

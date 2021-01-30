@@ -52,7 +52,7 @@ public class EntityStatus : MonoBehaviour
     private const int MAX_TICKS = 6;
     private const float TICK_TIME = 1.0f;
     private PoisonVial poison = null;
-    private const float GREATER_DECAY_MODIFIER = 1.5f;
+    private const float GREATER_DECAY_MODIFIER = 1.25f;
 
     //Events
     public UnityEvent onDeathEvent;
@@ -350,7 +350,14 @@ public class EntityStatus : MonoBehaviour
     //Public accessor method for speed
     public float GetCurSpeed()
     {
-        return speedModifier * baseSpeed;
+        float curSpeed = speedModifier * baseSpeed;
+        if (aura != null)
+            curSpeed *= aura.GetAuraSpeed();
+
+        if (poison != null)
+            curSpeed *= poison.GetSlowFactor();
+
+        return curSpeed;
     }
 
     //Public method to affect speed - NON-BUFF

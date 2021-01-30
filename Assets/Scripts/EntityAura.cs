@@ -17,7 +17,7 @@ public class EntityAura : MonoBehaviour
     private const float POISON_FOG_DAMAGE = 0.2f;
 
     //Noxious Explosion constants
-    private const float NOXIOUS_DAMAGE = 3.0f;
+    private const float NOXIOUS_DAMAGE = 3.5f;
 
     //Slime Leak variable
     private const float BASE_SLIME_SLOW = 0.6f;
@@ -183,6 +183,13 @@ public class EntityAura : MonoBehaviour
                 damaged[i].WeakPoisonDamageEntity(effectLevel * NOXIOUS_DAMAGE, numStacks / 2, poison);
             }
         }
+    }
+
+
+    //Method to get speed factor from aura
+    public float GetAuraSpeed()
+    {
+        return (sideEffect == PoisonVial.SideEffect.SLIME_LEAK) ? 0.6f : 1f;
     }
 
 

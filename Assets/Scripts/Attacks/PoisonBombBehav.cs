@@ -36,7 +36,7 @@ public class PoisonBombBehav : MonoBehaviour
     private const float ACID_DAMAGE_GROWTH = 1f;
 
     //Combustion Blast constants
-    private const float BASE_BLAST_DAMAGE = 2.75f;
+    private const float BASE_BLAST_DAMAGE = 3.2f;
 
 
     //Awake is called to set local variables
