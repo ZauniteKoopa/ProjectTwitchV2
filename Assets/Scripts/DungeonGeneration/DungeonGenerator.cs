@@ -13,9 +13,9 @@ public class DungeonGenerator : MonoBehaviour
 
     //Grid size
     [SerializeField]
-    private int rows = 3;
+    private int randDim1 = 3;
     [SerializeField]
-    private int cols = 3;
+    private int randDim2 = 3;
     [SerializeField]
     private int numDungeons = 1;
 
@@ -65,6 +65,10 @@ public class DungeonGenerator : MonoBehaviour
             bool hasShop = (i == shopDungeon);
             if (hasShop)
                 shopDungeon += dungeonsPerShop;
+
+            int coinFlip = UnityEngine.Random.Range(0, 2);
+            int rows = (coinFlip == 0) ? randDim1 : randDim2;
+            int cols = (coinFlip == 0) ? randDim2 : randDim1;
 
             //Get initial blueprint of dungeon first and then make room from blueprint
             BP_Vertex[,] blueprint = MakeBlueprint(rows, cols, hasShop);

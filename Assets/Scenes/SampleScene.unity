@@ -18230,9 +18230,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02929bc4dd18b4ccfacef425b7aabaa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 3
-  cols: 3
-  numDungeons: 4
+  randDim1: 4
+  randDim2: 3
+  numDungeons: 3
   originPos: {x: -90, y: 0, z: 1}
   initialEntry: {fileID: 1610515764}
   tgtDest: {x: 20, y: 50, z: -1}
@@ -18249,7 +18249,7 @@ MonoBehaviour:
   shopRoom: {fileID: 2121784038891831787, guid: 8119ba9f938701a7395c14bd6fad2c86,
     type: 3}
   treasureRarity: 7
-  dungeonsPerShop: 2
+  dungeonsPerShop: 1
 --- !u!4 &2133674854
 Transform:
   m_ObjectHideFlags: 0
