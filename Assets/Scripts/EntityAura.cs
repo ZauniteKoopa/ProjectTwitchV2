@@ -20,7 +20,7 @@ public class EntityAura : MonoBehaviour
     private const float NOXIOUS_DAMAGE = 3f;
 
     //Slime Leak variable
-    private const float BASE_SLIME_SLOW = 0.6f;
+    private const float BASE_SLIME_SLOW = 0.85f;
 
 
     //On awake set up variables
